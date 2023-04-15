@@ -8,8 +8,8 @@ namespace ShoppingBasket.CommonHelper
 {
     internal class WebsiteRoles
     {
-        public static String UserRole = "User";
-        public static String AdminRole = "Admin";
-        public static String EmployeeRole = "Employee";
+        public static string UserRole = "User";
+        public static string AdminRole = "Admin";
+        public static string EmployeeRole = "Employee";
     }
 }
