@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingBasket.App", "Shopp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.CommonHelper", "ShoppingBasket.CommonHelper\ShoppingBasket.CommonHelper.csproj", "{CBF9D0EC-F106-4761-8A10-C50521802420}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingBasket.Models", "ShoppingBasket.Models\ShoppingBasket.Models.csproj", "{0CD5C533-0E88-4BCB-9154-662B0C0679CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CBF9D0EC-F106-4761-8A10-C50521802420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBF9D0EC-F106-4761-8A10-C50521802420}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBF9D0EC-F106-4761-8A10-C50521802420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CD5C533-0E88-4BCB-9154-662B0C0679CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CD5C533-0E88-4BCB-9154-662B0C0679CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CD5C533-0E88-4BCB-9154-662B0C0679CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CD5C533-0E88-4BCB-9154-662B0C0679CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
