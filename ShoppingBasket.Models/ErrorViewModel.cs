@@ -1,4 +1,4 @@
-namespace ShoppingBasket.App.Models
+namespace ShoppingBasket.Models
 {
     public class ErrorViewModel
     {

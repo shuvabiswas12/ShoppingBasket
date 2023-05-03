@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoppingBasket.App.Models;
 using System.Diagnostics;
+using ShoppingBasket.Models;
 
-namespace ShoppingBasket.App.Controllers
+namespace ShoppingBasket.App.Areas.Customer.Controllers
 {
     public class HomeController : Controller
     {
