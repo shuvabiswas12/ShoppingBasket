@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
 [Area("Customer")]
-public class ShopsController : Controller
+public class CartController : Controller
 {
     // GET
     public IActionResult Index()
@@ -11,7 +11,7 @@ public class ShopsController : Controller
         return View();
     }
 
-    public IActionResult Details(int? id)
+    public IActionResult Checkout()
     {
         return View();
     }

@@ -29,7 +29,6 @@
 
     <link rel="stylesheet" type="text/css" href="~/css/customStyle.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/ShoppingBasket.App.styles.css" asp-append-version="true"/>
 </head>
 <body>
 <!-- Page Preloader -->
@@ -74,21 +73,21 @@
                 <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
             </li>
             <li>
-                <a href="#">Pages</a>
+                <a>Pages</a>
                 <ul class="header__menu__dropdown">
                     <li>
-                        <a href="#">Shop Details</a>
+                        <a asp-area="Customer" asp-controller="Shops" asp-action="Details">Shop Details</a>
                     </li>
                     <li>
-                        <a href="#">Shoping Cart</a>
+                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
                     </li>
                     <li>
-                        <a href="#">Check Out</a>
+                        <a asp-area="Customer" asp-controller="Cart" asp-action="Checkout" >Check Out</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#">Contact</a>
+                <a asp-area="Customer" asp-controller="Home" asp-action="Contact" >Contact</a>
             </li>
         </ul>
     </nav>
@@ -177,23 +176,23 @@
                             <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
                         </li>
                         <li>
-                            <a href="#">Pages</a>
+                            <a>Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li>
-                                    <a href="#">Shop Details</a>
+                                    <a asp-area="Customer" asp-controller="Shops" asp-action="Details">Shop Details</a>
                                 </li>
                                 <li>
-                                    <a href="#">Shoping Cart</a>
+                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
                                 </li>
                                 <li>
-                                    <a href="#">Check Out</a>
+                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Checkout" >Check Out</a>
                                 </li>
 
                             </ul>
                         </li>
 
                         <li>
-                            <a href="#">Contact</a>
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Contact" >Contact</a>
                         </li>
                     </ul>
                 </nav>

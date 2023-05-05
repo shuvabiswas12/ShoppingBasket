@@ -19,7 +19,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Contact()
         {
             return View();
         }
