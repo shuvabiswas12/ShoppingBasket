@@ -65,31 +65,7 @@
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
-        <ul>
-            <li class="active">
-                <a asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-            </li>
-            <li>
-                <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
-            </li>
-            <li>
-                <a>Pages</a>
-                <ul class="header__menu__dropdown">
-                    <li>
-                        <a asp-area="Customer" asp-controller="Shops" asp-action="Details">Shop Details</a>
-                    </li>
-                    <li>
-                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
-                    </li>
-                    <li>
-                        <a asp-area="Customer" asp-controller="Cart" asp-action="Checkout" >Check Out</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a asp-area="Customer" asp-controller="Home" asp-action="Contact" >Contact</a>
-            </li>
-        </ul>
+        <partial name="_Menus"/>
     </nav>
     <div id="mobile-menu-wrap"></div>
     <div class="header__top__right__social">
@@ -168,33 +144,7 @@
             </div>
             <div class="col-lg-6">
                 <nav class="header__menu">
-                    <ul>
-                        <li class="active">
-                            <a asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li>
-                            <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
-                        </li>
-                        <li>
-                            <a>Pages</a>
-                            <ul class="header__menu__dropdown">
-                                <li>
-                                    <a asp-area="Customer" asp-controller="Shops" asp-action="Details">Shop Details</a>
-                                </li>
-                                <li>
-                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
-                                </li>
-                                <li>
-                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Checkout" >Check Out</a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a asp-area="Customer" asp-controller="Home" asp-action="Contact" >Contact</a>
-                        </li>
-                    </ul>
+                    <partial name="_Menus"/>
                 </nav>
             </div>
             <div class="col-lg-3">

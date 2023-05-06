@@ -1,0 +1,12 @@
+.intro {
+    height: calc(100vh - 30vh);
+}
+
+.admin-card-header {
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}

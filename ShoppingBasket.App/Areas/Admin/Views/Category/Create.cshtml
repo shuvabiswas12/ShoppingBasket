@@ -1,0 +1,31 @@
+@model ShoppingBasket.Models.Category
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<section class="intro">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-7">
+                    <div class="card">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="mb-4 pb-2">Create Category</h3>
+                            <form asp-action="Create" method="post">
+                                <div asp-validation-summary="ModelOnly"></div>
+                                <!-- Category Name input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" asp-for="Name"></label>
+                                    <input type="text" class="form-control" asp-for="Name" placeholder="Enter a new category"/>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="site-btn">SAVE</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

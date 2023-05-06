@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<section class="intro">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body p-4 p-md-5">
+                            
+                            <div class="admin-card-header">
+                                <h3>Categories</h3>
+                                <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="site-btn text-light">Create Category</a>
+                            </div>
+                            
+                            <div class="row px-3">
+                                <table class="col-lg-8 col-md-12 table table-bordered table-hover">
+                                    <thead>
+                                    <tr class="bg-light">
+                                        <th style="width: 50px;">ID</th>
+                                        <th>Category</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Vegetables</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Muttons</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Cloths</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
