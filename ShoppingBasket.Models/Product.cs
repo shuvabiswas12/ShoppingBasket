@@ -13,9 +13,9 @@ public class Product
 
     [Required] public string ProductImage_1 { get; set; }
 
-    public string ProductImage_2 { get; set; }
+    public string? ProductImage_2 { get; set; }
 
-    public string ProductImage_3 { get; set; }
+    public string? ProductImage_3 { get; set; }
 
     [Required] public double Price { get; set; }
 
