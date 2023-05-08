@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShoppingBasket.DataAccessLayer\ShoppingBasket.DataAccessLayer.csproj" />
     <ProjectReference Include="..\ShoppingBasket.Models\ShoppingBasket.Models.csproj" />
   </ItemGroup>
 
