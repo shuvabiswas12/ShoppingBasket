@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ public class Product
 
     [Required] public string Description { get; set; }
 
+    [DisplayName("Product Images")]
     [Required] public string ProductImage_1 { get; set; }
 
     public string? ProductImage_2 { get; set; }
@@ -19,7 +21,9 @@ public class Product
 
     [Required] public double Price { get; set; }
 
-    [ForeignKey(("Category"))] public int CategoryId { get; set; }
+    [Required] public int Stock { get; set; } = 5;
+
+    [ForeignKey(("Category"))] [DisplayName("Category")] public int CategoryId { get; set; }
 
     public Category Category { get; set; }
 

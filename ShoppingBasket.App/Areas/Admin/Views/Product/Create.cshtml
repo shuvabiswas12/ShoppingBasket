@@ -1,0 +1,68 @@
+@model ShoppingBasket.Models.Product
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<style>
+.nice-select, .nice-select * {
+width: 100%;
+}
+</style>
+
+<div class="container">
+    <form>
+        <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label class="form-label" asp-for="Name"></label>
+                    <input type="text" asp-for="Name" class="form-control"/>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="form-group">
+                    <label class="form-label" asp-for="Price"></label>
+                    <input type="text" asp-for="Price" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3">
+                <div class="form-group mb-4">
+                    <label class="form-label" asp-for="Stock"></label>
+                    <input class="form-control" type="number" asp-for="Stock"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="form-label"></label> <br>
+                    <select asp-for="CategoryId" style="width: 100%">
+                        <option selected disabled>Select a category &nbsp;</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-lg-8">
+                <div class="form-group mt-sm-4 mt-md-0 mt-lg-0">
+                    <label class="form-label" asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                </div>
+            </div>
+        </div>
+
+
+        @* There are at most 3 images *@
+        <div class="form-group mb-4">
+            <label class="form-label" asp-for="ProductImage_1"></label>
+            <input type="file" asp-for="ProductImage_1" class="form-control" accept="image/png, image/jpeg, image/jpg"/>
+        </div>
+
+
+        <!-- Submit button -->
+        <button type="submit" class="site-btn text-light btn-block mb-4 mt-4">Place order</button>
+    </form>
+</div>
