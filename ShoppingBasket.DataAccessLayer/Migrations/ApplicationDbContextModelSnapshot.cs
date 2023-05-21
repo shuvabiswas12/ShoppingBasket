@@ -288,6 +288,36 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ShoppingBasket.Models.Stock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CurrentStock")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastStockInsertedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NewStockInsertedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PreviousStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Stocks");
+                });
+
             modelBuilder.Entity("ShoppingBasket.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -367,6 +397,17 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShoppingBasket.Models.Stock", b =>
+                {
+                    b.HasOne("ShoppingBasket.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }
