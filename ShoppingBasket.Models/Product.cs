@@ -21,8 +21,6 @@ public class Product
 
     [Required] public double Price { get; set; }
 
-    [Required] public int Stock { get; set; } = 5;
-
     [ForeignKey(("Category"))] [DisplayName("Category")] public int CategoryId { get; set; }
 
     public Category Category { get; set; }
