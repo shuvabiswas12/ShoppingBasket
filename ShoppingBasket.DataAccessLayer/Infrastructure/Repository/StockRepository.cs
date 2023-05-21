@@ -3,7 +3,7 @@ using ShoppingBasket.Models;
 
 namespace ShoppingBasket.DataAccessLayer.Infrastructure.Repository;
 
-public class StockRepository : Repository<Stock>, IStock
+public class StockRepository : Repository<Stock>, IStockRepository
 {
     private ApplicationDbContext _context;
     
