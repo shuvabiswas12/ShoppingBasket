@@ -30,14 +30,17 @@ margin-bottom: 20px;
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group px-3">
                                 <label class="form-label" asp-for="Price"></label>
-                                <input type="text" asp-for="Price" class="form-control"/>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    <input type="text" asp-for="Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55"/>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group mb-4 px-3">
                                 <label class="form-label" asp-for="Stock"></label>
-                                <input class="form-control" type="number" asp-for="Stock"/>
+                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock" placeholder="Ex. 12"/>
                             </div>
                         </div>
                     </div>
@@ -71,6 +74,26 @@ margin-bottom: 20px;
             </div>
         </div>
     </div>
-
-
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+    
+    var numberFields = document.querySelectorAll('.number-field');
+    
+    numberFields.forEach(function(field) {
+      field.addEventListener('input', function() {
+        // Remove invalid characters
+        var sanitized = this.value.replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        this.value = sanitized;
+      });
+    });
+
+    </script>
+}
