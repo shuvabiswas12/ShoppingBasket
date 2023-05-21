@@ -17,26 +17,49 @@ public class Repository<T> : IRepository<T> where T : class
 
     public IEnumerable<T> GetAll(string? includeProperties = null, Expression<Func<T, bool>>? predicate = null)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = _dbSet;
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        if (includeProperties != null)
+        {
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+        }
+
+        return query.ToList();
     }
 
     public T GetT(Expression<Func<T, bool>> predicate, string? includeProperties = null)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = _dbSet;
+        query = query.Where(predicate);
+        if (includeProperties != null)
+        {
+            foreach (var includeProperty in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+        }
+        return query.FirstOrDefault();
     }
 
     public void Add(T entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Add(entity);
     }
 
     public void Delete(T entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Remove(entity);
     }
 
     public void DeleteRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        _dbSet.RemoveRange(entities);
     }
 }
