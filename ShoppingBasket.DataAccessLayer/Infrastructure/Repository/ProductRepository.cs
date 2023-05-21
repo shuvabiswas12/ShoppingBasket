@@ -5,7 +5,7 @@ namespace ShoppingBasket.DataAccessLayer.Infrastructure.Repository;
 
 public class ProductRepository : Repository<Product>, IProductRepository
 {
-    private ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     
     public ProductRepository(ApplicationDbContext context) : base(context)
     {
@@ -14,6 +14,16 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
     public void Update(Product product)
     {
-        throw new NotImplementedException();
+        var productToUpdate = _context.Products.FirstOrDefault(p => p.Id == product.Id);
+        if (productToUpdate != null)
+        {
+            productToUpdate.Name = product.Name;
+            productToUpdate.Price = product.Price;
+            productToUpdate.Description = product.Description;
+            if (!string.IsNullOrEmpty(product.ProductImage_1)) productToUpdate.ProductImage_1 = product.ProductImage_1;
+            if (!string.IsNullOrEmpty(product.ProductImage_2)) productToUpdate.ProductImage_2 = product.ProductImage_2;
+            if (!string.IsNullOrEmpty(product.ProductImage_3)) productToUpdate.ProductImage_3 = product.ProductImage_3;
+            productToUpdate.CategoryId = product.CategoryId;
+        }
     }
 }

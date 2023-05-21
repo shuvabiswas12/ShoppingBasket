@@ -5,7 +5,7 @@ namespace ShoppingBasket.DataAccessLayer.Infrastructure.Repository;
 
 public class StockRepository : Repository<Stock>, IStockRepository
 {
-    private ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     
     public StockRepository(ApplicationDbContext context) : base(context)
     {
@@ -14,6 +14,11 @@ public class StockRepository : Repository<Stock>, IStockRepository
 
     public void Update(Stock stock)
     {
-        throw new NotImplementedException();
+        var stockToUpdate = _context.Stocks.FirstOrDefault(s => s.Id == stock.Id);
+        if (stockToUpdate != null)
+        {
+            stockToUpdate.PreviousStock = stockToUpdate.CurrentStock;
+            stockToUpdate.CurrentStock = stock.CurrentStock;
+        }
     }
 }

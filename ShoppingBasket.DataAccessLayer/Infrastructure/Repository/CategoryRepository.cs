@@ -15,7 +15,11 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
     
     public void Update(Category category)
     {
-        throw new NotImplementedException();
+        var categoryToUpdate = _context.Categories.FirstOrDefault(c => c.Id == category.Id);
+        if (categoryToUpdate != null)
+        {
+            categoryToUpdate.Name = category.Name;
+        }
     }
 
     
