@@ -10,6 +10,7 @@
   "profiles": {
     "ShoppingBasket.App": {
       "commandName": "Project",
+      "hotReloadEnabled": true,
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7147;http://localhost:5257",
