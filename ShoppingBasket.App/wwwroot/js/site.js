@@ -2,3 +2,5 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+document.getElementsByTagName('main')[0].style.minHeight = (window.screen.height - 400)+ "px";
