@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ShoppingBasket.Models.ViewModels;
 
 namespace ShoppingBasket.App.Areas.Admin.Controllers;
 
@@ -14,6 +15,7 @@ public class ProductController : Controller
     // GET
     public IActionResult Create()
     {
-        return View();
+        ProductVm productVm = new ProductVm();
+        return View(productVm);
     }
 }

@@ -1,4 +1,4 @@
-@model ShoppingBasket.Models.Product
+@model ShoppingBasket.Models.ViewModels.ProductVm
 
 @{
     ViewData["Title"] = "Create Product";
@@ -23,46 +23,46 @@ margin-bottom: 20px;
             <div class="row mt-4">
                 <form class="offset-lg-2 offset-md-2 col-md-8 col-lg-8">
                     <div class="form-group px-3">
-                        <label class="form-label" asp-for="Name"></label>
-                        <input type="text" asp-for="Name" class="form-control"/>
+                        <label class="form-label" asp-for="Product.Name"></label>
+                        <input type="text" asp-for="Product.Name" class="form-control"/>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group px-3">
-                                <label class="form-label" asp-for="Price"></label>
+                                <label class="form-label" asp-for="Product.Price"></label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">$</span>
-                                    <input type="text" asp-for="Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55"/>
+                                    <input type="text" asp-for="Product.Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group mb-4 px-3">
-                                <label class="form-label" asp-for="Stock"></label>
-                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock" placeholder="Ex. 12"/>
+                                <label class="form-label" asp-for="Stock.CurrentStock"></label>
+                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock.CurrentStock" placeholder="Ex. 12"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group px-3">
-                        <label asp-for="CategoryId" class="form-label"></label> <br>
-                        <select asp-for="CategoryId" style="width: 100%">
+                        <label asp-for="Product.CategoryId" class="form-label"></label> <br>
+                        <select asp-for="Product.CategoryId" style="width: 100%">
                             <option selected disabled>Select a category &nbsp;</option>
                         </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mt-sm-4 mt-md-0 mt-lg-0 px-3">
-                        <label class="form-label" asp-for="Description"></label>
-                        <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                        <label class="form-label" asp-for="Product.Description"></label>
+                        <textarea asp-for="Product.Description" class="form-control" rows="6"></textarea>
                     </div>
 
 
                     @* There are at most 3 images *@
                     <div class="form-group mb-4 px-3">
-                        <label class="form-label" asp-for="ProductImage_1"></label>
-                        <input type="file" asp-for="ProductImage_1" class="form-control" accept="image/png, image/jpeg, image/jpg"/>
+                        <label class="form-label" asp-for="Product.ProductImage_1"></label>
+                        <input type="file" asp-for="Product.ProductImage_1" class="form-control" accept="image/png, image/jpeg, image/jpg"/>
                     </div>
 
 
