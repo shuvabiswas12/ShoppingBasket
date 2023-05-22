@@ -18,19 +18,12 @@ public class Repository<T> : IRepository<T> where T : class
     public IEnumerable<T> GetAll(string? includeProperties = null, Expression<Func<T, bool>>? predicate = null)
     {
         IQueryable<T> query = _dbSet;
-        if (predicate != null)
-        {
-            query = query.Where(predicate);
-        }
+        if (predicate != null) query = query.Where(predicate);
 
         if (includeProperties != null)
-        {
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' },
+            foreach (var includeProperty in includeProperties.Split(new[] { ',' },
                          StringSplitOptions.RemoveEmptyEntries))
-            {
                 query = query.Include(includeProperty);
-            }
-        }
 
         return query.ToList();
     }
@@ -40,13 +33,9 @@ public class Repository<T> : IRepository<T> where T : class
         IQueryable<T> query = _dbSet;
         query = query.Where(predicate);
         if (includeProperties != null)
-        {
-            foreach (var includeProperty in includeProperties.Split(new char[] { ',' },
+            foreach (var includeProperty in includeProperties.Split(new[] { ',' },
                          StringSplitOptions.RemoveEmptyEntries))
-            {
                 query = query.Include(includeProperty);
-            }
-        }
 
         return query.FirstOrDefault();
     }

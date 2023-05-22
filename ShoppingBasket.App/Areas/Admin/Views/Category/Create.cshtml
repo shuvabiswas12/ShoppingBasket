@@ -4,8 +4,6 @@
     ViewData["Title"] = "Create Category";
 }
 
-<partial name="_Toast"/>
-
 <section class="intro">
     <div class="mask d-flex align-items-center h-100">
         <div class="container">
@@ -19,7 +17,7 @@
                                 <!-- Category Name input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label" asp-for="Name"></label>
-                                    <input type="text" class="form-control" asp-for="Name" placeholder="Enter a new category"/>
+                                    <input type="text" required class="form-control" asp-for="Name" placeholder="Enter a new category"/>
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                                 <button type="submit" class="site-btn">SAVE</button>

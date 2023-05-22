@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css"/>
     <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css"/>
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="~/css/toastify.min.css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css"/>
     @* end *@
 
@@ -173,6 +174,8 @@
 <!-- Header Section End -->
 
 <main role="main" class="pb-3">
+    <partial name="_Toast"/>
+    
     @RenderBody()
 </main>
 
@@ -191,6 +194,7 @@
 <script src="~/js/jquery.slicknav.js"></script>
 <script src="~/js/mixitup.min.js"></script>
 <script src="~/js/owl.carousel.min.js"></script>
+<script src="~/js/toastify-js.js"></script>
 <script src="~/js/main.js"></script>
 @* end *@
 

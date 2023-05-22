@@ -4,8 +4,6 @@
     ViewData["Title"] = "Categories";
 }
 
-<partial name="_Toast"/>
-
 <div class="container my-5">
 
     <div class="my-3">
@@ -18,37 +16,80 @@
                 <h3>Categories</h3>
             </div>
 
-            <div class="row my-4">
-                <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr class="bg-light">
-                            <th style="width: 50px;">ID</th>
-                            <th>Category Name</th>
-                            <th>Creation Date</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        
-                        @foreach (var category in Model)
-                        {
-                            <tr>
-                                <td> @category.Id </td>
-                                <td> @category.Name </td>
-                                <td> @category.CreatedAt </td>
-                                <td>
-                                    <button>EDIT</button>
-                                    <button>DELETE</button>
-                                </td>
+            @if (!Model.Any())
+            {
+                <p class="lead text-danger text-center px-2 py-5">No Categories found!</p>
+            }
+            else
+            {
+                <div class="row my-4">
+                    <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr class="bg-light">
+                                <th style="width: 50px;">ID</th>
+                                <th>Category Name</th>
+                                <th>Creation Date</th>
+                                <th>Actions</th>
                             </tr>
+                            </thead>
+                            <tbody>
 
-                        }
+                            @foreach (var category in Model)
+                            {
+                                <tr>
+                                    <td> @category.Id </td>
+                                    <td> @category.Name </td>
+                                    <td> @category.CreatedAt </td>
+                                    <td>
+                                        <button>EDIT</button>
+                                        <button onclick="deleteCategory(@category.Id)">DELETE</button>
+                                    </td>
+                                </tr>
+                            }
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            }
+
+
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+    function deleteCategory(categoryId)
+    {
+        $.ajax({
+        url: `/Admin/Category/Delete?id=${categoryId}` ,
+        method: "GET",
+        success: function (data) {
+            location.reload();
+        },
+        error: function (e) {
+           console.log(e);
+                       Toastify({
+                                     text: "Could not be deleted the category!",
+                                     style: {
+                                         background: "#ff3333",
+                                     },
+                                     position: "center",
+                                     close: true,
+                                     duration: 3000,
+                                     offset: {
+                                       x: 0, 
+                                       y: 120
+                                     },
+                                     onClick: function(){} 
+                                   }).showToast(); 
+        },
+        });
+        
+       
+    }
+    </script>
+}

@@ -8,6 +8,7 @@ namespace ShoppingBasket.App.Areas.Admin.Controllers;
 public class CategoryController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
+
     // GET
     public CategoryController(IUnitOfWork unitOfWork)
     {
@@ -16,7 +17,7 @@ public class CategoryController : Controller
 
     public IActionResult Index()
     {
-        IEnumerable<Category> categories = _unitOfWork.CategoryRepository.GetAll();
+        var categories = _unitOfWork.CategoryRepository.GetAll();
         return View(categories);
     }
 
@@ -37,7 +38,23 @@ public class CategoryController : Controller
             _unitOfWork.CategoryRepository.Add(category);
             _unitOfWork.Save();
             TempData["success"] = "Category created successfully";
-        }
         return RedirectToAction("Index");
+        }
+        return View();
     }
+
+    #region API DELETE
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var categoryToDelete = _unitOfWork.CategoryRepository.GetT(c => c.Id == id);
+        if (categoryToDelete == null) return NotFound("Category not found");
+        _unitOfWork.CategoryRepository.Delete(categoryToDelete);
+        _unitOfWork.Save();
+        TempData["success"] = "Category deleted successfully";
+        return Json(new { success = true, message = "Deleted!" });
+    }
+
+    #endregion API delete
 }
