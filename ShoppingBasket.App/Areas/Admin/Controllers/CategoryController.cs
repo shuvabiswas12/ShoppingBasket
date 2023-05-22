@@ -23,22 +23,38 @@ public class CategoryController : Controller
 
     // GET
     [HttpGet]
-    public IActionResult Create()
+    public IActionResult CreateAndUpdate(int ? id)
     {
+        if (id is not null)
+        {
+            var categoryToUpdate = _unitOfWork.CategoryRepository.GetT(c => c.Id == id);
+            if (categoryToUpdate is null) return View("_404");
+            return View(categoryToUpdate);
+        }
         return View();
     }
 
     // POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(Category category)
+    public IActionResult CreateAndUpdate(Category category)
     {
         if (ModelState.IsValid)
         {
-            _unitOfWork.CategoryRepository.Add(category);
-            _unitOfWork.Save();
-            TempData["success"] = "Category created successfully";
-        return RedirectToAction("Index");
+            if (category.Id == 0)
+            {
+                _unitOfWork.CategoryRepository.Add(category);
+                _unitOfWork.Save();
+                TempData["success"] = "Category created successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                _unitOfWork.CategoryRepository.Update(category);
+                _unitOfWork.Save();
+                TempData["success"] = "Category updated successfully";
+                return RedirectToAction("Index");
+            }
         }
         return View();
     }
