@@ -1,6 +1,10 @@
+@model IEnumerable<Category>;
+
 @{
     ViewData["Title"] = "Categories";
 }
+
+<partial name="_Toast"/>
 
 <div class="container my-5">
 
@@ -21,34 +25,25 @@
                         <tr class="bg-light">
                             <th style="width: 50px;">ID</th>
                             <th>Category Name</th>
+                            <th>Creation Date</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Vegetables</td>
-                            <td>
-                                <button>EDIT</button>
-                                <button>DELETE</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Muttons</td>
-                            <td>
-                                <button>EDIT</button>
-                                <button>DELETE</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Cloths</td>
-                            <td>
-                                <button>EDIT</button>
-                                <button>DELETE</button>
-                            </td>
-                        </tr>
+                        
+                        @foreach (var category in Model)
+                        {
+                            <tr>
+                                <td> @category.Id </td>
+                                <td> @category.Name </td>
+                                <td> @category.CreatedAt </td>
+                                <td>
+                                    <button>EDIT</button>
+                                    <button>DELETE</button>
+                                </td>
+                            </tr>
+
+                        }
 
                         </tbody>
                     </table>
