@@ -1,0 +1,34 @@
+@{
+  ViewData["Title"] = "NOT FOUND"; 
+}
+
+<style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      font-size: 1.2rem;
+    }
+  </style>
+
+<div class="container" id="notFound">
+  <div class="text-center">
+    <h1>404</h1>
+    <p class="d-none d-md-block d-lg-block">The page you are looking for was <strong class="text-danger text-uppercase">Not Found</strong></p>
+    <p class="d-block d-md-none d-lg-none">The page you are looking for was <strong class="text-danger text-uppercase d-block pt-3">Not Found</strong></p>
+    <a class="site-btn" href="/">Go to Home Page</a>
+  </div>
+</div>
