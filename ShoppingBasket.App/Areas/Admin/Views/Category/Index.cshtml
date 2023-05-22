@@ -7,7 +7,7 @@
 <div class="container my-5">
 
     <div class="my-3">
-        <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="site-btn text-light">Create Category</a>
+        <a asp-area="Admin" asp-controller="Category" asp-action="CreateAndUpdate" class="site-btn text-light">Create Category</a>
     </div>
 
     <div class="card">
@@ -42,7 +42,7 @@
                                     <td> @category.Name </td>
                                     <td> @category.CreatedAt </td>
                                     <td>
-                                        <button>EDIT</button>
+                                        <a role="button" asp-area="Admin" type="submit" asp-action="CreateAndUpdate" asp-controller="Category" asp-route-id="@category.Id">EDIT</a>
                                         <button onclick="deleteCategory(@category.Id)">DELETE</button>
                                     </td>
                                 </tr>
