@@ -5,12 +5,37 @@
 }
 
 <style>
+/*select tag's css starts */
+
 .nice-select, .nice-select * {
 width: 100%;
 }
 .nice-select {
 margin-bottom: 20px;
 }
+
+/* end */
+
+
+/*box shape image upload ui css starts*/
+
+.box {
+    width: 100%;
+    height: 200px;
+    background-color: #eaeaea;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.box:hover {
+    background-color: #ccc;
+}
+.box input[type="file"] {
+    display: none;
+}
+/* ends */
 
 </style>
 
@@ -65,9 +90,64 @@ margin-bottom: 20px;
 
 
                     @* There are at most 3 images *@
-                    <div class="form-group mb-4 px-3">
-                        <label class="form-label" asp-for="Product.ProductImage_1"></label>
-                        <input type="file" asp-for="Product.ProductImage_1" class="form-control" accept="image/png, image/jpeg, image/jpg"/>
+
+                    <div>&nbsp;</div>
+                    <div class="row px-3 mb-4">
+                        <label class="form-label">Product's Images</label>
+
+
+                        @* for first image *@
+                        <div class="col-md-4 col-lg-4 col-sm-6">
+                            <span class="text-warning">Recommended**</span>
+                            <div class="box" onclick="openFileInput('firstImage')" id="imageSelector1">
+                                <label for="firstImage">Image-1</label>
+                                <input type="file" onchange="uploadImage('firstImage', 'preview_1', 'imageSelector1')" id="firstImage" accept="image/png, image/jpeg, image/jpg"/>
+                            </div>
+                            <span asp-validation-for="Product.ProductImage_1" class="text-danger"></span>
+
+                            <input type="text" asp-for="Product.ProductImage_1" hidden>
+
+                            <div class="w-100" id="image_1">
+                                <img src="" alt="" id="preview_1" onclick="openFileInput('firstImage')" class="img-thumbnail" style="cursor: pointer">
+                            </div>
+                        </div>
+
+
+                        @* for second image *@
+                        <div class="col-md-4 col-lg-4 col-sm-6">
+                            <span class="text-secondary">(Optional)</span>
+                            <div class="box" onclick="openFileInput('secondImage')" id="imageSelector2">
+                                <label for="secondImage">Image-2</label>
+                                <input type="file" onchange="uploadImage('secondImage', 'preview_2', 'imageSelector2')" id="secondImage" accept="image/png, image/jpeg, image/jpg"/>
+
+                            </div>
+                            <input type="text" asp-for="Product.ProductImage_2" hidden>
+                            <div class="w-100" id="image_2" hidden>
+                                <img src="" alt="" id="preview_2" class="img-thumbnail mb-1">
+                                &nbsp;
+                                <button class="btn btn-danger btn-sm w-75 offset-1" role="button" type="reset" onclick="removeImage('imageSelector2', 'image_2')">REMOVE</button>
+                            </div>
+                        </div>
+
+
+                        @* for third image *@
+                        <div class="col-md-4 col-lg-4 col-sm-6">
+                            <span class="text-secondary">(Optional)</span>
+                            <div class="box" onclick="openFileInput('thirdImage')" id="imageSelector3">
+                                <label for="thirdImage">Image-3</label>
+                                <input type="file" onchange="uploadImage('thirdImage', 'preview_3', 'imageSelector3')" id="thirdImage" accept="image/png, image/jpeg, image/jpg"/>
+                            </div>
+
+                            <input type="text" asp-for="Product.ProductImage_3" hidden>
+
+                            <div class="w-100" id="image_3" hidden>
+                                <img src="" alt="" id="preview_3" class="img-thumbnail mb-1">
+                                &nbsp;
+                                <button class="btn btn-danger btn-sm w-75 offset-1" role="button" type="reset" onclick="removeImage('imageSelector3', 'image_3')">REMOVE</button>
+                            </div>
+                        </div>
+
+
                     </div>
 
 
@@ -85,6 +165,8 @@ margin-bottom: 20px;
 {
     <script type="text/javascript">
     
+    // number field should be number field.
+    // number filed validation starts...
     var numberFields = document.querySelectorAll('.number-field');
     
     numberFields.forEach(function(field) {
@@ -99,6 +181,64 @@ margin-bottom: 20px;
         this.value = sanitized;
       });
     });
+    // ends here
+    
+    // clickable input box starts
+    function openFileInput(inputID) {
+        let fileInput = document.getElementById(inputID);
+        console.log(inputID)
+        fileInput.click();
+    }
+    // ends
+    
+    // remove uploaded images which are optional
+    function removeImage(imageSelectorId, previewDivId)
+    {
+        document.getElementById(imageSelectorId).hidden = false;  // image uploader unhidden
+        document.getElementById(previewDivId).hidden = true;  // preview_2 unhidden
+        storeImageURL(null, imageSelectorId);  // remove image url from model's property
+    }
+    
+    
+    // store the image url into the model dotnet property
+    function storeImageURL(imgURL, imageSelectorId)
+    {
+        if (imageSelectorId === "imageSelector1") document.getElementById("Product_ProductImage_1").value = imgURL
+        else if (imageSelectorId === "imageSelector2") document.getElementById("Product_ProductImage_2").value = imgURL
+        else if (imageSelectorId === "imageSelector3") document.getElementById("Product_ProductImage_3").value = imgURL
+    }
+    
+  
+      // image uploader and preview
+      
+     function uploadImage(imageNo, previewId, imageSelectorId) {
+        let fileInput = document.getElementById(imageNo);
+        let file = fileInput.files[0];
+    
+        let formData = new FormData();
+        formData.append("image", file);
+
+        axios
+          .post(
+                  "https://api.imgbb.com/1/upload?key=83c06bb5765e7af399e8f93f1416d00f",
+                  formData
+              )
+              .then(function (response) {
+                  console.log("Image uploaded successfully:");
+                  const ImageURL = response.data?.data["display_url"];
+                  document.getElementById(imageSelectorId).hidden = true;  // image box hidden
+                  if (previewId === "preview_2") document.getElementById("image_2").hidden = false;  // preview_2 unhidden
+                  if (previewId === "preview_3") document.getElementById("image_3").hidden = false;  // preview_3 unhidden
+                  document.getElementById(previewId).src = ImageURL;  // preview image
+                  
+                  // store imgUrl into model's property
+                  storeImageURL(ImageURL, imageSelectorId);
+                  
+              })
+              .catch(function (error) {
+                  console.error("Error uploading image:", error);
+              });
+      }
 
     </script>
 }
