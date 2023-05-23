@@ -1,3 +1,5 @@
+@model ShoppingBasket.Models.ViewModels.HomeVM
+
 @{
     ViewData["Title"] = ViewData["Root"] = "Shops";
 }
@@ -11,7 +13,7 @@
 <div class="row">
 <div class="col-lg-3 col-md-5">
     <div class="sidebar">
-        <partial name="_Categories"/>
+        @await Html.PartialAsync("_Categories", Model.Categories)
         <div class="mb-4"></div>
         <div class="sidebar__item">
             <h4>Price</h4>

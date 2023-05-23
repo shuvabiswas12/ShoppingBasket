@@ -1,9 +1,11 @@
+@model ShoppingBasket.Models.ViewModels.HomeVM
+
 <!-- Hero Section Begin -->
 <section class="hero">
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <partial name="_Categories"/>
+                @await Html.PartialAsync("_Categories", Model.Categories)
             </div>
             <div class="col-lg-9">
                 <partial name="_SearchBox"/>

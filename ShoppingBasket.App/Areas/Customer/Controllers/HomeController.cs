@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
+using ShoppingBasket.Models.ViewModels;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers
 {
@@ -8,15 +10,21 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var homeVM = new HomeVM()
+            {
+                Categories = _unitOfWork.CategoryRepository.GetAll(),
+            };
+            return View(homeVM);
         }
 
         public IActionResult Contact()
