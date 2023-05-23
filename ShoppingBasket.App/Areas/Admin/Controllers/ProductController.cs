@@ -9,10 +9,12 @@ namespace ShoppingBasket.App.Areas.Admin.Controllers;
 [Area("Admin")]
 public class ProductController : Controller
 {
+    private readonly ILogger<ProductController> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ProductController(IUnitOfWork unitOfWork)
+    public ProductController(ILogger<ProductController> logger, IUnitOfWork unitOfWork)
     {
+        _logger = logger;
         _unitOfWork = unitOfWork;
     }
 
@@ -44,6 +46,9 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
+            _unitOfWork.ProductRepository.Add(productVm.Product);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
         }
 
         return View();
