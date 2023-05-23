@@ -37,7 +37,7 @@ public class Repository<T> : IRepository<T> where T : class
                          StringSplitOptions.RemoveEmptyEntries))
                 query = query.Include(includeProperty);
 
-        return query.FirstOrDefault();
+        return query.FirstOrDefault()!;
     }
 
     public void Add(T entity)

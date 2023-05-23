@@ -6,13 +6,13 @@ namespace ShoppingBasket.DataAccessLayer;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
-    public DbSet<Category> Categories { get; set; }
-    
-    public DbSet<Product> Products { get; set; }
-    
-    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Category> Categories { get; set; } = null!;
+
+    public DbSet<Product> Products { get; set; } = null!;
+
+    public DbSet<Stock> Stocks { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
