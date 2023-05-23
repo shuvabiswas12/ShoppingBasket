@@ -1,0 +1,23 @@
+@model IEnumerable<Category>
+
+<style>
+    #dynamic-category li > a:hover {
+        text-decoration: underline;
+        text-underline: #0c0c0c;
+    }
+</style>
+
+<div class="hero__categories">
+    <div class="hero__categories__all">
+        <i class="fa fa-bars"></i>
+        <span>All Categories</span>
+    </div>
+    <ul id="dynamic-category">
+        @foreach (var category in Model)
+        {
+            <li>
+                <a href="#">@category.Name</a>
+            </li>
+        }
+    </ul>
+</div>
