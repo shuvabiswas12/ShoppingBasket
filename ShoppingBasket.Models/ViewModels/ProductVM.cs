@@ -5,8 +5,8 @@ namespace ShoppingBasket.Models.ViewModels;
 
 public class ProductVm
 {
-    public Product Product { get; set; }
+    public Product Product { get; set; } = null!;
 
-    [ValidateNever] public IEnumerable<SelectListItem> Categories { get; set; }
-    [ValidateNever] public Stock Stock { get; set; }
+    [ValidateNever] public IEnumerable<SelectListItem> Categories { get; set; } = null!;
+    [ValidateNever] public Stock Stock { get; set; } = null!;
 }
