@@ -20,11 +20,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var homeVM = new HomeVM()
-            {
-                Categories = _unitOfWork.CategoryRepository.GetAll(),
-            };
-            return View(homeVM);
+            return View();
         }
 
         public IActionResult Contact()

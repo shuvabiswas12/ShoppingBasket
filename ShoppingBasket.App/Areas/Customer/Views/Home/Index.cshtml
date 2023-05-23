@@ -1,11 +1,10 @@
-﻿@model ShoppingBasket.Models.ViewModels.HomeVM
-
-@{
+﻿@{
     ViewData["Title"] = "Home";
 }
 
 
-@await Html.PartialAsync("_HeroSection", Model)
+@await Html.PartialAsync("_HeroSection")
+@* @await Html.PartialAsync("_HeroSection", Model) *@
 
 <!-- Categories Section Begin -->
 <section class="categories">

@@ -21,10 +21,12 @@ margin-bottom: 20px;
                 <h3>Add Product</h3>
             </div>
             <div class="row mt-4">
-                <form class="offset-lg-2 offset-md-2 col-md-8 col-lg-8">
+                <form class="offset-lg-2 offset-md-2 col-md-8 col-lg-8" method="post" asp-action="CreateAndUpdate" asp-controller="Product" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly"></div>
                     <div class="form-group px-3">
                         <label class="form-label" asp-for="Product.Name"></label>
                         <input type="text" asp-for="Product.Name" class="form-control"/>
+                        <span asp-validation-for="Product.Name" class="text-danger"></span>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
@@ -33,6 +35,7 @@ margin-bottom: 20px;
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">$</span>
                                     <input type="text" asp-for="Product.Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55"/>
+                                    <span asp-validation-for="Product.Price" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -41,13 +44,14 @@ margin-bottom: 20px;
                             <div class="form-group mb-4 px-3">
                                 <label class="form-label" asp-for="Stock.CurrentStock"></label>
                                 <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock.CurrentStock" placeholder="Ex. 12"/>
+                                <span asp-validation-for="Stock.CurrentStock" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group px-3">
                         <label asp-for="Product.CategoryId" class="form-label"></label> <br>
-                        <select asp-for="Product.CategoryId" style="width: 100%">
+                        <select asp-for="Product.CategoryId" asp-items="@Model.Categories" style="width: 100%">
                             <option selected disabled>Select a category &nbsp;</option>
                         </select>
                         <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
@@ -56,6 +60,7 @@ margin-bottom: 20px;
                     <div class="form-group mt-sm-4 mt-md-0 mt-lg-0 px-3">
                         <label class="form-label" asp-for="Product.Description"></label>
                         <textarea asp-for="Product.Description" class="form-control" rows="6"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
                     </div>
 
 

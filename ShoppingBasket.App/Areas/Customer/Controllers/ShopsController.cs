@@ -7,12 +7,12 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers;
 [Area("Customer")]
 public class ShopsController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<ShopsController> _logger;
 
     private readonly IUnitOfWork _unitOfWork;
 
     // GET
-    public ShopsController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+    public ShopsController(ILogger<ShopsController> logger, IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
@@ -20,11 +20,7 @@ public class ShopsController : Controller
 
     public IActionResult Index()
     {
-        var homeVm = new HomeVM()
-        {
-            Categories = _unitOfWork.CategoryRepository.GetAll(),
-        };
-        return View(homeVm);
+        return View();
     }
 
     public IActionResult Details(int? id)
