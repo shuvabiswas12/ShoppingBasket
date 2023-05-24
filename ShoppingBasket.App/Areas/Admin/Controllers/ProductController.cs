@@ -25,6 +25,7 @@ public class ProductController : Controller
     }
 
     // GET
+    [HttpGet]
     public IActionResult CreateAndUpdate(int? id)
     {
         ProductVm productVm = new ProductVm()
@@ -42,15 +43,17 @@ public class ProductController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreateAndUpdate(ProductVm productVm, IFormFile ? file)
+    public IActionResult CreateAndUpdate(ProductVm productVm, IFormFile? file)
     {
         if (ModelState.IsValid)
         {
-            _unitOfWork.ProductRepository.Add(productVm.Product);
+            productVm.Product.Price = double.Parse(productVm.Product.Price.ToString("F"));
+            productVm.Stock.Product = productVm.Product;
+            _unitOfWork.StockRepository.Add(productVm.Stock);
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
-        return View();
+        return RedirectToAction("CreateAndUpdate");
     }
 }
