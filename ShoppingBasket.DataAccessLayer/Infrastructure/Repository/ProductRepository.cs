@@ -20,9 +20,9 @@ public class ProductRepository : Repository<Product>, IProductRepository
             productToUpdate.Name = product.Name;
             productToUpdate.Price = product.Price;
             productToUpdate.Description = product.Description;
-            if (!string.IsNullOrEmpty(product.ProductImage_1)) productToUpdate.ProductImage_1 = product.ProductImage_1;
-            if (!string.IsNullOrEmpty(product.ProductImage_2)) productToUpdate.ProductImage_2 = product.ProductImage_2;
-            if (!string.IsNullOrEmpty(product.ProductImage_3)) productToUpdate.ProductImage_3 = product.ProductImage_3;
+            productToUpdate.ProductImage_1 = product.ProductImage_1;
+            productToUpdate.ProductImage_2 = product.ProductImage_2;
+            productToUpdate.ProductImage_3 = product.ProductImage_3;
             productToUpdate.CategoryId = product.CategoryId;
         }
     }

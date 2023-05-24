@@ -5,37 +5,40 @@
 }
 
 <style>
-/*select tag's css starts */
+    /*select tag's css starts */
 
-.nice-select, .nice-select * {
-width: 100%;
-}
-.nice-select {
-margin-bottom: 20px;
-}
+    .nice-select, .nice-select * {
+        width: 100%;
+    }
 
-/* end */
+    .nice-select {
+        margin-bottom: 20px;
+    }
+
+    /* end */
 
 
-/*box shape image upload ui css starts*/
+    /*box shape image upload ui css starts*/
 
-.box {
-    width: 100%;
-    height: 200px;
-    background-color: #eaeaea;
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-.box:hover {
-    background-color: #ccc;
-}
-.box input[type="file"] {
-    display: none;
-}
-/* ends */
+    .box {
+        width: 100%;
+        height: 200px;
+        background-color: #eaeaea;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        .box:hover {
+            background-color: #ccc;
+        }
+
+        .box input[type="file"] {
+            display: none;
+        }
+    /* ends */
 
 </style>
 
@@ -48,9 +51,20 @@ margin-bottom: 20px;
             <div class="row mt-4">
                 <form class="offset-lg-2 offset-md-2 col-md-8 col-lg-8" method="post" asp-action="CreateAndUpdate" asp-controller="Product" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly"></div>
+
+                    @* this will work only update page *@
+                    @if (Model.Product != null || Model.Product!.Id != 0)
+                    {
+                        <input asp-for="Product.Id" hidden />
+                        <input asp-for="Stock.Id" hidden />
+                    }
+                    <input asp-for="Product.ProductImage_1" hidden />
+                    <input asp-for="Product.ProductImage_2" hidden />
+                    <input asp-for="Product.ProductImage_3" hidden />
+
                     <div class="form-group px-3">
                         <label class="form-label" asp-for="Product.Name"></label>
-                        <input type="text" asp-for="Product.Name" class="form-control"/>
+                        <input type="text" asp-for="Product.Name" class="form-control" />
                         <span asp-validation-for="Product.Name" class="text-danger"></span>
                     </div>
                     <div class="row">
@@ -59,7 +73,7 @@ margin-bottom: 20px;
                                 <label class="form-label" asp-for="Product.Price"></label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">$</span>
-                                    <input type="text" asp-for="Product.Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55"/>
+                                    <input type="text" asp-for="Product.Price" min="1" max="10000" class="form-control number-field" placeholder="Ex. 12.55" />
                                     <span asp-validation-for="Product.Price" class="text-danger"></span>
                                 </div>
                             </div>
@@ -68,7 +82,7 @@ margin-bottom: 20px;
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group mb-4 px-3">
                                 <label class="form-label" asp-for="Stock.CurrentStock"></label>
-                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock.CurrentStock" placeholder="Ex. 12"/>
+                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock.CurrentStock" placeholder="Ex. 12" />
                                 <span asp-validation-for="Stock.CurrentStock" class="text-danger"></span>
                             </div>
                         </div>
@@ -101,11 +115,9 @@ margin-bottom: 20px;
                             <span class="text-warning">Recommended**</span>
                             <div class="box" onclick="openFileInput('firstImage')" id="imageSelector1">
                                 <label for="firstImage">Image-1</label>
-                                <input type="file" onchange="uploadImage('firstImage', 'preview_1', 'imageSelector1')" id="firstImage" accept="image/png, image/jpeg, image/jpg"/>
+                                <input type="file" onchange="uploadImage('firstImage', 'preview_1', 'imageSelector1')" id="firstImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
                             <span asp-validation-for="Product.ProductImage_1" class="text-danger"></span>
-
-                            <input type="text" asp-for="Product.ProductImage_1" hidden>
 
                             <div class="w-100" id="image_1">
                                 <img src="" alt="" id="preview_1" onclick="openFileInput('firstImage')" class="img-thumbnail" style="cursor: pointer">
@@ -118,14 +130,13 @@ margin-bottom: 20px;
                             <span class="text-secondary">(Optional)</span>
                             <div class="box" onclick="openFileInput('secondImage')" id="imageSelector2">
                                 <label for="secondImage">Image-2</label>
-                                <input type="file" onchange="uploadImage('secondImage', 'preview_2', 'imageSelector2')" id="secondImage" accept="image/png, image/jpeg, image/jpg"/>
-
+                                <input type="file" onchange="uploadImage('secondImage', 'preview_2', 'imageSelector2')" id="secondImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
-                            <input type="text" asp-for="Product.ProductImage_2" hidden>
+
                             <div class="w-100" id="image_2" hidden>
                                 <img src="" alt="" id="preview_2" class="img-thumbnail mb-1">
                                 &nbsp;
-                                <button class="btn btn-danger btn-sm w-75 offset-1" role="button" type="reset" onclick="removeImage('imageSelector2', 'image_2')">REMOVE</button>
+                                <button class="btn btn-danger btn-sm w-75 offset-1" type="button" onclick="removeImage('imageSelector2', 'image_2', 'preview_2')">REMOVE</button>
                             </div>
                         </div>
 
@@ -135,15 +146,13 @@ margin-bottom: 20px;
                             <span class="text-secondary">(Optional)</span>
                             <div class="box" onclick="openFileInput('thirdImage')" id="imageSelector3">
                                 <label for="thirdImage">Image-3</label>
-                                <input type="file" onchange="uploadImage('thirdImage', 'preview_3', 'imageSelector3')" id="thirdImage" accept="image/png, image/jpeg, image/jpg"/>
+                                <input type="file" onchange="uploadImage('thirdImage', 'preview_3', 'imageSelector3')" id="thirdImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
-
-                            <input type="text" asp-for="Product.ProductImage_3" hidden>
 
                             <div class="w-100" id="image_3" hidden>
                                 <img src="" alt="" id="preview_3" class="img-thumbnail mb-1">
                                 &nbsp;
-                                <button class="btn btn-danger btn-sm w-75 offset-1" role="button" type="reset" onclick="removeImage('imageSelector3', 'image_3')">REMOVE</button>
+                                <button class="btn btn-danger btn-sm w-75 offset-1" type="button" onclick="removeImage('imageSelector3', 'image_3', 'preview_3')">REMOVE</button>
                             </div>
                         </div>
 
@@ -153,7 +162,9 @@ margin-bottom: 20px;
 
                     <!-- Submit button -->
                     <div class="px-3">
-                        <button type="submit" class="site-btn text-light btn-block mb-4 mt-4">SAVE PRODUCT</button>
+                        <button type="submit" class="site-btn text-light btn-block mb-4 mt-4 text-uppercase">
+                            @((Model.Product == null || Model.Product.Id == 0) ? "Save " : "Update ") product
+                        </button>
                     </div>
                 </form>
             </div>
@@ -162,86 +173,99 @@ margin-bottom: 20px;
 </div>
 
 @section Scripts
-{
-        @{
-            <partial name="_ValidationScriptsPartial"/>
-        }
-    <script type="text/javascript">
-    
-    // number field should be number field.
-    // number filed validation starts...
-    var numberFields = document.querySelectorAll('.number-field');
-    
-    numberFields.forEach(function(field) {
-      field.addEventListener('input', function() {
-        // Remove invalid characters
-        var sanitized = this.value.replace(/[^-.0-9]/g, '');
-        // Remove non-leading minus signs
-        sanitized = sanitized.replace(/(.)-+/g, '$1');
-        // Remove the first point if there is more than one
-        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
-        // Update value
-        this.value = sanitized;
-      });
-    });
-    // ends here
-    
-    // clickable input box starts
-    function openFileInput(inputID) {
-        let fileInput = document.getElementById(inputID);
-        console.log(inputID)
-        fileInput.click();
-    }
-    // ends
-    
-    // remove uploaded images which are optional
-    function removeImage(imageSelectorId, previewDivId)
     {
-        document.getElementById(imageSelectorId).hidden = false;  // image uploader unhidden
-        document.getElementById(previewDivId).hidden = true;  // preview_2 unhidden
-        storeImageURL(null, imageSelectorId);  // remove image url from model's property
+    @{
+        <partial name="_ValidationScriptsPartial" />
     }
-    
-    
-    // store the image url into the model dotnet property
-    function storeImageURL(imgURL, imageSelectorId)
-    {
-        if (imageSelectorId === "imageSelector1") document.getElementById("Product_ProductImage_1").value = imgURL
-        else if (imageSelectorId === "imageSelector2") document.getElementById("Product_ProductImage_2").value = imgURL
-        else if (imageSelectorId === "imageSelector3") document.getElementById("Product_ProductImage_3").value = imgURL
-    }
-    
-  
-      // image uploader and preview
-      
-     function uploadImage(imageNo, previewId, imageSelectorId) {
-        let fileInput = document.getElementById(imageNo);
-        let file = fileInput.files[0];
-    
-        let formData = new FormData();
-        formData.append("image", file);
 
-        axios
-          .post(
-                  "https://api.imgbb.com/1/upload?key=83c06bb5765e7af399e8f93f1416d00f",
-                  formData
-              )
-              .then(function (response) {
-                  console.log("Image uploaded successfully:");
-                  const ImageURL = response.data?.data["display_url"];
-                  document.getElementById(imageSelectorId).hidden = true;  // image box hidden
-                  if (previewId === "preview_2") document.getElementById("image_2").hidden = false;  // preview_2 unhidden
-                  if (previewId === "preview_3") document.getElementById("image_3").hidden = false;  // preview_3 unhidden
-                  document.getElementById(previewId).src = ImageURL;  // preview image
-                  
-                  // store imgUrl into model's property
-                  storeImageURL(ImageURL, imageSelectorId);
-                  
-              })
-              .catch(function (error) {
-                  console.error("Error uploading image:", error);
-              });
-      }
+    <script type="text/javascript">
+
+        // this event lister block works only on update page
+        document.addEventListener("DOMContentLoaded", () => {
+            previewTheImage("imageSelector1", "preview_1", document.getElementById("Product_ProductImage_1").value);
+            previewTheImage("imageSelector2", "preview_2", document.getElementById("Product_ProductImage_2").value);
+            previewTheImage("imageSelector3", "preview_3", document.getElementById("Product_ProductImage_3").value);
+        });
+
+        // number filed validation starts...
+        let numberFields = document.querySelectorAll('.number-field');
+
+        numberFields.forEach(function (field) {
+            field.addEventListener('input', function () {
+                let sanitized = this.value.replace(/[^-.0-9]/g, '');  // Remove invalid characters
+                sanitized = sanitized.replace(/(.)-+/g, '$1');  // Remove non-leading minus signs
+                sanitized = sanitized.replace(/\.(?=.*\.)/g, '');  // Remove the first point if there is more than one
+                this.value = sanitized;  // Update value
+            });
+        });
+
+        // clickable input image box starts
+        function openFileInput(inputID) {
+            let fileInput = document.getElementById(inputID);
+            console.log(inputID)
+            fileInput.click();
+        }
+
+        // remove uploaded images which are optional if delete btn hits
+        function removeImage(imageSelectorId, previewDivId, previewImageTagId) {
+            document.getElementById(previewImageTagId).src = "";
+            document.getElementById(imageSelectorId).hidden = false;  // image uploader unhidden
+            document.getElementById(previewDivId).hidden = true;  // preview_2 hidden
+            if (imageSelectorId === "imageSelector2") removeImagesFromInputTag("Product_ProductImage_2"); // remove image url from model's property
+            if (imageSelectorId === "imageSelector3") removeImagesFromInputTag("Product_ProductImage_3"); // remove image url from model's property
+        }
+
+
+        // store the image url into the model dotnet property
+        function storeImageURL(imgURL, imageSelectorId) {
+            if (imageSelectorId === "imageSelector1") document.getElementById("Product_ProductImage_1").value = imgURL;
+            else if (imageSelectorId === "imageSelector2") document.getElementById("Product_ProductImage_2").value = imgURL;
+            else if (imageSelectorId === "imageSelector3") document.getElementById("Product_ProductImage_3").value = imgURL;
+        }
+
+
+        // preview images after loaded or uploaded
+        function previewTheImage(imageSelectorId, previewId, ImageURL) {
+            if (ImageURL.trim() !== "") {
+                document.getElementById(imageSelectorId).hidden = true;  // image box hidden
+                if (previewId === "preview_2") document.getElementById("image_2").hidden = false;  // preview_2 unhidden
+                if (previewId === "preview_3") document.getElementById("image_3").hidden = false;  // preview_3 unhidden
+                document.getElementById(previewId).src = ImageURL;  // preview image
+            }
+        }
+
+        // removing the optional images
+        function removeImagesFromInputTag(inputID) {
+            document.getElementById(inputID).value = "";
+        }
+
+        // image uploader and preview
+        function uploadImage(imageNo, previewId, imageSelectorId) {
+            let fileInput = document.getElementById(imageNo);
+            let file = fileInput.files[0];
+
+            let formData = new FormData();
+            formData.append("image", file);
+
+            axios
+                .post(
+                    "https://api.imgbb.com/1/upload?key=83c06bb5765e7af399e8f93f1416d00f",
+                    formData
+                )
+                .then(function (response) {
+                    console.log("Image uploaded successfully:");
+                    console.log(response.data?.data["url"]);
+                    const ImageURL = response.data?.data["display_url"];
+                    previewTheImage(imageSelectorId, previewId, ImageURL);  // preview images
+
+                    // store imgUrl into model's property
+                    storeImageURL(response.data?.data["url"], imageSelectorId);
+
+                })
+                .catch(function (error) {
+                    console.error("Error uploading image:", error);
+                });
+        }
 
     </script>
 }

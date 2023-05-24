@@ -44,12 +44,12 @@ public class ProductController : Controller
         {
             return View(productVm);
         }
-        
+
         // if product id is not valid or product is deleted.
         try
         {
             productVm.Product =
-                _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category, Stock");
+                _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category");
         }
         catch (Exception ex)
         {
@@ -57,7 +57,7 @@ public class ProductController : Controller
         }
 
         productVm.Stock = _unitOfWork.StockRepository.GetT(p => p.ProductId == id);
-        return View(productVm);  // for product updating
+        return View(productVm); // for product updating
     }
 
     [HttpPost]
@@ -66,10 +66,24 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
+            // convert price to double like: 180 to 180.0. "F" parameter is responsible for this conversion. 
             productVm.Product.Price = double.Parse(productVm.Product.Price.ToString("F"));
-            productVm.Stock.Product = productVm.Product;
-            _unitOfWork.StockRepository.Add(productVm.Stock);
-            _unitOfWork.Save();
+            if (productVm.Product.Id == 0)
+            {
+                productVm.Stock.Product = productVm.Product;
+                _unitOfWork.StockRepository.Add(productVm.Stock);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+            }
+            else
+            {
+                _unitOfWork.ProductRepository.Update(productVm.Product);
+                //productVm.Stock.Product = productVm.Product;
+                _unitOfWork.StockRepository.Update(productVm.Stock);
+                _unitOfWork.Save();
+                TempData["success"] = "Product updated successfully";
+            }
+
             return RedirectToAction("Index");
         }
 
