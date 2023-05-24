@@ -17,7 +17,7 @@ public class Stock
     [ForeignKey("Product")] public int ProductId { get; set; }
 
     [DisplayName("Last Stock Inserted At")]
-    public DateTime LastStockInsertedAt { get; set; } = DateTime.Now;
+    public DateTime? LastStockInsertedAt { get; set; }
 
     [DisplayName("New Stock Inserted At")] public DateTime NewStockInsertedAt { get; set; } = DateTime.Now;
 }
