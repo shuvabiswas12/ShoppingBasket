@@ -78,7 +78,7 @@ public class ProductController : Controller
             else
             {
                 _unitOfWork.ProductRepository.Update(productVm.Product);
-                //productVm.Stock.Product = productVm.Product;
+                productVm.Stock.Product = productVm.Product;
                 _unitOfWork.StockRepository.Update(productVm.Stock);
                 _unitOfWork.Save();
                 TempData["success"] = "Product updated successfully";
