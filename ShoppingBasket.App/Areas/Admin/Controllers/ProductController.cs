@@ -38,7 +38,26 @@ public class ProductController : Controller
             }),
             Stock = new Stock()
         };
-        return View(productVm);
+
+        // for product creation: if id is null or 0 
+        if (id is null or 0)
+        {
+            return View(productVm);
+        }
+        
+        // if product id is not valid or product is deleted.
+        try
+        {
+            productVm.Product =
+                _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category, Stock");
+        }
+        catch (Exception ex)
+        {
+            return View("_404");
+        }
+
+        productVm.Stock = _unitOfWork.StockRepository.GetT(p => p.ProductId == id);
+        return View(productVm);  // for product updating
     }
 
     [HttpPost]
