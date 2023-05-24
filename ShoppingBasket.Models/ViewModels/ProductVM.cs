@@ -9,4 +9,6 @@ public class ProductVm
 
     [ValidateNever] public IEnumerable<SelectListItem> Categories { get; set; } = null!;
     [ValidateNever] public Stock Stock { get; set; } = null!;
+
+    [ValidateNever] public int ProductsCount { get; set; } = 0;
 }

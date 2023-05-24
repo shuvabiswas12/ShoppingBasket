@@ -21,7 +21,11 @@ public class ProductController : Controller
     // GET
     public IActionResult Index()
     {
-        return View();
+        var productVm = new ProductVm()
+        {
+            ProductsCount = _unitOfWork.ProductRepository.GetAll().Count(),
+        };
+        return View(productVm);
     }
 
     // GET
@@ -89,4 +93,22 @@ public class ProductController : Controller
 
         return RedirectToAction("CreateAndUpdate");
     }
+
+    #region Datatables API
+
+    [HttpGet]
+    public IActionResult GetProducts()
+    {
+        var products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
+        
+        return Json(new { data = products });
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteProduct(int id)
+    {
+        return Json(new {});
+    }
+
+    #endregion
 }

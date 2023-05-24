@@ -1,3 +1,5 @@
+@model ShoppingBasket.Models.ViewModels.ProductVm
+
 @{
     ViewData["Title"] = "Products";
 }
@@ -12,9 +14,60 @@
             <div class="card-header admin-card-header">
                 <h3>Products</h3>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-4 p-4">
+                @if (Model.ProductsCount <= 0)
+                {
+                    <p class="text-danger text-center  px-2 py-5">No Products found!</p>
+                }
+                else
+                {
+                    <table class="table table-striped" id="productsTable">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Product's name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            
+                        </tr>
+                        </tbody>
+                    </table>
+                }
 
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        let datatable = null;
+        $(document).ready(function () {
+            $('#productsTable').DataTable({
+            ajax: {
+                url: '/Admin/Product/GetProducts',
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'category.name' },
+                { data: 'price' },
+                { data: 'price' },
+                {
+                    data: 'id',
+                    render: function (data) {
+                        return `<a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="p-2 site-btn btn">Edit</a>`;
+                    }
+                }
+            ],
+            });
+        })
+    </script>
+}
