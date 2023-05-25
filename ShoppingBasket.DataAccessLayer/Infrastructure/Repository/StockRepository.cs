@@ -19,6 +19,8 @@ public class StockRepository : Repository<Stock>, IStockRepository
         {
             stockToUpdate.PreviousStock = stockToUpdate.CurrentStock;
             stockToUpdate.CurrentStock = stock.CurrentStock;
+            stockToUpdate.LastStockInsertedAt = stockToUpdate.NewStockInsertedAt;
+            stockToUpdate.NewStockInsertedAt = DateTime.Now;
         }
     }
 }

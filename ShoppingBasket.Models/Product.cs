@@ -31,5 +31,6 @@ public class Product
     
     [ValidateNever] public Stock Stock { get; set; }
 
+    [DisplayName("Product Entry Date")]
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
 }

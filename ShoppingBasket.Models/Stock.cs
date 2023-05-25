@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ShoppingBasket.Models;
 
@@ -12,12 +13,12 @@ public class Stock
 
     [DisplayName("Previous Stock")] public int PreviousStock { get; set; } = 0;
 
-    public Product Product { get; set; }
+    [ValidateNever] public Product Product { get; set; }
 
     [ForeignKey("Product")] public int ProductId { get; set; }
 
-    [DisplayName("Last Stock Inserted At")]
+    [DisplayName("Previous Stock Entry Date")]
     public DateTime? LastStockInsertedAt { get; set; }
 
-    [DisplayName("New Stock Inserted At")] public DateTime NewStockInsertedAt { get; set; } = DateTime.Now;
+    [DisplayName("Latest Stock Entry Date")] public DateTime NewStockInsertedAt { get; set; } = DateTime.Now;
 }

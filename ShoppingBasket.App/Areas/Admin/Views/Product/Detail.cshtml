@@ -1,0 +1,123 @@
+@model ShoppingBasket.Models.ViewModels.ProductVm
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container my-5">
+
+    <div class="my-3">
+        <input
+            class="site-btn bg-secondary text-light"
+            action="action"
+            onclick="window.history.go(-1); return false;"
+            type="submit"
+            value="GO BACK"/>
+
+        <a asp-area="Admin" asp-controller="Product" asp-action="CreateAndUpdate" asp-route-id="@Model.Product.Id" class="site-btn bg-warning text-light">EDIT</a>
+
+    </div>
+    <div class="card">
+        <div class="card-body admin-card-body">
+            <div class="card-header admin-card-header">
+                <h3>Product Details</h3>
+            </div>
+            <div class="row p-4">
+                <div class="col-md-6 col-lg-6 col-sm-12">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Product.Name"></label>
+                        <input type="text" asp-for="Product.Name" class="form-control" disabled/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label text-uppercase" asp-for="Product.Id"></label>
+                                <input type="text" asp-for="Product.Id" class="form-control bg-danger h2 text-white" disabled/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="form-label" asp-for="Product.Price"></label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    <input type="text" asp-for="Product.Price" class="form-control" disabled/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.CreatedAt" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.CreatedAt" class="form-control" disabled/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.Stock.CurrentStock" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.Stock.CurrentStock" class="form-control" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.Stock.PreviousStock" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.Stock.PreviousStock" class="form-control" disabled/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.Stock.NewStockInsertedAt" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.Stock.NewStockInsertedAt" class="form-control" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.Stock.LastStockInsertedAt" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.Stock.LastStockInsertedAt" class="form-control" disabled/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Product.Category.Name" class="form-label"></label> <br>
+                                <input type="text" asp-for="Product.Category.Name" class="form-control" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-sm-4 mt-md-0 mt-lg-0">
+                        <label class="form-label" asp-for="Product.Description"></label>
+                        <textarea asp-for="Product.Description" class="form-control" rows="6" disabled></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-12">
+                    @* There are at most 3 images *@
+                    <div class="form-group mb-4">
+                        <label class="form-label" asp-for="Product.ProductImage_1"></label>
+                        <img src="@Url.Content(Model.Product.ProductImage_1)" alt="First Image" class="img-thumbnail">
+                    </div>
+
+                    @if (Model.Product.ProductImage_2 != null)
+                    {
+                        <div class="form-group mb-4">
+                            <label class="form-label" asp-for="Product.ProductImage_2"></label>
+                            <img src="@Url.Content(Model.Product.ProductImage_2)" alt="" class="img-thumbnail">
+                        </div>
+                    }
+
+                    @if (Model.Product.ProductImage_3 != null)
+                    {
+                        <div class="form-group mb-4">
+                            <label class="form-label" asp-for="Product.ProductImage_3"></label>
+                            <img src="@Url.Content(Model.Product.ProductImage_3)" alt="" class="img-thumbnail">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

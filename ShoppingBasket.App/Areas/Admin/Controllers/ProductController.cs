@@ -18,13 +18,24 @@ public class ProductController : Controller
         _unitOfWork = unitOfWork;
     }
 
-    // GET
+    // GETc
     public IActionResult Index()
     {
         var productVm = new ProductVm()
         {
             ProductsCount = _unitOfWork.ProductRepository.GetAll().Count(),
         };
+        return View(productVm);
+    }
+
+    [HttpGet]
+    public IActionResult Detail(int id)
+    {
+        var productVm = new ProductVm()
+        {
+            Product = _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category, Stock"),
+        };
+        if (productVm.Product == null) return View("_404");
         return View(productVm);
     }
 
@@ -54,7 +65,7 @@ public class ProductController : Controller
         {
             productVm.Product =
                 _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category, Stock");
-            if (productVm.Product is null) return View("_404");  // if product is not found based on the id
+            if (productVm.Product is null) return View("_404"); // if product is not found based on the id
         }
         catch (Exception ex)
         {
@@ -106,7 +117,7 @@ public class ProductController : Controller
     public IActionResult DeleteProduct(int id)
     {
         if (id.Equals(null) || id == 0) return NotFound("Product is INVALID!");
-        
+
         var productToDelete = _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Stock");
         if (productToDelete == null) return NotFound("Product not found!");
         _unitOfWork.ProductRepository.Delete(productToDelete);
