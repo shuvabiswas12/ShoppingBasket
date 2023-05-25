@@ -28,6 +28,8 @@ public class Product
     public int CategoryId { get; set; }
 
     [ValidateNever] public Category Category { get; set; }
+    
+    [ValidateNever] public Stock Stock { get; set; }
 
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
 }
