@@ -191,7 +191,7 @@ ol {
 	top: 0;
 	left: 0;
 	z-index: 999999;
-	background: #000;
+	background: #3a3a3a;
 }
 
 .loader {
@@ -203,8 +203,8 @@ ol {
 	margin-top: -13px;
 	margin-left: -13px;
 	border-radius: 60px;
-	animation: loader 0.8s linear infinite;
-	-webkit-animation: loader 0.8s linear infinite;
+	animation: loader 0.3s ease-out infinite;
+	-webkit-animation: loader 0.3s ease-out infinite;
 }
 
 @keyframes loader {
