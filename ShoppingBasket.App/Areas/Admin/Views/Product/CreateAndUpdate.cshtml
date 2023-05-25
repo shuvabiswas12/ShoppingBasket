@@ -1,7 +1,15 @@
 @model ShoppingBasket.Models.ViewModels.ProductVm
 
 @{
-    ViewData["Title"] = "Create Product";
+    if(Model.Product != null || Model.Product!.Id != 0)
+    {
+        ViewData["Title"] = "Update Product";
+    }
+    else
+    {
+        ViewData["Title"] = "Create Product";
+    }
+    
 }
 
 <style>
@@ -113,13 +121,13 @@
                         @* for first image *@
                         <div class="col-md-4 col-lg-4 col-sm-6">
                             <span class="text-warning">Recommended**</span>
-                            <div class="box" onclick="openFileInput('firstImage')" id="imageSelector1">
+                            <div class="box" onclick="openFileInput('firstImage')" title="1st Image (Required!)" id="imageSelector1">
                                 <label for="firstImage">Image-1</label>
                                 <input type="file" onchange="uploadImage('firstImage', 'preview_1', 'imageSelector1')" id="firstImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
                             <span asp-validation-for="Product.ProductImage_1" class="text-danger"></span>
 
-                            <div class="w-100" id="image_1">
+                            <div class="w-100" id="image_1" hidden>
                                 <img src="" alt="" id="preview_1" onclick="openFileInput('firstImage')" class="img-thumbnail" style="cursor: pointer">
                             </div>
                         </div>
@@ -128,7 +136,7 @@
                         @* for second image *@
                         <div class="col-md-4 col-lg-4 col-sm-6">
                             <span class="text-secondary">(Optional)</span>
-                            <div class="box" onclick="openFileInput('secondImage')" id="imageSelector2">
+                            <div class="box" onclick="openFileInput('secondImage')" title="2nd Image" id="imageSelector2">
                                 <label for="secondImage">Image-2</label>
                                 <input type="file" onchange="uploadImage('secondImage', 'preview_2', 'imageSelector2')" id="secondImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
@@ -144,7 +152,7 @@
                         @* for third image *@
                         <div class="col-md-4 col-lg-4 col-sm-6">
                             <span class="text-secondary">(Optional)</span>
-                            <div class="box" onclick="openFileInput('thirdImage')" id="imageSelector3">
+                            <div class="box" onclick="openFileInput('thirdImage')" title="3rd Image" id="imageSelector3">
                                 <label for="thirdImage">Image-3</label>
                                 <input type="file" onchange="uploadImage('thirdImage', 'preview_3', 'imageSelector3')" id="thirdImage" accept="image/png, image/jpeg, image/jpg" />
                             </div>
@@ -162,7 +170,7 @@
 
                     <!-- Submit button -->
                     <div class="px-3">
-                        <button type="submit" class="site-btn text-light btn-block mb-4 mt-4 text-uppercase">
+                        <button type="submit" onclick="return validateImage()" class="site-btn text-light btn-block mb-4 mt-4 text-uppercase">
                             @((Model.Product == null || Model.Product.Id == 0) ? "Save " : "Update ") product
                         </button>
                     </div>
@@ -186,6 +194,20 @@
             previewTheImage("imageSelector2", "preview_2", document.getElementById("Product_ProductImage_2").value);
             previewTheImage("imageSelector3", "preview_3", document.getElementById("Product_ProductImage_3").value);
         });
+        
+        // Validate if required 1st image is selected or empty
+        function validateImage() {
+            if (document.getElementById('Product_ProductImage_1').value === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'First image is required!',
+                    });
+                document.getElementById("imageSelector1").style.borderColor = "red";
+                return false;
+                }
+            return true;
+        }
 
         // number filed validation starts...
         let numberFields = document.querySelectorAll('.number-field');
@@ -228,6 +250,7 @@
         function previewTheImage(imageSelectorId, previewId, ImageURL) {
             if (ImageURL.trim() !== "") {
                 document.getElementById(imageSelectorId).hidden = true;  // image box hidden
+                if (previewId === "preview_1") document.getElementById("image_1").hidden = false;  // preview_1 unhidden
                 if (previewId === "preview_2") document.getElementById("image_2").hidden = false;  // preview_2 unhidden
                 if (previewId === "preview_3") document.getElementById("image_3").hidden = false;  // preview_3 unhidden
                 document.getElementById(previewId).src = ImageURL;  // preview image
