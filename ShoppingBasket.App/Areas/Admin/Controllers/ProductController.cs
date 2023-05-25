@@ -53,14 +53,15 @@ public class ProductController : Controller
         try
         {
             productVm.Product =
-                _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category");
+                _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Category, Stock");
+            if (productVm.Product is null) return View("_404");  // if product is not found based on the id
         }
         catch (Exception ex)
         {
+            _logger.Log(logLevel: LogLevel.Error, message: ex.Message);
             return View("_404");
         }
 
-        productVm.Stock = _unitOfWork.StockRepository.GetT(p => p.ProductId == id);
         return View(productVm); // for product updating
     }
 
@@ -74,16 +75,13 @@ public class ProductController : Controller
             productVm.Product.Price = double.Parse(productVm.Product.Price.ToString("F"));
             if (productVm.Product.Id == 0)
             {
-                productVm.Stock.Product = productVm.Product;
-                _unitOfWork.StockRepository.Add(productVm.Stock);
+                _unitOfWork.ProductRepository.Add(productVm.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
             }
             else
             {
                 _unitOfWork.ProductRepository.Update(productVm.Product);
-                productVm.Stock.Product = productVm.Product;
-                _unitOfWork.StockRepository.Update(productVm.Stock);
                 _unitOfWork.Save();
                 TempData["success"] = "Product updated successfully";
             }
@@ -99,15 +97,15 @@ public class ProductController : Controller
     [HttpGet]
     public IActionResult GetProducts()
     {
-        var products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
-        
+        var products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock");
+
         return Json(new { data = products });
     }
 
     [HttpDelete]
     public IActionResult DeleteProduct(int id)
     {
-        return Json(new {});
+        return Json(new { });
     }
 
     #endregion

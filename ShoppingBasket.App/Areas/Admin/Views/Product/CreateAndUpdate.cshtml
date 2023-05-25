@@ -56,7 +56,7 @@
                     @if (Model.Product != null || Model.Product!.Id != 0)
                     {
                         <input asp-for="Product.Id" hidden />
-                        <input asp-for="Stock.Id" hidden />
+                        <input asp-for="Product.Stock.Id" hidden />
                     }
                     <input asp-for="Product.ProductImage_1" hidden />
                     <input asp-for="Product.ProductImage_2" hidden />
@@ -81,9 +81,9 @@
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group mb-4 px-3">
-                                <label class="form-label" asp-for="Stock.CurrentStock"></label>
-                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Stock.CurrentStock" placeholder="Ex. 12" />
-                                <span asp-validation-for="Stock.CurrentStock" class="text-danger"></span>
+                                <label class="form-label" asp-for="Product.Stock.CurrentStock"></label>
+                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Product.Stock.CurrentStock" placeholder="Ex. 12" />
+                                <span asp-validation-for="Product.Stock.CurrentStock" class="text-danger"></span>
                             </div>
                         </div>
                     </div>

@@ -21,23 +21,25 @@
                 }
                 else
                 {
-                    <table class="table table-striped" id="productsTable">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Product's name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped table-bordered" id="productsTable">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Product's name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
                             
-                        </tr>
-                        </tbody>
-                    </table>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 }
 
             </div>
@@ -58,16 +60,22 @@
                 { data: 'id' },
                 { data: 'name' },
                 { data: 'category.name' },
-                { data: 'price' },
-                { data: 'price' },
+                { data: 'price', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
+                { data: 'stock.currentStock' },
                 {
                     data: 'id',
                     render: function (data) {
-                        return `<a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="p-2 site-btn btn">Edit</a>`;
+                        return `<a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="p-2 site-btn btn">Edit</a>
+                                <a onclick=deleteProduct(${data}) title="Delete" class="btn btn-danger p-2 mx-2 text-white">Delete</a>`;
                     }
                 }
             ],
             });
         })
+        
+        function deleteProduct(data)
+        {
+            alert("Delete works!");
+        }
     </script>
 }
