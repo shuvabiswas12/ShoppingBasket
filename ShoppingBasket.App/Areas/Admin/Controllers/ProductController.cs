@@ -105,7 +105,13 @@ public class ProductController : Controller
     [HttpDelete]
     public IActionResult DeleteProduct(int id)
     {
-        return Json(new { });
+        if (id.Equals(null) || id == 0) return NotFound("Product is INVALID!");
+        
+        var productToDelete = _unitOfWork.ProductRepository.GetT(p => p.Id == id, includeProperties: "Stock");
+        if (productToDelete == null) return NotFound("Product not found!");
+        _unitOfWork.ProductRepository.Delete(productToDelete);
+        _unitOfWork.Save();
+        return Json(new { success = true, message = "Product successfully deleted!" });
     }
 
     #endregion

@@ -50,11 +50,17 @@
 @section Scripts
 {
     <script type="text/javascript">
-        let datatable = null;
+        let dataTable = null;
         $(document).ready(function () {
-            $('#productsTable').DataTable({
+            dataTable = $('#productsTable').DataTable({
             ajax: {
                 url: '/Admin/Product/GetProducts',
+                complete: function (data) {
+                   let responseData = data["responseJSON"]?.data;
+                   if (responseData.length === 0){
+                       setInterval(function(){ window.location.reload(); }, 1500);
+                   }
+                },
             },
             columns: [
                 { data: 'id' },
@@ -73,9 +79,37 @@
             });
         })
         
-        function deleteProduct(data)
-        {
-            alert("Delete works!");
+        function deleteProduct(data) {
+            Swal.fire({
+              title: 'Are you sure?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result["isConfirmed"]) {
+                  $.ajax({
+                  method: 'DELETE',
+                  url: `/Admin/Product/DeleteProduct?id=${data}`,
+                  success: function (data) {
+                      Swal.fire(
+                        'Deleted!',
+                        'Product has been deleted.',
+                        'success'
+                      )
+                      dataTable.ajax.reload();
+                  },
+                  error: function (error) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error?.responseText,
+                      })
+                  }
+              });
+              }
+            }) 
         }
     </script>
 }
