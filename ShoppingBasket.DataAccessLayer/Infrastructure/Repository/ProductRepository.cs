@@ -24,6 +24,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
             productToUpdate.ProductImage_2 = product.ProductImage_2;
             productToUpdate.ProductImage_3 = product.ProductImage_3;
             productToUpdate.CategoryId = product.CategoryId;
+            productToUpdate.Stock = product.Stock;  // for reference value update only
         }
     }
 }
