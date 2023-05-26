@@ -1,0 +1,72 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header admin-card-header">
+                    <h3>Log-in</h3>
+                </div>
+                <div class="card-body my-3">
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group row">
+                            <label asp-for="Input.Email" class="col-md-4 col-sm-12 col-form-label text-md-right">E-Mail Address</label>
+                            <div class="col-md-6 col-sm-12">
+                                <input type="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label asp-for="Input.Password" class="col-md-4 col-sm-12 col-form-label text-md-right">Password</label>
+                            <div class="col-md-6 col-sm-12">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12"></div>
+                            <div class="col-md-6 col-sm-12 ml-1 my-2">
+                                <div class="checkbox px-3">
+                                    <label asp-for="Input.RememberMe" class="form-label">
+                                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                                        &nbsp;
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-6">
+                                <button id="login-submit" type="submit" class="w-100 btn btn-success my-2">Log in</button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-5 flex-column flex-md-row">
+                            <p>
+                                <a class="text-decoration-underline text-info" id="forgot-password" asp-page="./ForgotPassword">Forgot your password ?</a>
+                            </p>
+                            <span class="mx-3 text-secondary d-none d-md-inline-block d-lg-inline-block">|</span>
+                            <p>
+                                <a class="text-decoration-underline text-info" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

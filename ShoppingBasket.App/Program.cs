@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingBasket.DataAccessLayer;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.DataAccessLayer.Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ShoppingBasket.CommonHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +18,19 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// For resolving IEmailSender exception on activating RegisterModel.
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
+
+// For resolving issues of Razor pages services.
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -32,8 +46,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

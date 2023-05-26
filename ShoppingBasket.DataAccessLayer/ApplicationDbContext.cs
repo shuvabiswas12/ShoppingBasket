@@ -6,7 +6,7 @@ namespace ShoppingBasket.DataAccessLayer;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     public DbSet<Category> Categories { get; set; } = null!;
 

@@ -1,0 +1,67 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header admin-card-header">
+                    <h3>Create an account</h3>
+                </div>
+                <div class="card-body my-3">
+                    <form name="my-form" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group row">
+                            <label asp-for="Input.Name" class="col-md-4 col-form-label text-md-right"></label>
+                            <div class="col-md-6">
+                                <input type="text" asp-for="Input.Name" class="form-control" autocomplete="name" aria-required="true" />
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label asp-for="Input.Email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                            <div class="col-md-6">
+                                <input type="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                            <div class="col-md-6">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label asp-for="Input.ConfirmPassword" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+                            <div class="col-md-6">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-6">
+                                <button id="registerSubmit" type="submit" class="w-100 btn btn-success my-2">Register</button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-4">
+                            <span>Have an account? &nbsp; &nbsp;</span> <p><a class="text-info text-decoration-underline" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

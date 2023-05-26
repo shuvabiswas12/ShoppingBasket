@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingBasket.CommonHelper
 {
-    internal class WebsiteRoles
+    public class WebsiteRoles
     {
         public static string UserRole = "User";
         public static string AdminRole = "Admin";
