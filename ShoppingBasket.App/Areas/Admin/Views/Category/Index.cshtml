@@ -42,10 +42,10 @@
                                     <td> @category.Name </td>
                                     <td> @category.CreatedAt </td>
                                     <td>
-                                        <a role="button" asp-area="Admin" type="submit" asp-action="CreateAndUpdate" asp-controller="Category" asp-route-id="@category.Id">EDIT</a>
+                                        <a class="btn btn-outline-primary" role="button" asp-area="Admin" type="submit" asp-action="CreateAndUpdate" asp-controller="Category" asp-route-id="@category.Id">EDIT</a>
                                         &nbsp;
                                         &nbsp;
-                                        <button onclick="deleteCategory(@category.Id)">DELETE</button>
+                                        <button class="btn btn-danger" onclick="deleteCategory(@category.Id)">DELETE</button>
                                     </td>
                                 </tr>
                             }
