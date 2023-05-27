@@ -1,201 +1,191 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content="Ogani Template"/>
-    <meta name="keywords" content="Ogani, unica, creative, shopping, Basket, ecommerce, dotnet, entity-framework-core, html"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="description" content="Ogani Template" />
+    <meta name="keywords" content="Ogani, unica, creative, shopping, Basket, ecommerce, dotnet, entity-framework-core, html" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ShoppingBasket.App</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-    
+
     @* bootstrap icons *@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     @* this bootstrap file comes from newer template file. *@
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     @* this bootstrap file comes from templates file. *@
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css" />
 
     @* start: this css file comes from template file *@
-    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css"/>
-    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css"/>
-    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css"/>
-    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css"/>
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css"/>
-    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css"/>
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="~/css/toastify.min.css">
     <link rel="stylesheet" type="text/css" href="~/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="~/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
     @* end *@
 
-    <link rel="stylesheet" type="text/css" href="~/css/customStyle.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" type="text/css" href="~/css/customStyle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-<!-- Page Preloader -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+    <!-- Page Preloader -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
 
-<!-- Humberger Begin -->
-<div class="humberger__menu__overlay"></div>
-<div id="Humberger" class="humberger__menu__wrapper">
-    <div class="humberger__menu__logo">
-        <a href="#">
-            <img src="~/img/logo.png" alt="" width="200px"/>
-        </a>
-    </div>
-    <div class="humberger__menu__cart">
-        <ul>
-            <li>
-                <a href="#">
-                    <i class="fa fa-heart"></i> <span>1</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-shopping-bag"></i> <span>3</span>
-                </a>
-            </li>
-        </ul>
-        <div class="header__cart__price">item: <span>$150.00</span></div>
-    </div>
-    <div class="humberger__menu__widget">
-        <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i> Login</a>
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div id="Humberger" class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#">
+                <img src="~/img/logo.png" alt="" width="200px" />
+            </a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-heart"></i> <span>1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-shopping-bag"></i> <span>3</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="header__cart__price">item: <span>$150.00</span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__auth">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <partial name="_Menus" />
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#">
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a href="#">
+                <i class="fa fa-linkedin"></i>
+            </a>
+            <a href="#">
+                <i class="bi bi-github"></i>
+            </a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> hello@example.com</li>
+                <li>Free Shipping for all Order of $99</li>
+            </ul>
         </div>
     </div>
-    <nav class="humberger__menu__nav mobile-menu">
-        <partial name="_Menus"/>
-    </nav>
-    <div id="mobile-menu-wrap"></div>
-    <div class="header__top__right__social">
-        <a href="#">
-            <i class="fa fa-facebook"></i>
-        </a>
-        <a href="#">
-            <i class="fa fa-twitter"></i>
-        </a>
-        <a href="#">
-            <i class="fa fa-linkedin"></i>
-        </a>
-        <a href="#">
-            <i class="fa fa-pinterest-p"></i>
-        </a>
-    </div>
-    <div class="humberger__menu__contact">
-        <ul>
-            <li><i class="fa fa-envelope"></i> hello@example.com</li>
-            <li>Free Shipping for all Order of $99</li>
-        </ul>
-    </div>
-</div>
-<!-- Humberger End -->
-
-
-<!-- Header Section Begin -->
-<header class="header" id="header" style="margin-bottom: 20px">
-    <div class="header__top">
+    <!-- Humberger End -->
+    <!-- Header Section Begin -->
+    <header class="header" id="header" style="margin-bottom: 20px">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left d-flex">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> hello@example.com</li>
+                            </ul>
+                            <p>&nbsp;&nbsp; | &nbsp; &nbsp;</p>
+                            <div class="d-flex">
+                                <a href="#" class="text-secondary">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                                &nbsp; &nbsp;
+                                <a href="#" class="text-secondary">
+                                    <i class="bi bi-github"></i>
+                                </a>
+                                &nbsp; &nbsp;
+                                <a href="#" class="text-secondary">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__auth">
+                                <partial name="_LoginPartial" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__left">
-                        <ul>
-                            <li><i class="fa fa-envelope"></i> hello@example.com</li>
-                            <li>Free Shipping for all Order of $99</li>
-                        </ul>
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="#">
+                            <img src="~/img/logo.png" alt="" width="200px" />
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__right">
-                        <div class="header__top__right__social">
-                            <a href="#">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-linkedin"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-pinterest-p"></i>
-                            </a>
-                        </div>
-                        <div class="header__top__right__language">
-                            <img src="~/img/language.png" alt=""/>
-                            <div>English</div>
-                        </div>
-                        <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
-                        </div>
+                <div class="col-lg-6 offset-md-1 offset-lg-1">
+                    <nav class="header__menu">
+                        <partial name="_Menus" />
+                    </nav>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__cart">
+                        @* right sided menus *@
+
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="header__logo">
-                    <a href="#">
-                        <img src="~/img/logo.png" alt="" width="200px"/>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6 offset-md-1 offset-lg-1">
-                <nav class="header__menu">
-                    <partial name="_Menus"/>
-                </nav>
-            </div>
-            <div class="col-lg-2">
-                <div class="header__cart">
-                    @* right sided menus *@
-                    <partial name="_LoginPartial" />
-                </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
             </div>
         </div>
-        <div class="humberger__open">
-            <i class="fa fa-bars"></i>
-        </div>
-    </div>
-</header>
-<!-- Header Section End -->
+    </header>
+    <!-- Header Section End -->
 
-<main role="main" class="pb-3">
-    <partial name="_Toast"/>
+    <main role="main" class="pb-3">
+        <partial name="_Toast" />
 
-    @RenderBody()
-</main>
+        @RenderBody()
+    </main>
 
-<partial name="_Footer"/>
+    <partial name="_Footer" />
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-@* previous version of bootstrap js *@
-<script src="~/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* previous version of bootstrap js *@
+    <script src="~/js/bootstrap.min.js"></script>
 
-@* newer version of bootstrap js *@
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* newer version of bootstrap js *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-@* start: coming from templates *@
-<script src="~/js/jquery.nice-select.min.js"></script>
-<script src="~/js/jquery-ui.min.js"></script>
-<script src="~/js/jquery.slicknav.js"></script>
-<script src="~/js/mixitup.min.js"></script>
-<script src="~/js/owl.carousel.min.js"></script>
-<script src="~/js/main.js"></script>
-@* end *@
+    @* start: coming from templates *@
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/mixitup.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+    @* end *@
 
-<script src="~/js/toastify-js.js"></script>
-<script src="~/js/jquery.dataTables.min.js"></script>
-<script src="~/js/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/toastify-js.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
