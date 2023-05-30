@@ -29,7 +29,9 @@ public class Product
 
     [ValidateNever] public Category Category { get; set; }
     
-    [ValidateNever] public Stock Stock { get; set; }
+    [ValidateNever] public Stock? Stock { get; set; }
+
+    [ValidateNever] public Wishlist? Wishlist { get; set; }
 
     [DisplayName("Product Entry Date")]
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
