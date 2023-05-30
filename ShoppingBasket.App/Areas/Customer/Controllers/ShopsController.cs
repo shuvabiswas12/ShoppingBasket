@@ -25,8 +25,13 @@ public class ShopsController : Controller
         return View(products);
     }
 
-    public IActionResult Details(int? id)
+    public IActionResult Details(int id)
     {
-        return View();
+        var productToView = _unitOfWork.ProductRepository.GetT(predicate: p => p.Id == id, includeProperties: "Category, Stock");
+        if (productToView == null)
+        {
+            return View("_404");
+        }
+        return View(productToView);
     }
 }
