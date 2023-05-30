@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
+using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
@@ -20,7 +21,8 @@ public class ShopsController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var products = _unitOfWork.ProductRepository.GetAll("Category, Stock");
+        return View(products);
     }
 
     public IActionResult Details(int? id)
