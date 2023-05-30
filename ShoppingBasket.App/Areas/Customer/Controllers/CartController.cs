@@ -15,4 +15,18 @@ public class CartController : Controller
     {
         return View();
     }
+
+    #region update increment or decrement product's count
+
+    public IActionResult IncrementProductCount(int cartId)
+    {
+        return Ok();
+    }
+
+    public IActionResult DecrementProductCount(int cartId)
+    {
+        return Ok();
+    }
+
+    #endregion
 }
