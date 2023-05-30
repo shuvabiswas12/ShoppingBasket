@@ -14,6 +14,8 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<Stock> Stocks { get; set; } = null!;
 
+    public DbSet<Wishlist> Wishlists { get; set; } = null!;
+
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
