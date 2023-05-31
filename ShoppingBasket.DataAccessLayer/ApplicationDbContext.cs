@@ -16,6 +16,8 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<Wishlist> Wishlists { get; set; } = null!;
 
+    public DbSet<Cart> Carts { get; set; }
+
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
