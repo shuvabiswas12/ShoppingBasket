@@ -12,16 +12,16 @@ namespace ShoppingBasket.Models
 {
     public class Wishlist
     {
-        [Key]
-        public int Id { get; set; }
+        [Key] public int Id { get; set; }
 
-        [ValidateNever]
-        public Product Product { get; set; }
+        [ValidateNever] public Product Product { get; set; }
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        [ForeignKey("Product")] public int ProductId { get; set; }
 
-        [DisplayName("Created At")]
-        public DateTime CreatedAt { get; set; }
+        public string ApplicationUserId { get; set; }
+
+        [ValidateNever] public ApplicationUser? ApplicationUser { get; set; }
+
+        [DisplayName("Created At")] public DateTime CreatedAt { get; set; }
     }
 }
