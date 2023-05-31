@@ -32,6 +32,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProvid
 // For resolving issues of Razor pages services.
 builder.Services.AddRazorPages();
 
+// must be given so that return url works properly
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
