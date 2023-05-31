@@ -7,5 +7,9 @@ public interface IUnitOfWork
     IProductRepository ProductRepository { get; }
     
     IStockRepository StockRepository { get; }
+    
+    ICartRepository CartRepository { get; }
+    
+    IWishlistRepository WishlistRepository { get; }
     void Save();
 }
