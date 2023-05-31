@@ -6,12 +6,12 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
 [Area("Customer")]
 [Authorize(Roles = "User")]
-public class Wishlist : Controller
+public class WishlistController : Controller
 {
-    private ILogger<Wishlist> _logger;
+    private ILogger<WishlistController> _logger;
     private IUnitOfWork _unitOfWork;
 
-    public Wishlist(ILogger<Wishlist> logger, IUnitOfWork unitOfWork)
+    public WishlistController(ILogger<WishlistController> logger, IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
