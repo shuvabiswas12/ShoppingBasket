@@ -4,5 +4,5 @@ namespace ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 
 public interface ICartRepository : IRepository<Cart>
 {
-    void Update();
+    void Update(int cartId);
 }
