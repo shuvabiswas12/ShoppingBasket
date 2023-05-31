@@ -33,7 +33,7 @@ public class ShopsController : Controller
         
         string includeProperties = "Category, Stock";
 
-        if (claims!.Value != null)
+        if (claims != null)
         {
             includeProperties = "Category, Stock, Wishlist";
         }

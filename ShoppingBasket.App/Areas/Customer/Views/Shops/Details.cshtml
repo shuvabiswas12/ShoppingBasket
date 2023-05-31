@@ -6,7 +6,7 @@
     ViewData["Child_1"] = Model.Name;
 }
 
-<partial name="_Breadcrumb" view-data="ViewData"/>
+<partial name="_Breadcrumb" view-data="ViewData" />
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
@@ -52,10 +52,19 @@
                             </div>
                         </div>
                     </div>
-                    <a asp-controller="Wishlist" asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@Model.Id" class="primary-btn">ADD TO CARD</a>
-                    <a href="#" class="heart-icon">
-                        <span class="icon_heart_alt"></span>
-                    </a>
+                    <a href="#" class="primary-btn">ADD TO CARD</a>
+                    @if (Model.Wishlist == null)
+                    {
+                        <a title="Add to wishlist!" asp-controller="Wishlist" asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@Model.Id" class="heart-icon">
+                            <span class="icon_heart_alt"></span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a title="Remove from wishlist!" asp-controller="Wishlist" asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@Model.Id" class="heart-icon">
+                            <i class="bi bi-heart-fill"></i>
+                        </a>
+                    }
                     <ul>
                         <li>
                             <b>Availability</b> <span>In Stock (@Model.Stock.CurrentStock)</span>
@@ -84,10 +93,8 @@
     </div>
 </section>
 <!-- Product Details Section End -->
-
-
 @section Scripts
-{
+    {
     <script type="text/javascript">
         let facebookShareBtn = document.getElementById("facebook-share");
         const currentUrl = window.location.href.replace("https://", "");
