@@ -1,3 +1,8 @@
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <ul>
     <li class="active">
         <a asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
@@ -26,15 +31,18 @@
     </li>
     
     @* For admin panels only *@
-    <li>
-        <a>Admin</a>
-        <ul class="header__menu__dropdown">
-            <li>
-                <a asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-            </li>
-            <li>
-                <a asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-            </li>
-        </ul>
-    </li>
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <li>
+            <a>Admin</a>
+            <ul class="header__menu__dropdown">
+                <li>
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                </li>
+            </ul>
+        </li>
+    }
 </ul>

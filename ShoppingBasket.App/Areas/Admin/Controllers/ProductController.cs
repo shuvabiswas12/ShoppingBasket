@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
@@ -7,6 +8,7 @@ using ShoppingBasket.Models.ViewModels;
 namespace ShoppingBasket.App.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class ProductController : Controller
 {
     private readonly ILogger<ProductController> _logger;

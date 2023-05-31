@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
@@ -5,6 +6,7 @@ using ShoppingBasket.Models;
 namespace ShoppingBasket.App.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class CategoryController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
