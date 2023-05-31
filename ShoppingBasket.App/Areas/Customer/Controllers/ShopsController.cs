@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
+using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -27,7 +28,17 @@ public class ShopsController : Controller
 
     public IActionResult Details(int id)
     {
-        var productToView = _unitOfWork.ProductRepository.GetT(predicate: p => p.Id == id, includeProperties: "Category, Stock");
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+        
+        string includeProperties = "Category, Stock";
+
+        if (claims!.Value != null)
+        {
+            includeProperties = "Category, Stock, Wishlist";
+        }
+        var productToView = _unitOfWork.ProductRepository.GetT(predicate: p => p.Id == id, includeProperties: includeProperties);
+
         if (productToView == null)
         {
             return View("_404");

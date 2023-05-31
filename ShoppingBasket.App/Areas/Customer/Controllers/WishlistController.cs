@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
+using ShoppingBasket.Models;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -9,7 +11,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers;
 public class WishlistController : Controller
 {
     private ILogger<WishlistController> _logger;
-    private IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public WishlistController(ILogger<WishlistController> logger, IUnitOfWork unitOfWork)
     {
@@ -17,18 +19,39 @@ public class WishlistController : Controller
         _unitOfWork = unitOfWork;
     }
 
+    #region Wishlist api call
+
     public IActionResult Index()
     {
         return Ok();
     }
 
-    public IActionResult AddToWishlist(int productId)
+    [HttpGet]
+    public IActionResult AddOrDeleteWishlist(int productId)
     {
-        return Ok();
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        var claims = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+
+        try
+        {
+            var wishlist = _unitOfWork.WishlistRepository.GetT(w =>
+                claims != null && (w.ProductId == productId && w.ApplicationUserId == claims.Value));
+            _unitOfWork.WishlistRepository.Delete(wishlist);
+            _unitOfWork.Save();
+        }
+        catch (Exception e)
+        {
+            var newWishlist = new Wishlist()
+            {
+                ProductId = productId,
+                ApplicationUserId = claims!.Value,
+            };
+            _unitOfWork.WishlistRepository.Add(newWishlist);
+            _unitOfWork.Save();
+        }
+        
+        return RedirectToAction("Details", "Shops", new { id = productId });
     }
 
-    public IActionResult RemoveFromWishlist(int productId)
-    {
-        return Ok();
-    }
+    #endregion
 }
