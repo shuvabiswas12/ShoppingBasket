@@ -22,7 +22,7 @@ public class ShopsController : Controller
 
     public IActionResult Index()
     {
-        var products = _unitOfWork.ProductRepository.GetAll("Category, Stock");
+        var products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
         return View(products);
     }
 

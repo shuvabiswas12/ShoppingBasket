@@ -331,9 +331,12 @@
                                 <div class="product__item__pic set-bg img-thumbnail" data-setbg="@product.ProductImage_1">
                                     <ul class="product__item__pic__hover">
                                         <li>
-                                            <a href="#">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
+                                            @if (product.Wishlist == null)
+                                            {
+                                                <a target="_blank" title="Add to wishlist!" asp-controller="Wishlist" asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@product.Id" class="heart-icon">
+                                                    <span class="icon_heart_alt"></span>
+                                                </a>
+                                            }
                                         </li>
                                         <li>
                                             <a href="#">
