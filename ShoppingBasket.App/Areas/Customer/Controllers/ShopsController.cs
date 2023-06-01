@@ -26,6 +26,7 @@ public class ShopsController : Controller
         return View(products);
     }
 
+    /** This id is a product's Id */
     public IActionResult Details(int id)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
@@ -43,6 +44,11 @@ public class ShopsController : Controller
         {
             return View("_404");
         }
-        return View(productToView);
+        var cartVm = new CartVM()
+        {
+            Product = productToView,
+            Cart = new Cart()
+        };
+        return View(cartVm);
     }
 }
