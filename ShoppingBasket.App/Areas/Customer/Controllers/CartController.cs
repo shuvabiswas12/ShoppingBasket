@@ -24,7 +24,13 @@ public class CartController : Controller
     public IActionResult Index()
     {
         var carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product");
-        return View(carts);
+        double total = 0;
+        foreach (var cart in carts)
+        {
+            total += (cart.Count * cart.Product!.Price);
+        }
+        var cartVm = new CartVM() { Carts = carts, Total = total };
+        return View(cartVm);
     }
 
     [HttpPost]
