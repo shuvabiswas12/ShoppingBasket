@@ -23,7 +23,8 @@ public class CartController : Controller
     // GET
     public IActionResult Index()
     {
-        return View();
+        var carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product");
+        return View(carts);
     }
 
     [HttpPost]
