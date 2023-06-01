@@ -40,7 +40,7 @@ public class CartController : Controller
             ApplicationUserId = claims!.Value,
             Count = productDetailsVm.Cart!.Count
         };
-        
+
         _unitOfWork.CartRepository.Add(newCart);
         _unitOfWork.Save();
 
@@ -56,14 +56,26 @@ public class CartController : Controller
 
     #region update increment or decrement product's count
 
-    public IActionResult IncrementProductCount(int cartId)
+    public IActionResult IncrementProductCount(int cartId, int count)
     {
-        return Ok();
+        var cart = _unitOfWork.CartRepository.GetT(c => c.Id == cartId, includeProperties: "Product");
+        if (cart != null)
+        {
+            cart.Count += count;
+            return Ok(new { data = cart, success = "Increment successfull!" });
+        }
+        return NotFound(new { error = "Cart not exists!" });
     }
 
-    public IActionResult DecrementProductCount(int cartId)
+    public IActionResult DecrementProductCount(int cartId, int count)
     {
-        return Ok();
+        var cart = _unitOfWork.CartRepository.GetT(c => c.Id == cartId, includeProperties: "Product");
+        if (cart != null)
+        {
+            cart.Count -= count;
+            return Ok(new { data = cart, success = "Decrement successfull!" });
+        }
+        return NotFound(new { error = "Cart not exists!" });
     }
 
     #endregion
