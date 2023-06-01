@@ -56,6 +56,7 @@ public class CartController : Controller
 
     #region update increment or decrement product's count
 
+    [HttpGet, ActionName("Increment")]
     public IActionResult IncrementProductCount(int cartId, int count)
     {
         var cart = _unitOfWork.CartRepository.GetT(c => c.Id == cartId, includeProperties: "Product");
@@ -67,6 +68,7 @@ public class CartController : Controller
         return NotFound(new { error = "Cart not exists!" });
     }
 
+    [HttpGet, ActionName("Decrement")]
     public IActionResult DecrementProductCount(int cartId, int count)
     {
         var cart = _unitOfWork.CartRepository.GetT(c => c.Id == cartId, includeProperties: "Product");
