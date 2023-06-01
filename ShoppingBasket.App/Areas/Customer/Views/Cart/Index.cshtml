@@ -35,8 +35,10 @@
                                     </td>
                                     <td class="shoping__cart__quantity noselect">
                                         <div class="quantity">
-                                            <div class="pro-qty">
+                                            <div class="qty">
+                                                <span onclick="decrementCount(this, @cart.Id)" class="decrement qty-btn"><i class="bi bi-dash"></i></span>
                                                 <input type="text" asp-for="@cart.Count" />
+                                                <span onclick="incrementCount(this, @cart.Id)" class="increment qty-btn"><i class="bi bi-plus"></i></span>
                                             </div>
                                         </div>
                                     </td>
@@ -44,7 +46,7 @@
                                         @((cart.Count * cart.Product.Price).ToString("C2"))
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                        <button title="Delete Cart!" onclick="deleteCart(@cart.Id)" class="close-btn btn btn-danger p-2 mx-2"><i class="bi bi-x-lg"></i></button>
                                     </td>
                                 </tr>
                             }
@@ -88,3 +90,55 @@
     </div>
 </section>
 <!-- Shopping Cart Section End -->
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        function incrementCount(e, cartId) {
+            const count = 1;
+            $.ajax({
+                method: "GET",
+                url: `/Customer/Cart/Increment?cartId=${cartId}&count=${count}`,
+                success: function (data) {
+                    e.parentNode.children[1].value++;  // updating the value instant
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("Could not increment the value!");
+                }
+            })
+        }
+
+        function decrementCount(e, cartId) {
+            const count = 1;
+            $.ajax({
+                method: "GET",
+                url: `/Customer/Cart/Decrement?cartId=${cartId}&count=${count}`,
+                success: function (data) {
+                    e.parentNode.children[1].value--;  // updating the value instant
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("Could not decrement the value!");
+                }
+            });
+        }
+
+        function deleteCart(cartId) {
+            $.ajax({
+                method: "DELETE",
+                url: `/Customer/Cart/Delete?cartId=${cartId}`,
+                success: function (data) {
+                    console.log(data);
+                    window.location.reload();
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert("Could not delete the cart!");
+                }
+            });
+        }
+    </script>
+    }

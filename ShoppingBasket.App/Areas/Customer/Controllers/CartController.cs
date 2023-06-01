@@ -63,6 +63,7 @@ public class CartController : Controller
         if (cart != null)
         {
             cart.Count += count;
+            _unitOfWork.Save();
             return Ok(new { data = cart, success = "Increment successfull!" });
         }
         return NotFound(new { error = "Cart not exists!" });
@@ -75,9 +76,23 @@ public class CartController : Controller
         if (cart != null)
         {
             cart.Count -= count;
+            _unitOfWork.Save();
             return Ok(new { data = cart, success = "Decrement successfull!" });
         }
         return NotFound(new { error = "Cart not exists!" });
+    }
+
+    [HttpDelete, ActionName("Delete")]
+    public IActionResult DeleteCart(int cartId)
+    {
+        var cartToDelete = _unitOfWork.CartRepository.GetT(c => c.Id == cartId);
+        if (cartToDelete != null)
+        {
+            _unitOfWork.CartRepository.Delete(cartToDelete);
+            _unitOfWork.Save();
+            return Ok(new { data = cartToDelete, success = "Cart has been deleted." });
+        }
+        return NotFound(new { error = "Cart could be deleted." });
     }
 
     #endregion
