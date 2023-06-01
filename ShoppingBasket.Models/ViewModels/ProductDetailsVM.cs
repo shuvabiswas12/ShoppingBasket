@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingBasket.Models.ViewModels
 {
-    public class CartVM
+    public class ProductDetailsVM
     {
         public Cart? Cart { get; set; }
         public Product Product { get; set; } = null!;

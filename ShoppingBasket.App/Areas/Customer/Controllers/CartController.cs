@@ -28,7 +28,7 @@ public class CartController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult AddToCart(CartVM cartVm, int productId)
+    public IActionResult AddToCart(ProductDetailsVM productDetailsVm, int productId)
     {
         var claimIdentity = User.Identity as ClaimsIdentity;
         var claims = claimIdentity!.FindFirst(ClaimTypes.NameIdentifier);
@@ -37,7 +37,7 @@ public class CartController : Controller
         {
             ProductId = productId,
             ApplicationUserId = claims!.Value,
-            Count = cartVm.Cart!.Count
+            Count = productDetailsVm.Cart!.Count
         };
         
         _unitOfWork.CartRepository.Add(newCart);

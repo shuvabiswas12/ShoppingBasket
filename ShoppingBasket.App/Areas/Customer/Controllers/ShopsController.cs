@@ -44,11 +44,11 @@ public class ShopsController : Controller
         {
             return View("_404");
         }
-        var cartVm = new CartVM()
+        var productDetailsVm = new ProductDetailsVM()
         {
             Product = productToView,
             Cart = new Cart()
         };
-        return View(cartVm);
+        return View(productDetailsVm);
     }
 }
