@@ -54,3 +54,17 @@
 .qty .qty-btn:active {
     background: #e1dcdc
 }
+
+/* form field important mark */
+.checkout__input > label > span {
+    color: red !important;
+}
+
+/* cart details header */
+.cart-detail > h4 {
+    color: #1c1c1c;
+    font-weight: 700;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}

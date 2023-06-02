@@ -46,6 +46,8 @@ namespace ShoppingBasket.Models
         [Required] public string Email { get; set; } = null!;
         
         [Required] public string City { get; set; } = null!;
+
+        [Required] public string Country { get; set; } = null!;
         
         [Required] public string State { get; set; } = null!;
         
