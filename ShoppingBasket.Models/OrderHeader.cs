@@ -36,7 +36,8 @@ namespace ShoppingBasket.Models
         
         [DisplayName("Payment Intent ID")] public string? PaymentIntentId { get; set; }
 
-        [Required] public string Name { get; set; } = null!;
+        [Required] public string FirstName { get; set; } = null!;
+        [Required] public string LastName { get; set; } = null!;
         
         [Required] public string Address { get; set; } = null!;
         
