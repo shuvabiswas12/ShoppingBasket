@@ -6,7 +6,7 @@ namespace ShoppingBasket.DataAccessLayer;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
     public DbSet<Category> Categories { get; set; } = null!;
 
@@ -16,9 +16,11 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<Wishlist> Wishlists { get; set; } = null!;
 
-    public DbSet<Cart> Carts { get; set; }
+    public DbSet<Cart> Carts { get; set; } = null!;
 
-    public DbSet<Coupon> Coupons { get; set; }
+    public DbSet<Coupon> Coupons { get; set; } = null!;
+
+    public DbSet<OrderHeader> OrderHeaders { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
