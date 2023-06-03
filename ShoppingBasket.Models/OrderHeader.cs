@@ -52,5 +52,7 @@ namespace ShoppingBasket.Models
         [Required] public string State { get; set; } = null!;
         
         [Required, DisplayName("Post Code")] public string PostCode { get; set; } = null!;
+
+        [Required, DisplayName("Payment Type")] public string PaymentType { get; set; } = null!;
     }
 }
