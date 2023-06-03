@@ -8,16 +8,19 @@
 
 <!-- Shopping Cart Section Begin -->
 <section class="shoping-cart spad">
-    <div class="container">
+    
+    <div class="container cart-detail">
+        <h4>Cart Details</h4>
+
         @if (!Model.Carts.Any())
         {
-            <div class="border border-4 border-danger w-50 offset-3">
+            <div class="border border-4 border-danger w-50 offset-3 mt-3">
                 <p class="h3 lead text-center mt-2 p-3">Cart is empty!</p>
             </div>
         }
         else {
             <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 mt-4">
                 <div class="shoping__cart__table">
                     <table>
                         <thead>
@@ -86,11 +89,12 @@
             <div class="col-lg-6">
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
+                    <hr/>
                     <ul>
-                        @*<li>Subtotal <span>$454.98</span></li>*@
+                        <li>Subtotal <span>$454.98</span></li>
                         <li>Total <span>@Model.Total.ToString("C2")</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    <a asp-action="Checkout" asp-controller="Cart" asp-area="Customer" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>
             </div>
         </div>
