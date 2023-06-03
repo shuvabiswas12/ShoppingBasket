@@ -24,6 +24,7 @@ namespace ShoppingBasket.Models
 
         [DisplayName("Payment Date")] public DateTime? PaymentDate { get; set; }
 
+        [Required, DisplayName("Order Total")] public double OrderTotal { get; set; } = 0.0;
         [Required, DisplayName("Order Status")] public string OrderStatus { get; set; } = null!;
 
         [Required, DisplayName("Payment Status")] public string PaymentStatus { get; set; } = null!;
