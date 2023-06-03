@@ -11,5 +11,10 @@ public interface IUnitOfWork
     ICartRepository CartRepository { get; }
     
     IWishlistRepository WishlistRepository { get; }
+    
+    IOrderHeaderRepository OrderHeaderRepository { get; }
+    
+    IOrderDetailsRepository OrderDetailsRepository { get; }
+    
     void Save();
 }

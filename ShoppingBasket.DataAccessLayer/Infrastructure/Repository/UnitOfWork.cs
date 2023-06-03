@@ -12,6 +12,10 @@ public class UnitOfWork : IUnitOfWork
     public ICartRepository CartRepository { get; }
     
     public IWishlistRepository WishlistRepository { get; }
+    
+    public IOrderHeaderRepository OrderHeaderRepository { get; }
+    
+    public IOrderDetailsRepository OrderDetailsRepository { get; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -21,6 +25,8 @@ public class UnitOfWork : IUnitOfWork
         CategoryRepository = new CategoryRepository(context);
         ProductRepository = new ProductRepository(context);
         StockRepository = new StockRepository(context);
+        OrderHeaderRepository = new OrderHeaderRepository(_context);
+        OrderDetailsRepository = new OrderDetailsRepository(_context);
     }
 
     public void Save()
