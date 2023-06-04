@@ -6,6 +6,7 @@ using ShoppingBasket.DataAccessLayer.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ShoppingBasket.CommonHelper;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,10 +25,10 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
+
+// configure the stripe payment settings from appsettings.json file.
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("PaymentSettings"));
 
 // For resolving issues of Razor pages services.
 builder.Services.AddRazorPages();
@@ -51,6 +52,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// stripe api configuration
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
 
 app.UseRouting();
 app.UseAuthentication(); ;

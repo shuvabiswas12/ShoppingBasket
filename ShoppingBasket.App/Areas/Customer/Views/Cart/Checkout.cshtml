@@ -1,4 +1,8 @@
+@using Microsoft.Extensions.Options
 @model ShoppingBasket.Models.ViewModels.CheckoutVM
+
+@* injecting stripe api services for payment ui *@
+@inject IOptions<ShoppingBasket.CommonHelper.StripeSettings> Stripe
 
 @{
     ViewData["Title"] = ViewData["Root"] = "Checkout";
@@ -18,10 +22,7 @@
         </div>
         <div class="checkout__form">
             <h4>Billing Details</h4>
-            <form asp-action="Checkout" method="post" asp-controller="Cart" asp-area="Customer">
-
-                <input asp-for="@Model.OrderHeader.OrderStatus" type="text" hidden>
-                <input asp-for="@Model.OrderHeader.PaymentStatus" type="text" hidden>
+            <form asp-action="Checkout" method="post">
                 <input asp-for="@Model.OrderHeader.ApplicationUserId" type="text" hidden>
                 <input asp-for="@Model.OrderHeader.OrderTotal" type="number" hidden>
 

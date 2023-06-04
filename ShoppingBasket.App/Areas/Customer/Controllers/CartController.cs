@@ -6,6 +6,7 @@ using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
 using System.Security.Claims;
 using ShoppingBasket.CommonHelper;
+using Stripe.Checkout;
 using Exception = System.Exception;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
@@ -67,8 +68,6 @@ public class CartController : Controller
 
         var orderHeader = new OrderHeader()
         {
-            OrderStatus = OrderStatus.STATUS_PENDING,
-            PaymentStatus = PaymentStatus.STATUS_PENDING,
             ApplicationUserId = claims!.Value
         };
 
@@ -94,29 +93,88 @@ public class CartController : Controller
 
         if (ModelState.IsValid && checkoutVm.OrderHeader.ApplicationUserId == claims!.Value)
         {
+            _unitOfWork.OrderHeaderRepository.Add(checkoutVm.OrderHeader);
+            _unitOfWork.Save();
+
+            checkoutVm.Carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product",
+                c => c.ApplicationUserId == claims!.Value);
+
+            if (SaveOrderDetails(checkoutVm) && RemoveCart(checkoutVm))
+            {
+                _unitOfWork.Save();
+            }
+
             // Cash on delivery options...
             if (string.Equals(checkoutVm.OrderHeader.PaymentType.ToUpper(), PaymentTypes.CashOnDelivery.ToUpper()))
             {
-                _unitOfWork.OrderHeaderRepository.Add(checkoutVm.OrderHeader);
+                _unitOfWork.OrderHeaderRepository.UpdateStatus(checkoutVm.OrderHeader.Id, OrderStatus.STATUS_PENDING,
+                    PaymentStatus.STATUS_PENDING);
                 _unitOfWork.Save();
-
-                checkoutVm.Carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product",
-                    c => c.ApplicationUserId == claims!.Value);
-
-                if (SaveOrderDetails(checkoutVm) && RemoveCart(checkoutVm))
-                {
-                    _unitOfWork.Save();
-                }
-
                 return RedirectToAction("Index", "Shops");
             }
-            else
-            {
-                // Online Payment options...
-            }
+
+            // Online Payment options...
+            return PaymentByStripe(checkoutVm);
         }
 
         return View();
+    }
+
+    private IActionResult PaymentByStripe(CheckoutVM checkoutVm)
+    {
+        var domain = "https://localhost:7147/";
+        var options = new SessionCreateOptions()
+        {
+            LineItems = new List<SessionLineItemOptions>(),
+            Mode = "payment",
+            SuccessUrl = domain + "Customer/Cart/PaymentSuccess?id=" + checkoutVm.OrderHeader.Id,
+            CancelUrl = domain + "Customer/Cart/Index",
+        };
+
+        foreach (var cart in checkoutVm.Carts)
+        {
+            var lineItemOptions = new SessionLineItemOptions()
+            {
+                PriceData = new SessionLineItemPriceDataOptions()
+                {
+                    ProductData = new SessionLineItemPriceDataProductDataOptions()
+                    {
+                        Name = cart.Product!.Name,
+                    },
+                    Currency = "USD",
+                    UnitAmount = (long)(cart.Product!.Price * 100),
+                },
+                Quantity = cart.Count,
+            };
+            options.LineItems.Add(lineItemOptions);
+        }
+
+        var service = new SessionService();
+        var session = service.Create(options);
+        // updating payment status
+        _unitOfWork.OrderHeaderRepository.PaymentStatus(orderHeaderId: checkoutVm.OrderHeader.Id, sessionId: session.Id);
+        _unitOfWork.Save();
+
+        Response.Headers.Add("Location", session.Url);
+        return new StatusCodeResult(303);
+    }
+
+    public IActionResult PaymentSuccess(int id)
+    {
+        // Updting payment status and order status for online payment system
+        var orderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == id);
+        if (orderHeader != null && orderHeader.PaymentIntentId == null)
+        {
+            var service = new SessionService();
+            var session = service.Get(orderHeader.SessionId);
+            _unitOfWork.OrderHeaderRepository.PaymentStatus(orderHeaderId: orderHeader.Id, paymentIntentId: session.PaymentIntentId);
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderId: orderHeader.Id, OrderStatus.STATUS_APPROVED, PaymentStatus.STATUS_APPROVED);
+            _unitOfWork.Save();
+
+            return View(orderHeader);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
 

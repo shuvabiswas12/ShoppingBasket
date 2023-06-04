@@ -1,0 +1,47 @@
+@model ShoppingBasket.Models.OrderHeader;
+
+@{
+    ViewData["Title"] = "Order Completed";
+}
+
+<div class="container my-3">
+    <h3 class="text-center text-warning my-4">Your order is successful!</h3>
+    <hr />
+    <div class="row">
+        <div class="col-lg-8 col-md-12 offset-lg-2 col-sm-12">
+            <div class="card mx-5 my-2">
+                <div class="card-header admin-card-header mb-3"><h3>Order Summary</h3></div>
+                <div class="card-body admin-card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr">
+                                <td class="h6 bg-secondary text-white">Your Payment Status </td>
+                                <td class="h6 bg-light">@Model.PaymentStatus</td>
+                                </tr>
+                                <tr>
+                                    <td class="h6 bg-secondary text-white">Payment ID </td>
+                                    <td class="h6 bg-light">@Model.PaymentIntentId</td>
+                                </tr>
+                                <tr>
+                                    <td class="h6 bg-secondary text-white">Your Payment Date</td>
+                                    <td class="h6 bg-light">@Model.PaymentDate</td>
+                                </tr>
+                                <tr>
+                                    <td class="h6 bg-secondary text-white">Your Order Status</td>
+                                    <td class="h6 bg-light">@Model.OrderStatus</td>
+                                </tr>
+                                <tr>
+                                    <td class="h6 bg-secondary text-white">Your Order Date</td>
+                                    <td class="h6 bg-light">@Model.OrderDate</td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
