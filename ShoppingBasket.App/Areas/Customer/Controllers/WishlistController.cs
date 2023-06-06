@@ -30,8 +30,12 @@ public class WishlistController : Controller
         return View(wishlistVm);
     }
 
+    /** If API is false then it is consider as like "The Action method called from directly!". Otherwise if api=true then it 
+        is considered as like "The action method called from api call". 
+        If api call happens, The method returns a json file instead of a Html Pages.
+    */
     [HttpGet]
-    public IActionResult AddOrDeleteWishlist(int productId)
+    public IActionResult AddOrDeleteWishlist(int productId, bool api=false)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
         var claims = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -53,6 +57,8 @@ public class WishlistController : Controller
             _unitOfWork.WishlistRepository.Add(newWishlist);
             _unitOfWork.Save();
         }
+
+        if (api) return Ok(new { success = "The Product just added to wishlist!" });
         
         return RedirectToAction("Details", "Shops", new { id = productId });
     }

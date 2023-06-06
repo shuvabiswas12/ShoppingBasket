@@ -333,7 +333,7 @@
                                         <li>
                                             @if (product.Wishlist == null)
                                             {
-                                                <a target="_blank" title="Add to wishlist!" asp-controller="Wishlist" asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@product.Id" class="heart-icon">
+                                                <a onclick="addOrRemoveToWishlist(this, @product.Id)" title="Add to wishlist!" class="heart-icon">
                                                     <span class="icon_heart_alt"></span>
                                                 </a>
                                             }
@@ -354,8 +354,6 @@
                             </div>
                         </div>
                     }
-
-
                 </div>
                 <div class="product__pagination">
                     <a href="#">1</a>
@@ -370,3 +368,30 @@
     </div>
 </section>
 <!-- Product Section End -->
+@section Scripts {
+    <script type="text/javascript">
+        function addOrRemoveToWishlist(wishlistBtn, productId) {
+            console.log(wishlistBtn);
+            $.ajax({
+                contentType: "application/json",
+                method: "GET",
+                url: `/Customer/Wishlist/AddOrDeleteWishlist?productId=${productId}&api=true`,
+                success: function (data) {
+                    console.log(data.success);
+                    wishlistBtn.style.display = "none";
+                    Toastify({
+                        text: data.success,
+                        duration: 2000
+                    }).showToast();
+                },
+                error: function (error) {
+                    console.log("Error");
+                    if (error.status === 401) {
+                        return window.location.href = "https://" + window.location.host + "/Identity/Account/Login?ReturnUrl=/Customer/Shops";
+                    }
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+}
