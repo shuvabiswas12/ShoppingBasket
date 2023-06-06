@@ -1,0 +1,58 @@
+﻿@model ShoppingBasket.Models.ViewModels.WishlistVM
+
+@*
+    ViewData["Title"] = "Wishlists"
+*@
+
+<div class="cart-wrap">
+	<div class="container">
+		<div class="row my-3">
+			<div class="col-md-10 col-sm-12 offset-md-1">
+				<div class="section-header mb-5">
+					<h4><i class="bi bi-heart mr-2"></i> My Wishlist</h4>
+				</div>
+				<div class="table-wishlist">
+					<table class="" cellpadding="0" cellspacing="0" border="0" width="100%">
+						<thead>
+							<tr>
+								<th width="45%">Product Name</th>
+								<th width="15%">Unit Price</th>
+								<th width="15%">Stock Status</th>
+								<th width="15%"></th>
+								<th width="10%"></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach(var item in Model.Wishlists)
+							{
+								<tr>
+									<td width="45%">
+										<div class="display-flex align-center">
+											<div class="img-product">
+												<img src="@item.Product.ProductImage_1" class="mCS_img_loaded" alt="Default or first image of product">
+											</div>
+											<div class="name-product">
+												@item.Product.Name
+											</div>
+										</div>
+									</td>
+									<td width="15%" class="price">@item.Product.Price.ToString("C2")</td>
+									<td width="15%"><span class="in-stock-box">In Stock</span></td>
+									<td width="15%">
+										<form method="post" asp-action="AddToCart" asp-controller="Cart" asp-area="Customer" asp-route-productId="@item.Product.Id">
+											<button type="submit" class="round-black-btn site-btn small-btn">Add to Cart</button>
+										</form>
+									</td>
+
+									<td width="10%" class="text-center">
+										<a asp-area="Customer" asp-action="AddOrDeleteWishlist" asp-route-productId="@item.Product.Id" asp-controller="Wishlist" title="Delete" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+										</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

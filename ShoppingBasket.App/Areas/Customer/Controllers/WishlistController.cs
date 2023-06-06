@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
+using ShoppingBasket.Models.ViewModels;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -23,7 +24,10 @@ public class WishlistController : Controller
 
     public IActionResult Index()
     {
-        return Ok();
+        var wishlistVm = new WishlistVM() { 
+            Wishlists = _unitOfWork.WishlistRepository.GetAll(includeProperties: "Product"),
+        };
+        return View(wishlistVm);
     }
 
     [HttpGet]
@@ -39,7 +43,7 @@ public class WishlistController : Controller
             _unitOfWork.WishlistRepository.Delete(wishlist);
             _unitOfWork.Save();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             var newWishlist = new Wishlist()
             {
