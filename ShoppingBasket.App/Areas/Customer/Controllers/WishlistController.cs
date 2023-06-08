@@ -35,7 +35,7 @@ public class WishlistController : Controller
         If api call happens, The method returns a json file instead of a Html Pages.
     */
     [HttpGet]
-    public IActionResult AddOrDeleteWishlist(int productId, bool api=false)
+    public IActionResult AddOrDeleteWishlist(int productId)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
         var claims = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -58,7 +58,12 @@ public class WishlistController : Controller
             _unitOfWork.Save();
         }
 
-        if (api) return Ok(new { success = "The Product just added to wishlist!" });
+        // for api call
+        // if ajax call's headers has "isApiResponse" property set to true, Then reponse will be api response.
+        // Otherwise, response will be View() response.
+        var isApiResponse = HttpContext.Request.Headers["isApiResponse"].ToString().ToLower();
+
+        if (isApiResponse == "true") return Ok(new { success = "The Product just added to wishlist!" });
         
         return RedirectToAction("Details", "Shops", new { id = productId });
     }

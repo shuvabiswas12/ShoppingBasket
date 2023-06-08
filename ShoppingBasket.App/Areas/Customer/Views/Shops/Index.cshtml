@@ -374,6 +374,9 @@
             console.log(wishlistBtn);
             $.ajax({
                 contentType: "application/json",
+                headers: {
+                    "isApiResponse" : true
+                },
                 method: "GET",
                 url: `/Customer/Wishlist/AddOrDeleteWishlist?productId=${productId}&api=true`,
                 success: function (data) {
