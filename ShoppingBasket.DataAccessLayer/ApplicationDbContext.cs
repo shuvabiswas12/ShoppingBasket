@@ -24,6 +24,8 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
+    public DbSet<Contact> Contacts { get; set; } = null!;
+
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
