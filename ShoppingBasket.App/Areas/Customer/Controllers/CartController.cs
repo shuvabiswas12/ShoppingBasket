@@ -85,6 +85,8 @@ public class CartController : Controller
 		// counting total price value of all of selected products 
 		checkoutVm.OrderHeader.OrderTotal = checkoutVm.Carts.Sum(cart => (cart.Product!.Price * cart.Count));
 
+		if (checkoutVm.OrderHeader.OrderTotal == 0) return RedirectToAction("Index");
+
 		return View(checkoutVm);
 	}
 
