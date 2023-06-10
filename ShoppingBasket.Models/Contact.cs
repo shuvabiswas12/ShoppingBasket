@@ -21,7 +21,7 @@ namespace ShoppingBasket.Models
 
         [Required] public DateTime CreatedAt { get; set; } = DateTime.Now!;
 
-        [Required, ForeignKey("ApplicationUser")] public string ApplicationUserId { get; set; } = null!;
+        [ForeignKey("ApplicationUser")] public string ApplicationUserId { get; set; } = null!;
 
         [ValidateNever] public ApplicationUser ApplicationUser { get; set; } = null!;
     }

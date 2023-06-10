@@ -245,3 +245,9 @@
     font-size: 20px;
     color: #212529;
 }
+
+
+/* contact form */
+.contact-form form input, .contact-form form textarea {
+    margin-bottom: 10px !important;
+}

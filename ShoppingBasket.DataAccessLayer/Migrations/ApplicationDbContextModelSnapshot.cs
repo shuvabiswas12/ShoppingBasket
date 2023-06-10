@@ -250,7 +250,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Category", b =>
@@ -270,7 +270,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Contact", b =>
@@ -304,7 +304,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Coupon", b =>
@@ -339,7 +339,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupons");
+                    b.ToTable("Coupons", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.OrderDetail", b =>
@@ -368,7 +368,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.OrderHeader", b =>
@@ -457,7 +457,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("OrderHeaders");
+                    b.ToTable("OrderHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Product", b =>
@@ -499,7 +499,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Stock", b =>
@@ -530,7 +530,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stocks", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.Wishlist", b =>
@@ -558,7 +558,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Wishlists");
+                    b.ToTable("Wishlists", (string)null);
                 });
 
             modelBuilder.Entity("ShoppingBasket.Models.ApplicationUser", b =>
