@@ -17,6 +17,8 @@ public class UnitOfWork : IUnitOfWork
     
     public IOrderDetailsRepository OrderDetailsRepository { get; }
 
+    public IContactRepository ContactRepository { get; }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
@@ -27,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         StockRepository = new StockRepository(context);
         OrderHeaderRepository = new OrderHeaderRepository(_context);
         OrderDetailsRepository = new OrderDetailsRepository(_context);
+        ContactRepository = new ContactRepository(_context);
     }
 
     public void Save()
