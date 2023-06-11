@@ -75,7 +75,15 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="primary-btn border-0">ADD TO CARD</button>
+                        @if (TempData["acknowledge"] != null)
+                        {
+                            <button type="button" class="primary-btn bg-secondary border-0" disabled style="cursor: no-drop">ADDED !</button>
+                            
+                        }
+                        else
+                        {
+                            <button type="submit" class="primary-btn border-0">ADD TO CARD</button>
+                        }
                     </form>
 
                     @if (Model.Product.Wishlist == null)

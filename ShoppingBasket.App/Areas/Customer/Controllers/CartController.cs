@@ -39,7 +39,6 @@ public class CartController : Controller
 	}
 
 	[HttpPost]
-	[ValidateAntiForgeryToken]
 	public IActionResult AddToCart(ProductDetailsVM? productDetailsVm, int productId)
 	{
 		var claimIdentity = User.Identity as ClaimsIdentity;
@@ -59,9 +58,12 @@ public class CartController : Controller
 		_unitOfWork.CartRepository.Add(newCart);
 		_unitOfWork.Save();
 
-		TempData["success"] = "The Product added to carts!";
+        var isApiResponse = HttpContext.Request.Headers["isApiResponse"].ToString().ToLower();
+        if (isApiResponse == "true") return Ok(new { success = "The Product just added to cart!" });
 
-		return RedirectToAction("Index", "Cart");
+        TempData["success"] = "The Product added to carts!";
+		TempData["acknowledge"] = "Added to cart!";
+		return RedirectToAction("Details", "Shops", new { id = productId });
 	}
 
 	[HttpGet]

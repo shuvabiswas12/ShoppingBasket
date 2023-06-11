@@ -24,7 +24,8 @@ public class WishlistController : Controller
 
     public IActionResult Index()
     {
-        var wishlistVm = new WishlistVM() { 
+        var wishlistVm = new WishlistVM()
+        {
             Wishlists = _unitOfWork.WishlistRepository.GetAll(includeProperties: "Product"),
         };
         return View(wishlistVm);
@@ -35,7 +36,7 @@ public class WishlistController : Controller
         If api call happens, The method returns a json file instead of a Html Pages.
     */
     [HttpGet]
-    public IActionResult AddOrDeleteWishlist(int productId)
+    public IActionResult AddOrDeleteWishlist(int productId, int? reload = 0)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
         var claims = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
@@ -64,8 +65,8 @@ public class WishlistController : Controller
         var isApiResponse = HttpContext.Request.Headers["isApiResponse"].ToString().ToLower();
 
         if (isApiResponse == "true") return Ok(new { success = "The Product just added to wishlist!" });
-        
-        return RedirectToAction("Details", "Shops", new { id = productId });
+
+        return reload == 1 ? RedirectToAction("Index") : RedirectToAction("Details", "Shops", new { id = productId });
     }
 
     #endregion
