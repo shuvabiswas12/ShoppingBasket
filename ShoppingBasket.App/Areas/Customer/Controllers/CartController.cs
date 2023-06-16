@@ -116,7 +116,7 @@ public class CartController : Controller
 			if (string.Equals(checkoutVm.OrderHeader.PaymentType.ToUpper(), PaymentTypes.CashOnDelivery.ToUpper()))
 			{
 				_unitOfWork.OrderHeaderRepository.UpdateStatus(checkoutVm.OrderHeader.Id, OrderStatus.STATUS_PENDING,
-					PaymentStatus.STATUS_PENDING);
+					PaymentStatus.STATUS_DUE);
 				_unitOfWork.Save();
 				return RedirectToAction("Index", "Shops");
 			}
@@ -161,6 +161,7 @@ public class CartController : Controller
 		var session = service.Create(options);
 		// updating payment status
 		_unitOfWork.OrderHeaderRepository.PaymentStatus(orderHeaderId: checkoutVm.OrderHeader.Id, sessionId: session.Id);
+		_unitOfWork.OrderHeaderRepository.UpdateStatus(checkoutVm.OrderHeader.Id, OrderStatus.STATUS_PENDING, PaymentStatus.STATUS_PENDING);
 		_unitOfWork.Save();
 
 		Response.Headers.Add("Location", session.Url);
