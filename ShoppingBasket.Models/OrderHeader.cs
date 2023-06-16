@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using ShoppingBasket.CommonHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,5 +56,8 @@ namespace ShoppingBasket.Models
 
         [Required, DisplayName("Payment Type")]
         public string PaymentType { get; set; } = null!;
+
+        [DisplayName("Order No")]
+        public string OrderNumber { get; set; } = RandomIdGenerator.GenerateOrderNumberId();
     }
 }

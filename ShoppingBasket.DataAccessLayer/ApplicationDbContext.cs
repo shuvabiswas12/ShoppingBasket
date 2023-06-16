@@ -34,5 +34,10 @@ public class ApplicationDbContext : IdentityDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Set the OrderNumber column to unique by Fluent API
+        modelBuilder.Entity<OrderHeader>()
+            .HasIndex(o => o.OrderNumber)
+            .IsUnique();
     }
 }
