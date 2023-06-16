@@ -23,6 +23,13 @@
         </ul>
     </li>
 
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+    {
+        <li>
+            <a asp-area="Customer" asp-controller="Orders" asp-action="Index">My Orders</a>
+        </li>
+    }
+
     <li>
         <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
     </li>

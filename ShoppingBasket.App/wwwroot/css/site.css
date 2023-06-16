@@ -251,3 +251,35 @@
 .contact-form form input, .contact-form form textarea {
     margin-bottom: 10px !important;
 }
+
+/**  Green color for background and foreground*/
+.bg-green {
+    background: #7fad39 !important;
+}
+
+.text-green {
+    color: #7fad39 !important
+}
+
+/*font weight stop 700*/
+.fw-700 {
+    font-weight: 700 !important;
+}
+
+.fw-600 {
+    font-weight: 600 !important;
+}
+.block-divider {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e1e1e1 !important;
+}
+
+/* order details btn css */
+.order-detail-btns a {
+    font-size: 1.1rem;
+}
+.order-detail-btns a:hover {
+    color: #7fad39 !important;
+    border-bottom: 1px solid #7fad39;
+}

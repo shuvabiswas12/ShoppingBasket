@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = ViewData["Root"] = "Orders";
+}
+
+<partial name="_Breadcrumb" view-data="ViewData" />
+
+<section class="shoping-cart spad">
+    <div class="container cart-detail">
+        <h4>Orders History</h4>
+
+        <div class="row mt-4">
+            <div class="table-responsive-sm">
+                <table class="table table-striped" id="ordersTable">
+                    <thead class="bg-green text-white">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Order NO</th>
+                            <th>Price</th>
+                            <th>Order Date</th>
+                            <th>Payment Type</th>
+                            <th>Payment Status</th>
+                            <th>Order Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-rows-id">
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        let dataTable = null;
+        $(document).ready(function () {
+            dataTable = $('#ordersTable').DataTable({
+                ajax: {
+                    url: '/Customer/Orders/GetOrders',
+                    complete: function (data) {
+                        let responseData = data["responseJSON"]?.data;
+                    },
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'orderNumber' },
+                    { data: 'orderTotal', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
+                    {
+                        data: 'orderDate', render: function (data, type, row) {
+                            const date = new Date(data);
+                            const formattedDate = date.toLocaleDateString();
+                            const formattedTime = date.toLocaleTimeString();
+                            return formattedDate + " " + formattedTime;
+                        }
+                    },
+                    { data: 'paymentType' },
+                    { data: 'paymentStatus' },
+                    { data: 'orderStatus' },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return `<a href="/Customer/Orders/Details?id=${data}" title="Order details" class="p-2 mx-2 btn btn-success"><strong><i class="bi bi-eye"></i></strong></a>
+                                                                                                <a onclick=CancelOrder(${data}) title="Cancel order" class="btn btn-danger p-2 mx-2 text-white"><strong><i class="bi bi-x-octagon"></i></strong></a>`;
+                        }
+                    }
+                ],
+            });
+        })
+
+        function CancelOrder(orderHeaderId) { 
+            const text = "Do you want to cancel this order? \nPress 'Ok' to Cancel."
+            if (confirm(text) == true)
+            console.log("OK");
+            else console.log("False");
+        }
+
+    </script>
+}

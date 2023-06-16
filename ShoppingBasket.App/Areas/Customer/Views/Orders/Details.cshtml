@@ -1,0 +1,138 @@
+﻿@using Microsoft.Extensions.Options
+
+@* injecting stripe api services for payment ui *@
+@inject IOptions<ShoppingBasket.CommonHelper.StripeSettings> Stripe
+
+@{
+    ViewData["Title"] = ViewData["Root"] = "Order Details";
+}
+
+<partial name="_Breadcrumb" view-data="ViewData" />
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="d-flex flex-row justify-content-md-end justify-content-sm-center order-detail-btns my-3">
+            <a href="#">Cancel Order</a>
+            &nbsp; | &nbsp;
+            <a href="#">Print Invoice</a>
+            &nbsp; | &nbsp;
+            <a href="#">Track Order</a>
+        </div>
+        <div class="checkout__form">
+            <h4>Order Details</h4>
+            <div class="row">
+                <div class="col-lg-7 col-md-6">
+                    <div class="checkout__order">
+                        <h4 class="text-green">Shipping Details</h4>
+                        <div class="row">
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Full Name</p>
+                                <h5 class="text-danger fw-600">Crish Illionis</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Email</p>
+                                <h5 class="text-danger fw-600">crish.Illionis@email.com</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Phone</p>
+                                <h5 class="text-danger fw-600">01998336784</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Country</p>
+                                <h5 class="text-danger fw-600">Bangladesh</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Postcode/ZIP</p>
+                                <h5 class="text-danger fw-600">Bangladesh</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">State</p>
+                                <h5 class="text-danger fw-600">Chittagong</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Town/City</p>
+                                <h5 class="text-danger fw-600">Chittagong</h5>
+                            </div>
+                            
+                            <div class="col-12 block-divider">
+                                <p class="fs-6 fw-700">Address</p>
+                                <h5 class="text-danger fw-600">Chittagong, 110988, BN, DHK</h5>
+                            </div>
+
+                            <div class="col-12">
+                                <p class="fs-6 fw-700">Order notes</p>
+                                <p class="">
+                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-6">
+                    <div class="checkout__order my-sm-3">
+                        <h4 class="text-green">Order Details</h4>
+                        <div class="checkout__order__products">Order No. <span class="text-green">#MGf-19022389</span></div>
+                        <div class="checkout__order__products">Products <span>Total</span></div>
+                        <ul>
+                            <li>
+                                Mirorless camera <span>$602.89</span>
+                            </li>
+                        </ul>
+                        <div class="checkout__order__total">Total <span>$1920.22</span></div>
+                        <div class="checkout__order__products">Payment Type</div>
+                        <div class="form-check noselect block-divider">
+                            <input class="form-check-input" type="radio" id="Cash_on_delivery" value="Cash-ond-delivery" checked>
+                            <label for="Cash_on_delivery" class="form-check-label" role="button">
+                                Cash On Delivery
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <div class="checkout__order__products">Payment Status</div>
+                            <div class="form-check noselect">
+                                <p>Due</p>
+                            </div>
+                        </div>
+
+                        <div class="checkout__order__products">Payment ID</div>
+                        <div class="block-divider">
+                            <p class="text-danger">--*--</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between block-divider">
+                            <div class="checkout__order__products">Payment Date</div>
+                            <div class="d-flex align-items-end flex-column">
+                                <p>6/16/2023</p>
+                                <p>10:48:17 AM</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="checkout__order__products">Order Date</div>
+                            <div class="d-flex align-items-end flex-column">
+                                <p>6/16/2023</p>
+                                <p>10:48:17 AM</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="site-btn">MAKE PAYMENT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

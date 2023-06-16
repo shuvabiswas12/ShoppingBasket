@@ -5,3 +5,7 @@
 .header__top__right, .header__top__left {
     padding: 5px 0 8px !important;
 }
+
+.pointer-cursor {
+    cursor: pointer;
+}
