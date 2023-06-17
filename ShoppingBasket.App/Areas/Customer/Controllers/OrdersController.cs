@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
+using ShoppingBasket.Models.ViewModels;
 using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers
@@ -26,7 +27,17 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult Details(int orderHeaderId)
         {
-            return View();
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+            var orderDetailsVm = new OrderDetailsVM() 
+            {
+                OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderHeaderId && o.ApplicationUserId == claims!.Value),
+                OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o=> o.OrderHeaderId == orderHeaderId)
+            };
+
+            if (orderDetailsVm.OrderHeader == null) return View("_404");
+
+            return View(orderDetailsVm);
         }
 
         [HttpGet]

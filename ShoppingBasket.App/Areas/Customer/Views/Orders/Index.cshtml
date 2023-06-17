@@ -13,7 +13,6 @@
                 <table class="table table-striped" id="ordersTable">
                     <thead class="bg-green text-white">
                         <tr>
-                            <th>Order ID</th>
                             <th>Order NO</th>
                             <th>Price</th>
                             <th>Order Date</th>
@@ -47,7 +46,6 @@
                     },
                 },
                 columns: [
-                    { data: 'id' },
                     { data: 'orderNumber' },
                     { data: 'orderTotal', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
                     {
@@ -64,7 +62,7 @@
                     {
                         data: 'id',
                         render: function (data) {
-                            return `<a href="/Customer/Orders/Details?id=${data}" title="Order details" class="p-2 mx-2 btn btn-success"><strong><i class="bi bi-eye"></i></strong></a>
+                            return `<a href="/Customer/Orders/Details?orderHeaderId=${data}" title="Order details" class="p-2 mx-2 btn btn-success"><strong><i class="bi bi-eye"></i></strong></a>
                                                                                                 <a onclick=CancelOrder(${data}) title="Cancel order" class="btn btn-danger p-2 mx-2 text-white"><strong><i class="bi bi-x-octagon"></i></strong></a>`;
                         }
                     }
