@@ -36,12 +36,15 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
         var orderHeaderToUpdate = _context.OrderHeaders.FirstOrDefault(o => o.Id == orderHeaderId);
         if (orderHeaderToUpdate != null)
         {
-            if (sessionId != null) { 
+            if (sessionId != null)
+            {
                 orderHeaderToUpdate.SessionId = sessionId;
+            }
+            else { 
+                orderHeaderToUpdate.PaymentIntentId = paymentIntentId;
                 orderHeaderToUpdate.PaymentDate = DateTime.Now;
             }
-            else orderHeaderToUpdate.PaymentIntentId = paymentIntentId;
-            
+
         }
     }
 }
