@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
+using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
+using Stripe;
 using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "User, Admin")]
     public class OrdersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,34 +26,126 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             return View();
         }
 
+        /* This orderId is a Order Header ID */
         [HttpGet]
-        public IActionResult Details(int orderHeaderId)
+        public IActionResult Details(int orderId)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
-            var orderDetailsVm = new OrderDetailsVM() 
+            if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
             {
-                OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderHeaderId && o.ApplicationUserId == claims!.Value),
-                OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o=> o.OrderHeaderId == orderHeaderId)
-            };
+                var orderDetailsVm = new OrderDetailsVM()
+                {
+                    OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId, includeProperties: "ApplicationUser"),
+                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.OrderHeaderId == orderId)
+                };
 
-            if (orderDetailsVm.OrderHeader == null) return View("_404");
+                if (orderDetailsVm.OrderHeader == null) return View("_404");
 
-            return View(orderDetailsVm);
+                return View(orderDetailsVm);
+            }
+            else
+            {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+                var orderDetailsVm = new OrderDetailsVM()
+                {
+                    OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId && o.ApplicationUserId == claims!.Value),
+                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.OrderHeaderId == orderId)
+                };
+
+                if (orderDetailsVm.OrderHeader == null) return View("_404");
+
+                return View(orderDetailsVm);
+            }
         }
 
+        #region API CALL
         [HttpGet]
         public IActionResult GetOrders()
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
-            var orders = _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value);
-            return Json(new { data = orders });
+            if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
+            {
+                // for admin or employees
+                var orders = _unitOfWork.OrderHeaderRepository.GetAll();
+                return Json(new { data = orders });
+            }
+            else
+            {
+                // for customers
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+                var orders = _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value);
+                return Json(new { data = orders });
+            }
+        }
+        #endregion
+
+        public IActionResult Cancel(int orderId)
+        {
+            var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId);
+            if (order == null) return View("_404");
+
+            if (order.OrderStatus != OrderStatus.STATUS_CANCELLED)
+            {
+                if (order.PaymentType == PaymentTypes.CashOnDelivery)
+                {
+                    _unitOfWork.OrderHeaderRepository.UpdateStatus(orderId, OrderStatus.STATUS_CANCELLED);
+                    _unitOfWork.Save();
+                }
+                else if (order.PaymentType == PaymentTypes.PaymentOnline && order.PaymentStatus == PaymentStatus.STATUS_APPROVED)
+                {
+                    // code for online payment order to refund the money
+                    //...
+                    try {
+                        RefundPayment(order);
+                        TempData["success"] = "Order is Canceled and Amount is Refunded!";
+                    }
+                    catch (Exception) {
+                        TempData["error"] = "Something went wrog during Cancelling Order Or Refunding Amuont!";
+                    };
+                    
+                }
+            }
+            return RedirectToAction("Details", new { orderId = orderId });
         }
 
-        public IActionResult Cancel(int orderHeaderId)
+        private bool RefundPayment(OrderHeader orderHeader)
         {
-            return View();
+            var refundOptions = new RefundCreateOptions()
+            {
+                Reason = RefundReasons.RequestedByCustomer,
+                PaymentIntent = orderHeader.PaymentIntentId
+            };
+            var refund = new RefundService().Create(refundOptions);
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeader.Id, OrderStatus.STATUS_CANCELLED, PaymentStatus.STATUS_REFUNDED);
+            _unitOfWork.Save();
+            return true;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ShipOrder(OrderShippingVM orderShippingVm)
+        {
+            return Ok();
+        }
+
+        /* This id is a OrderHeaderID */
+        [HttpGet, ActionName("StartProcessing")]
+        public IActionResult ApproveOrderAndStartProcessing(int orderId)
+        {
+            var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId);
+            if (order == null) return View("_404");
+
+            if (order.OrderStatus != OrderStatus.STATUS_PROCESSING) {
+                _unitOfWork.OrderHeaderRepository.UpdateStatus(orderId, OrderStatus.STATUS_PROCESSING);
+                
+                if(order.PaymentType == PaymentTypes.CashOnDelivery) _unitOfWork.Save();
+                else
+                {
+                    // online payment
+                    if (order.PaymentStatus == PaymentStatus.STATUS_APPROVED && order.PaymentIntentId != null) _unitOfWork.Save();
+                }
+            }
+            return RedirectToAction("Details", new { orderId = orderId });
         }
     }
 }

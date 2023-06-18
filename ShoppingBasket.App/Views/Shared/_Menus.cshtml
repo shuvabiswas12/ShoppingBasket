@@ -10,30 +10,30 @@
     <li>
         <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
     </li>
-    <li>
-        <a>Pages</a>
-        <ul class="header__menu__dropdown">
-            <li>
-                <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
-            </li>
-            <li>
-                <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">Wishlist</a>
-            </li>
-
-        </ul>
-    </li>
-
+    
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
     {
         <li>
+            <a>Pages</a>
+            <ul class="header__menu__dropdown">
+                <li>
+                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
+                </li>
+                <li>
+                    <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">Wishlist</a>
+                </li>
+
+            </ul>
+        </li>
+        <li>
             <a asp-area="Customer" asp-controller="Orders" asp-action="Index">My Orders</a>
+        </li>
+        <li>
+            <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
         </li>
     }
 
-    <li>
-        <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
-    </li>
-    
+
     @* For admin panels only *@
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
     {
@@ -47,6 +47,12 @@
                     <a asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
                 </li>
             </ul>
+        </li>
+        <li>
+            <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Queries</a>
+        </li>
+        <li>
+            <a asp-area="Customer" asp-controller="Orders" asp-action="Index">Orders</a>
         </li>
     }
 </ul>

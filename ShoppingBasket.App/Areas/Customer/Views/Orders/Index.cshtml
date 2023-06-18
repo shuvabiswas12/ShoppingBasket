@@ -10,7 +10,7 @@
 
         <div class="row mt-4">
             <div class="table-responsive-sm">
-                <table class="table table-striped" id="ordersTable">
+                <table class="table" id="ordersTable">
                     <thead class="bg-green text-white">
                         <tr>
                             <th>Order NO</th>
@@ -62,20 +62,12 @@
                     {
                         data: 'id',
                         render: function (data) {
-                            return `<a href="/Customer/Orders/Details?orderHeaderId=${data}" title="Order details" class="p-2 mx-2 btn btn-success"><strong><i class="bi bi-eye"></i></strong></a>
-                                                                                                <a onclick=CancelOrder(${data}) title="Cancel order" class="btn btn-danger p-2 mx-2 text-white"><strong><i class="bi bi-x-octagon"></i></strong></a>`;
+                            return `<a href="/Customer/Orders/Details?orderId=${data}" title="Order details" class="p-2 mx-2 text-green fs-4"><strong><i class="bi bi-eye"></i></strong></a>`;
                         }
                     }
                 ],
             });
         })
-
-        function CancelOrder(orderHeaderId) { 
-            const text = "Do you want to cancel this order? \nPress 'Ok' to Cancel."
-            if (confirm(text) == true)
-            console.log("OK");
-            else console.log("False");
-        }
 
     </script>
 }

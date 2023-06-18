@@ -9,3 +9,11 @@
 .pointer-cursor {
     cursor: pointer;
 }
+
+.pointer-auto {
+    cursor: auto;
+}
+
+.pointer-none {
+    cursor: no-drop;
+}

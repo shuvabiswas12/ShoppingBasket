@@ -284,8 +284,30 @@
     border-bottom: 1px solid #7fad39;
 }
 
-
 table td {
     padding: 0.95rem;
     vertical-align: middle !important;
 }
+
+/* nav tabs css */
+.checkout__form .nav-tabs .active {
+    font-weight: 700 !important;
+    color: #7fad39 !important;
+    background: #f5f5f5 !important;
+}
+.checkout__form .nav-tabs button {
+    font-weight: 600 !important;
+    color: #6f6f6f !important;
+}
+
+/* Order details buttons */
+#order-action-btns a {
+    margin-right: 10px;
+}
+
+    #order-action-btns a::after {
+        content: "|";
+        color: #6f6f6f;
+        margin-left: 10px;
+    }
+
