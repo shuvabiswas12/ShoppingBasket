@@ -10,7 +10,7 @@
     <li>
         <a asp-area="Customer" asp-controller="Shops" asp-action="Index">Shops</a>
     </li>
-    
+
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
     {
         <li>
@@ -28,10 +28,10 @@
         <li>
             <a asp-area="Customer" asp-controller="Orders" asp-action="Index">My Orders</a>
         </li>
-        <li>
-            <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
-        </li>
     }
+    <li>
+        <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
+    </li>
 
 
     @* For admin panels only *@

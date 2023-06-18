@@ -15,6 +15,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<OrdersController> _logger;
+
         public OrdersController(ILogger<OrdersController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
@@ -34,8 +35,11 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             {
                 var orderDetailsVm = new OrderDetailsVM()
                 {
-                    OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId, includeProperties: "ApplicationUser"),
-                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.OrderHeaderId == orderId)
+                    OrderHeader =
+                        _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId,
+                            includeProperties: "ApplicationUser"),
+                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product",
+                        predicate: o => o.OrderHeaderId == orderId)
                 };
 
                 if (orderDetailsVm.OrderHeader == null) return View("_404");
@@ -48,8 +52,11 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
                 var orderDetailsVm = new OrderDetailsVM()
                 {
-                    OrderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId && o.ApplicationUserId == claims!.Value),
-                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.OrderHeaderId == orderId)
+                    OrderHeader =
+                        _unitOfWork.OrderHeaderRepository.GetT(o =>
+                            o.Id == orderId && o.ApplicationUserId == claims!.Value),
+                    OrderDetail = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product",
+                        predicate: o => o.OrderHeaderId == orderId)
                 };
 
                 if (orderDetailsVm.OrderHeader == null) return View("_404");
@@ -59,6 +66,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
         }
 
         #region API CALL
+
         [HttpGet]
         public IActionResult GetOrders()
         {
@@ -73,10 +81,12 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 // for customers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
-                var orders = _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value);
+                var orders =
+                    _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value);
                 return Json(new { data = orders });
             }
         }
+
         #endregion
 
         public IActionResult Cancel(int orderId)
@@ -91,20 +101,25 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                     _unitOfWork.OrderHeaderRepository.UpdateStatus(orderId, OrderStatus.STATUS_CANCELLED);
                     _unitOfWork.Save();
                 }
-                else if (order.PaymentType == PaymentTypes.PaymentOnline && order.PaymentStatus == PaymentStatus.STATUS_APPROVED)
+                else if (order.PaymentType == PaymentTypes.PaymentOnline &&
+                         order.PaymentStatus == PaymentStatus.STATUS_APPROVED)
                 {
                     // code for online payment order to refund the money
                     //...
-                    try {
+                    try
+                    {
                         RefundPayment(order);
                         TempData["success"] = "Order is Canceled and Amount is Refunded!";
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
                         TempData["error"] = "Something went wrog during Cancelling Order Or Refunding Amuont!";
-                    };
-                    
+                    }
+
+                    ;
                 }
             }
+
             return RedirectToAction("Details", new { orderId = orderId });
         }
 
@@ -116,16 +131,45 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 PaymentIntent = orderHeader.PaymentIntentId
             };
             var refund = new RefundService().Create(refundOptions);
-            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeader.Id, OrderStatus.STATUS_CANCELLED, PaymentStatus.STATUS_REFUNDED);
+            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeader.Id, OrderStatus.STATUS_CANCELLED,
+                PaymentStatus.STATUS_REFUNDED);
             _unitOfWork.Save();
             return true;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ShipOrder(OrderShippingVM orderShippingVm)
+        public IActionResult ShipOrder(OrderDetailsVM orderDetailsVm)
         {
-            return Ok();
+            var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderDetailsVm.OrderShipping.OrderId);
+            if (order == null) return View("_404");
+
+            order.TrackingNumber = orderDetailsVm.OrderShipping.TrackingNumber;
+            order.Carrier = orderDetailsVm.OrderShipping.Carrier;
+
+            if (order.OrderStatus == OrderStatus.STATUS_PROCESSING)
+            {
+                _unitOfWork.OrderHeaderRepository.UpdateStatus(order.Id, OrderStatus.STATUS_SHIPPED);
+
+                if (order.PaymentType == PaymentTypes.CashOnDelivery)
+                {
+                    _unitOfWork.OrderHeaderRepository.Update(order);
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    // online payment
+                    if (order is { PaymentStatus: PaymentStatus.STATUS_APPROVED, PaymentIntentId: not null })
+                    {
+                        _unitOfWork.OrderHeaderRepository.Update(order);
+                        _unitOfWork.Save();
+                    }
+                }
+
+                TempData["success"] = "Order Shipped!";
+            }
+
+            return RedirectToAction("Details", new { orderId = order.Id });
         }
 
         /* This id is a OrderHeaderID */
@@ -135,16 +179,19 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId);
             if (order == null) return View("_404");
 
-            if (order.OrderStatus != OrderStatus.STATUS_PROCESSING) {
+            if (order.OrderStatus != OrderStatus.STATUS_PROCESSING)
+            {
                 _unitOfWork.OrderHeaderRepository.UpdateStatus(orderId, OrderStatus.STATUS_PROCESSING);
-                
-                if(order.PaymentType == PaymentTypes.CashOnDelivery) _unitOfWork.Save();
+
+                if (order.PaymentType == PaymentTypes.CashOnDelivery) _unitOfWork.Save();
                 else
                 {
                     // online payment
-                    if (order.PaymentStatus == PaymentStatus.STATUS_APPROVED && order.PaymentIntentId != null) _unitOfWork.Save();
+                    if (order is { PaymentStatus: PaymentStatus.STATUS_APPROVED, PaymentIntentId: not null })
+                        _unitOfWork.Save();
                 }
             }
+
             return RedirectToAction("Details", new { orderId = orderId });
         }
     }

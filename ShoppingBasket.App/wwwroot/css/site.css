@@ -301,11 +301,20 @@ table td {
 }
 
 /* Order details buttons */
-#order-action-btns a {
-    margin-right: 10px;
+#order-action-btns a > s{
+    color: orangered;
 }
 
-    #order-action-btns a::after {
+#order-action-btns button:hover {
+    border-bottom: 1px solid #7fad39 !important;
+}
+    #order-action-btns a, #order-action-btns button {
+    margin-right: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+    #order-action-btns a::after, #order-action-btns button::after {
         content: "|";
         color: #6f6f6f;
         margin-left: 10px;

@@ -14,7 +14,12 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
 
     public void Update(OrderHeader orderHeader)
     {
-        throw new NotImplementedException();
+        var order = _context.OrderHeaders.FirstOrDefault(o => o.Id == orderHeader.Id);
+        if (order == null) return;
+
+        order.TrackingNumber = orderHeader.TrackingNumber ?? null;
+        order.Carrier = orderHeader.Carrier ?? null;
+        order.ShippingDate = orderHeader.TrackingNumber != null ? DateTime.Now : null;
     }
 
     public void UpdateStatus(int orderHeaderId, string orderStatus, string? paymentStatus = null)
