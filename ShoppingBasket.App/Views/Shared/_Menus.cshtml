@@ -29,9 +29,13 @@
             <a asp-area="Customer" asp-controller="Orders" asp-action="Index">My Orders</a>
         </li>
     }
-    <li>
-        <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
-    </li>
+    
+    @if (!User.IsInRole("Admin"))
+    {
+        <li>
+            <a asp-area="Customer" asp-controller="Contact" asp-action="Index">Contact</a>
+        </li>
+    }
 
 
     @* For admin panels only *@

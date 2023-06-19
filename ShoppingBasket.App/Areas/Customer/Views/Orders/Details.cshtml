@@ -9,294 +9,293 @@
     ViewData["Title"] = ViewData["Root"] = "Order Details";
 }
 
-<partial name="_Breadcrumb" view-data="ViewData"/>
+<partial name="_Breadcrumb" view-data="ViewData" />
 
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
-<div class="container">
-<div class="d-flex flex-row justify-content-md-end justify-content-sm-center order-detail-btns my-3" id="order-action-btns">
+    <div class="container">
+        <div class="d-flex flex-row justify-content-md-end justify-content-sm-center order-detail-btns my-3" id="order-action-btns">
 
-    @if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
-    {
-        if (Model.OrderHeader.OrderStatus != OrderStatus.STATUS_CANCELLED)
-        {
-            if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_SHIPPED)
+            @if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
             {
-                <a class="pointer-none">
-                    <s>Ship Order</s>
-                </a>
-            }
-            else if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_PROCESSING)
-            {
-                <button data-toggle="modal" data-target="#exampleModalCenter" class="pointer-cursor bg-white border-0 text-green">Ship Order</button>
-            }
-
-            if (Model.OrderHeader.OrderStatus is OrderStatus.STATUS_PROCESSING or OrderStatus.STATUS_SHIPPED)
-            {
-                <a class="pointer-none">
-                    <s>Start Processing</s>
-                </a>
-            }
-            else
-            {
-                <a asp-action="StartProcessing" asp-controller="Orders" asp-area="Customer" asp-route-orderId="@Model.OrderHeader.Id">Start Processing</a>
-            }
-        }
-
-        @if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_CANCELLED)
-        {
-            <a class="pointer-none">
-                <s>Cancel Order</s>
-            </a>
-        }
-        else
-        {
-            <a asp-action="Cancel" asp-area="Customer" asp-controller="Orders" asp-route-orderId="@Model.OrderHeader.Id">Cancel Order</a>
-        }
-    }
-    <a href="#">Track Order</a>
-    <a href="#">Print Invoice</a>
-
-</div>
-
-@* carrier modal start *@
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body p-4 p-md-5">
-                <div class="icon border-0 d-flex align-items-center justify-content-center">
-                    <img src="~/img/delivery-truck.png" alt=""/>
-                </div>
-                <h3 class="text-center mb-4">Carrier Info</h3>
-                <form asp-action="ShipOrder" asp-area="Customer" asp-controller="Orders" class="login-form">
-                    <input type="text" asp-for="OrderShipping.OrderId" value="@Model.OrderHeader.Id" hidden>
-                    <div class="form-group">
-                        <label asp-for="@Model.OrderShipping.Carrier"></label>
-                        <input type="text" asp-for="@Model.OrderShipping.Carrier" class="form-control rounded-left" placeholder="Enter Carrier identity">
-                        <span asp-validation-for="@Model.OrderShipping.Carrier" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.OrderShipping.TrackingNumber"></label>
-                        <input type="text" asp-for="@Model.OrderShipping.TrackingNumber" class="form-control rounded-left" placeholder="Enter tracking number">
-                        <span asp-validation-for="@Model.OrderShipping.TrackingNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" style="letter-spacing: 1.2px;" class="my-2 form-control btn btn-success rounded bg-green fw-bold submit px-3">SAVE CARRIER & SHIP</button>
-                    </div>
-                    <div class="form-group d-md-flex">
-                        <div class="form-check w-100">
-                            <label class="custom-control fill-checkbox px-0">
-                                <span class="fill-control-description text-warning">
-                                    Before shipping the order, it is required to confirm carrier identity as well as tracking number.
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-@* carrier modal ends *@
-
-<div class="checkout__form">
-    <h4>Order Details</h4>
-
-    @if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_CANCELLED)
-    {
-        <h5 class="text-white fw-bold mb-3 py-2 bg-danger text-center">-- Order is cancelled! --</h5>
-    }
-
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link fs-5 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Order</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link fs-5" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Customer</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-            <div class="row">
-                <div class="col-lg-8 col-md-8">
-                    <div class="checkout__order my-sm-3 my-md-0">
-                        <h4 class="text-green">Order Details</h4>
-                        <div class="checkout__order__products">Order No. <span class="text-green">@Model.OrderHeader.OrderNumber</span></div>
-                        <div class="checkout__order__products">Products <span>Total</span></div>
-                        <ul>
-                            @foreach (var item in Model.OrderDetail)
-                            {
-                                <li class="d-flex flex-row justify-content-between">
-                                    @item.Product.Name &nbsp;
-                                    <strong class="text-danger">
-                                        <i class="bi bi-x"></i> @item.Count
-                                    </strong> <span>@item.Product.Price.ToString("C2")</span>
-                                </li>
-                            }
-                        </ul>
-                        <div class="checkout__order__total">Total <span>@Model.OrderHeader.OrderTotal.ToString("C2")</span></div>
-                        <div class="checkout__order__products">Payment Type</div>
-                        <div class="form-check noselect block-divider">
-                            <input class="form-check-input" type="radio" id="Payment-Type" value="Cash-ond-delivery" checked>
-                            @if (@Model.OrderHeader.PaymentType == PaymentTypes.CashOnDelivery)
-                            {
-                                <label for="Cash_on_delivery" class="form-check-label" role="button">
-                                    Cash On Delivery
-                                </label>
-                            }
-                            else
-                            {
-                                <label for="Payment-Type" class="form-check-label" role="button">
-                                    Online Payment
-                                </label>
-                            }
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <div class="checkout__order__products">Payment Status</div>
-                            <div class="form-check noselect">
-                                <p>@Model.OrderHeader.PaymentStatus</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-row justify-content-between block-divider">
-                            <div class="checkout__order__products">Payment ID</div>
-                            <div>
-                                @if (Model.OrderHeader.PaymentIntentId == null)
-                                {
-                                    <p class="text-danger">--*--</p>
-                                }
-                                else
-                                {
-                                    <p class="text-danger">@Model.OrderHeader.PaymentIntentId</p>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between block-divider">
-                            <div class="checkout__order__products">Payment Date</div>
-                            <div class="d-flex align-items-end flex-column">
-                                @if (Model.OrderHeader.PaymentDate != null)
-                                {
-                                    <p>@Model.OrderHeader.PaymentDate!.Value.ToString("dd MMMM yyyy")</p>
-                                    <p>@Model.OrderHeader.PaymentDate!.Value.ToString("h:mm tt")</p>
-                                }
-                                else
-                                {
-                                    <p>--*--</p>
-                                }
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between block-divider">
-                            <div class="checkout__order__products">Order Date</div>
-                            <div class="d-flex align-items-end flex-column">
-                                <p>@Model.OrderHeader.OrderDate.ToString("dd MMMM yyyy")</p>
-                                <p>@Model.OrderHeader.OrderDate.ToString("h:mm tt")</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <div class="checkout__order__products text-green">Order Status</div>
-                            <div class="form-check noselect">
-                                <p class="text-white fw-bold bg-success px-1">@Model.OrderHeader.OrderStatus</p>
-                            </div>
-                        </div>
-
-                        @if (Model.OrderHeader.PaymentType != PaymentTypes.CashOnDelivery && Model.OrderHeader.PaymentIntentId == null)
-                        {
-                            <a role="button" asp-route-orderHeaderId="@Model.OrderHeader.Id" asp-controller="Cart" asp-action="PaymentByStripe" asp-area="Customer" class="site-btn w-100 mt-2 text-center" style="font-size: inherit; letter-spacing: 1px;">MAKE PAYMENT</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-            <div class="row">
-                <div class="col-lg-8 col-md-7">
-                    <div class="checkout__order">
-                        <h4 class="text-green">Shipping Details</h4>
-                        <div class="row">
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Full Name</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.FirstName @Model.OrderHeader.LastName</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Email</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.Email</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Phone</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.Phone</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Country</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.Country</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Postcode/ZIP</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.PostCode</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">State</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.State</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Town/City</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.City</h5>
-                            </div>
-
-                            <div class="col-12 block-divider">
-                                <p class="fs-6 fw-700">Address</p>
-                                <h5 class="text-danger fw-600">@Model.OrderHeader.Address</h5>
-                            </div>
-
-                            <div class="col-12">
-                                <p class="fs-6 fw-700">Order notes</p>
-                                <p class="">
-                                    --*--
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-5">
-                    @if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
+                if (Model.OrderHeader.OrderStatus != OrderStatus.STATUS_CANCELLED)
+                {
+                    if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_SHIPPED)
                     {
-                        <div class="checkout__order mt-sm-3 mt-lg-0 mt-md-0">
-                            <h4 class="text-green">Order Placed By</h4>
-                            <div class="row">
-                                <div class="col-12 block-divider">
-                                    <p class="fs-6 fw-700">Name</p>
-                                    <h5 class="text-danger fw-600">@Model.OrderHeader.ApplicationUser.Name</h5>
-                                </div>
+                        <a class="pointer-none">
+                            <s>Ship Order</s>
+                        </a>
+                    }
+                    else if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_PROCESSING)
+                    {
+                        <button data-toggle="modal" data-target="#exampleModalCenter" class="pointer-cursor bg-white border-0 text-green">Ship Order</button>
+                    }
 
-                                <div class="col-12 block-divider">
-                                    <p class="fs-6 fw-700">Email</p>
-                                    <h5 class="text-danger fw-600">@Model.OrderHeader.ApplicationUser.Email</h5>
+                    if (Model.OrderHeader.OrderStatus is OrderStatus.STATUS_PROCESSING or OrderStatus.STATUS_SHIPPED)
+                    {
+                        <a class="pointer-none">
+                            <s>Start Processing</s>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="StartProcessing" asp-controller="Orders" asp-area="Customer" asp-route-orderId="@Model.OrderHeader.Id">Start Processing</a>
+                    }
+                }
+
+                @if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_CANCELLED)
+                {
+                    <a class="pointer-none">
+                        <s>Cancel Order</s>
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Cancel" asp-area="Customer" asp-controller="Orders" asp-route-orderId="@Model.OrderHeader.Id">Cancel Order</a>
+                }
+            }
+            <a href="#">Track Order</a>
+            <a href="#">Print Invoice</a>
+
+        </div>
+
+        @* carrier modal start *@
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-4 p-md-5">
+                        <div class="icon border-0 d-flex align-items-center justify-content-center">
+                            <img src="~/img/delivery-truck.png" alt="" />
+                        </div>
+                        <h3 class="text-center mb-4">Carrier Info</h3>
+                        <form asp-action="ShipOrder" asp-area="Customer" asp-controller="Orders" class="login-form">
+                            <input type="text" asp-for="OrderShipping.OrderId" value="@Model.OrderHeader.Id" hidden>
+                            <div class="form-group">
+                                <label asp-for="@Model.OrderShipping.Carrier"></label>
+                                <input type="text" asp-for="@Model.OrderShipping.Carrier" class="form-control rounded-left" placeholder="Enter Carrier identity">
+                                <span asp-validation-for="@Model.OrderShipping.Carrier" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.OrderShipping.TrackingNumber"></label>
+                                <input type="text" asp-for="@Model.OrderShipping.TrackingNumber" class="form-control rounded-left" placeholder="Enter tracking number">
+                                <span asp-validation-for="@Model.OrderShipping.TrackingNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" style="letter-spacing: 1.2px;" class="my-2 form-control btn btn-success rounded bg-green fw-bold submit px-3">SAVE CARRIER & SHIP</button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="form-check w-100">
+                                    <label class="custom-control fill-checkbox px-0">
+                                        <span class="fill-control-description text-warning">
+                                            Before shipping the order, it is required to confirm carrier identity as well as tracking number.
+                                        </span>
+                                    </label>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        @* carrier modal ends *@
 
-</div>
-</div>
+        <div class="checkout__form">
+            <h4>Order Details</h4>
+
+            @if (Model.OrderHeader.OrderStatus == OrderStatus.STATUS_CANCELLED)
+            {
+                <h5 class="text-white fw-bold mb-3 py-2 bg-danger text-center">-- Order is cancelled! --</h5>
+            }
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-5 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Order</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link fs-5" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Customer</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8">
+                            <div class="checkout__order my-sm-3 my-md-0">
+                                <h4 class="text-green">Order Details</h4>
+                                <div class="checkout__order__products">Order No. <span class="text-green">@Model.OrderHeader.OrderNumber</span></div>
+                                <div class="checkout__order__products">Products <span>Total</span></div>
+                                <ul>
+                                    @foreach (var item in Model.OrderDetail)
+                                    {
+                                        <li class="d-flex flex-row justify-content-between">
+                                            @item.Product.Name &nbsp;
+                                            <strong class="text-danger">
+                                                <i class="bi bi-x"></i> @item.Count
+                                            </strong> <span>@item.Product.Price.ToString("C2")</span>
+                                        </li>
+                                    }
+                                </ul>
+                                <div class="checkout__order__total">Total <span>@Model.OrderHeader.OrderTotal.ToString("C2")</span></div>
+                                <div class="checkout__order__products">Payment Type</div>
+                                <div class="form-check noselect block-divider">
+                                    <input class="form-check-input" type="radio" id="Payment-Type" value="Cash-ond-delivery" checked>
+                                    @if (@Model.OrderHeader.PaymentType == PaymentTypes.CashOnDelivery)
+                                    {
+                                        <label for="Cash_on_delivery" class="form-check-label" role="button">
+                                            Cash On Delivery
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label for="Payment-Type" class="form-check-label" role="button">
+                                            Online Payment
+                                        </label>
+                                    }
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="checkout__order__products">Payment Status</div>
+                                    <div class="form-check noselect">
+                                        <p>@Model.OrderHeader.PaymentStatus</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-between block-divider">
+                                    <div class="checkout__order__products">Payment ID</div>
+                                    <div>
+                                        @if (Model.OrderHeader.PaymentIntentId == null)
+                                        {
+                                            <p class="text-danger">--*--</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">@Model.OrderHeader.PaymentIntentId</p>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between block-divider">
+                                    <div class="checkout__order__products">Payment Date</div>
+                                    <div class="d-flex align-items-end flex-column">
+                                        @if (Model.OrderHeader.PaymentDate != null)
+                                        {
+                                            <p>@Model.OrderHeader.PaymentDate!.Value.ToString("dd MMMM yyyy")</p>
+                                            <p>@Model.OrderHeader.PaymentDate!.Value.ToString("h:mm tt")</p>
+                                        }
+                                        else
+                                        {
+                                            <p>--*--</p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between block-divider">
+                                    <div class="checkout__order__products">Order Date</div>
+                                    <div class="d-flex align-items-end flex-column">
+                                        <p>@Model.OrderHeader.OrderDate.ToString("dd MMMM yyyy")</p>
+                                        <p>@Model.OrderHeader.OrderDate.ToString("h:mm tt")</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="checkout__order__products text-green">Order Status</div>
+                                    <div class="form-check noselect">
+                                        <p class="text-white fw-bold bg-success px-1">@Model.OrderHeader.OrderStatus</p>
+                                    </div>
+                                </div>
+
+                                @if (Model.OrderHeader.PaymentType != PaymentTypes.CashOnDelivery && Model.OrderHeader.PaymentIntentId == null)
+                                {
+                                    <a role="button" asp-route-orderHeaderId="@Model.OrderHeader.Id" asp-controller="Cart" asp-action="PaymentByStripe" asp-area="Customer" class="site-btn w-100 mt-2 text-center" style="font-size: inherit; letter-spacing: 1px;">MAKE PAYMENT</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-7">
+                            <div class="checkout__order">
+                                <h4 class="text-green">Shipping Details</h4>
+                                <div class="row">
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Full Name</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.FirstName @Model.OrderHeader.LastName</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Email</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.Email</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Phone</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.Phone</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Country</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.Country</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Postcode/ZIP</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.PostCode</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">State</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.State</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Town/City</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.City</h5>
+                                    </div>
+
+                                    <div class="col-12 block-divider">
+                                        <p class="fs-6 fw-700">Address</p>
+                                        <h5 class="text-danger fw-600">@Model.OrderHeader.Address</h5>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <p class="fs-6 fw-700">Order notes</p>
+                                        <p class="">
+                                            --*--
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-5">
+                            @if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
+                            {
+                                <div class="checkout__order mt-sm-3 mt-lg-0 mt-md-0">
+                                    <h4 class="text-green">Order Placed By</h4>
+                                    <div class="row">
+                                        <div class="col-12 block-divider">
+                                            <p class="fs-6 fw-700">Name</p>
+                                            <h5 class="text-danger fw-600">@Model.OrderHeader.ApplicationUser.Name</h5>
+                                        </div>
+
+                                        <div class="col-12 block-divider">
+                                            <p class="fs-6 fw-700">Email</p>
+                                            <h5 class="text-danger fw-600">@Model.OrderHeader.ApplicationUser.Email</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 <!-- Checkout Section End -->
-
 @section Scripts {
     @{
-        <partial name="_ValidationScriptsPartial"/>
+        <partial name="_ValidationScriptsPartial" />
     }
     <script>
         function openCarrierForm() {

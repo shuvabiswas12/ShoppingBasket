@@ -1,10 +1,11 @@
-﻿@{
+﻿@using ShoppingBasket.CommonHelper;
+@{
     ViewData["Title"] = ViewData["Root"] = "Orders";
 }
 
 <partial name="_Breadcrumb" view-data="ViewData" />
 
-<section class="shoping-cart spad">
+<section class="checkout spad ">
     <div class="container cart-detail">
         <h4>Orders History</h4>
 
@@ -13,6 +14,7 @@
                 <table class="table" id="ordersTable">
                     <thead class="bg-green text-white">
                         <tr>
+                            <th>ID</th>
                             <th>Order NO</th>
                             <th>Price</th>
                             <th>Order Date</th>
@@ -45,8 +47,19 @@
                         let responseData = data["responseJSON"]?.data;
                     },
                 },
+                columnDefs: [
+                    { targets: 0, visible: false } // Hide the first column (index 0)
+                ],
+                order: [
+                    [0, 'desc']
+                ],
                 columns: [
-                    { data: 'orderNumber' },
+                    { data: 'id' },
+                    {
+                        data: 'orderNumber', render: function (data, type, row) {
+                            return `<p class="fw-bold">${data}</p>`;
+                        }
+                    },
                     { data: 'orderTotal', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
                     {
                         data: 'orderDate', render: function (data, type, row) {
@@ -56,13 +69,34 @@
                             return formattedDate + " " + formattedTime;
                         }
                     },
-                    { data: 'paymentType' },
-                    { data: 'paymentStatus' },
-                    { data: 'orderStatus' },
+                    {
+                        data: 'paymentType', render: function (data, type, row) {
+                            if (data === "CASH_ON_DELIVERY") return `<p class="bg-secondary p-2 text-center text-white">Cash on delivery</p>`;
+                            if (data === "PAYMENT_ONLINE") return `<p class="bg-success p-2 text-center text-white">Payment online</p>`;
+                        }
+                    },
+                    {
+                        data: 'paymentStatus', render: function (data, type, row) {
+                            if (data === "Refunded") return `<p class="text-danger text-center" style="font-weight: 700;">${data}</p>`;
+                            if (data === "Approved") return `<p class="text-success text-center" style="font-weight: 700;">${data}</p>`;
+                            if (data === "Due") return `<p class="text-dark-50 text-center" style="font-weight: 700;">${data}</p>`;
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'orderStatus', render: function (data, type, row) {
+                            const orderStatus = data;
+                            if (orderStatus === "Cancelled") return `<p class="bg-danger text-white p-2 text-center">${orderStatus}</p>`;
+                            if (orderStatus === "Shipped") return `<p class="bg-success text-white p-2 text-center">${orderStatus}</p>`;
+                            if (orderStatus === "Pending") return `<p class="bg-warning text-white p-2 text-center">${orderStatus}</p>`;
+                            if (orderStatus === "Processing") return `<p class="bg-info text-white p-2 text-center">${orderStatus}</p>`;
+                            return data;
+                        }
+                    },
                     {
                         data: 'id',
                         render: function (data) {
-                            return `<a href="/Customer/Orders/Details?orderId=${data}" title="Order details" class="p-2 mx-2 text-green fs-4"><strong><i class="bi bi-eye-fill"></i></strong></a>`;
+                            return `<a href="/Customer/Orders/Details?orderId=${data}" title="Order details" class="p-2 mx-2 text-green fs-4"><strong><i class="bi bi-eye-fill"></i><i style="margin-left: -2px;" class="bi bi-arrow-right"></i></strong></a>`;
                         }
                     }
                 ],

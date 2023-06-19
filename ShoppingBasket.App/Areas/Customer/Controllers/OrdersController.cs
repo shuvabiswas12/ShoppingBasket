@@ -73,7 +73,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             if (User.IsInRole(WebsiteRoles.AdminRole) || User.IsInRole(WebsiteRoles.EmployeeRole))
             {
                 // for admin or employees
-                var orders = _unitOfWork.OrderHeaderRepository.GetAll();
+                IEnumerable<OrderHeader> orders = _unitOfWork.OrderHeaderRepository.GetAll().OrderByDescending(order => order.Id).ToList();
                 return Json(new { data = orders });
             }
             else
@@ -82,7 +82,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
                 var orders =
-                    _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value);
+                    _unitOfWork.OrderHeaderRepository.GetAll(predicate: O => O.ApplicationUserId == claims!.Value).OrderBy(order => order.Id).ToList();
                 return Json(new { data = orders });
             }
         }
