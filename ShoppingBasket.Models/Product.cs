@@ -9,13 +9,13 @@ public class Product
 {
     [Key] public int Id { get; set; }
 
-    [Required] public string Name { get; set; }
+    [Required] public string Name { get; set; } = null!;
 
-    [Required] public string Description { get; set; }
+    [Required] public string Description { get; set; } = null!;
 
     [DisplayName("Product Images")]
     [Required]
-    public string ProductImage_1 { get; set; }
+    public string ProductImage_1 { get; set; } = null!;
 
     public string? ProductImage_2 { get; set; } = null;
 
@@ -27,12 +27,19 @@ public class Product
     [DisplayName("Category")]
     public int CategoryId { get; set; }
 
-    [ValidateNever] public Category Category { get; set; }
+    [ValidateNever] public Category Category { get; set; } = null!;
     
     [ValidateNever] public Stock? Stock { get; set; }
 
     [ValidateNever] public Wishlist? Wishlist { get; set; }
 
-    [DisplayName("Product Entry Date")]
-    public DateTime CreatedAt { get; private set; } = DateTime.Now;
+    [DisplayName("Product Entry Date")] public DateTime CreatedAt { get; private set; } = DateTime.Now;
+    
+    [DisplayName("Shipping Date")] public DateTime? ShippingDate { get; set; }
+    
+    [DisplayName("Delivery Date")] public DateTime? DeliveryDate { get; set; }
+
+    [DisplayName("Processing Date")] public DateTime? ProcessingDate { get; set; }
+    
+    [DisplayName("Is Featured")] public bool? IsFeatured { get; set; }
 }

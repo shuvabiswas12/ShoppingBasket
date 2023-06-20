@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppingBasket.DataAccessLayer;
 
@@ -11,9 +12,10 @@ using ShoppingBasket.DataAccessLayer;
 namespace ShoppingBasket.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620155522_added_aFewColumn_On_ProductTable")]
+    partial class added_aFewColumn_On_ProductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -481,14 +483,14 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeliveryDate")
+                    b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsFeatured")
+                    b.Property<bool>("IsFeatured")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -498,7 +500,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<DateTime?>("ProcessingDate")
+                    b.Property<DateTime>("ProcessingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProductImage_1")
@@ -511,7 +513,7 @@ namespace ShoppingBasket.DataAccessLayer.Migrations
                     b.Property<string>("ProductImage_3")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ShippingDate")
+                    b.Property<DateTime>("ShippingDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
