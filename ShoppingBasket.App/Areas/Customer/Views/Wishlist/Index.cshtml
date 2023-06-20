@@ -1,8 +1,11 @@
 ﻿@model ShoppingBasket.Models.ViewModels.WishlistVM
 
-@*
-    ViewData["Title"] = "Wishlists"
-*@
+@{
+    ViewData["Title"] = ViewData["Root"] = "Wishlists";
+    ViewData["Page"] = "Our Wishlist";
+}
+
+<partial name="_Breadcrumb" view-data="ViewData" />
 
 <div class="cart-wrap">
     <div class="container">

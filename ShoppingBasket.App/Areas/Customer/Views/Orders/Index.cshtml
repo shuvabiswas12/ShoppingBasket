@@ -3,6 +3,15 @@
     ViewData["Title"] = ViewData["Root"] = "Orders";
 }
 
+@if (User.IsInRole(WebsiteRoles.AdminRole)  || User.IsInRole(WebsiteRoles.EmployeeRole))
+{
+    ViewData["Page"] = "Customer's Orders";
+}
+else
+{
+    ViewData["Page"] = "Our Orders";
+}
+
 <partial name="_Breadcrumb" view-data="ViewData" />
 
 <section class="checkout spad ">
