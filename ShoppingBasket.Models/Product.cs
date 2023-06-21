@@ -40,6 +40,6 @@ public class Product
     [DisplayName("Delivery Date")] public DateTime? DeliveryDate { get; set; }
 
     [DisplayName("Processing Date")] public DateTime? ProcessingDate { get; set; }
-    
-    [DisplayName("Is Featured")] public bool? IsFeatured { get; set; }
+
+    [DisplayName("Is Featured")] public bool? IsFeatured { get; set; } = false;
 }

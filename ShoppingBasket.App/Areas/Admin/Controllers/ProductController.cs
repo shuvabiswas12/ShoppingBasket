@@ -127,5 +127,21 @@ public class ProductController : Controller
         return Json(new { success = true, message = "Product successfully deleted!" });
     }
 
+    [HttpGet]
+    public IActionResult MakeAsFeatured(int productId)
+    {
+        var product = _unitOfWork.ProductRepository.GetT(p => p.Id == productId);
+        if (product == null) return NotFound(new { error = "Product not found!" });
+        
+        var successMessage = "";
+        if (product.IsFeatured == true) successMessage = "Unchecked from Featured Product.";
+        else successMessage = "Checked as Featured Product.";
+
+        product.IsFeatured = !product.IsFeatured;
+        _unitOfWork.Save();
+
+        return Ok(new { success = successMessage });
+    }
+
     #endregion
 }

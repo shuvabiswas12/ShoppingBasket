@@ -8,7 +8,7 @@
     <div class="my-3">
         <a asp-area="Admin" asp-controller="Product" asp-action="CreateAndUpdate" class="site-btn text-light">Add Product</a>
     </div>
-    
+
     <div class="card">
         <div class="card-body admin-card-body">
             <div class="card-header admin-card-header">
@@ -22,21 +22,21 @@
                 else
                 {
                     <div class="table-responsive-sm">
-                        <table class="table table-striped table-bordered" id="productsTable">
-                            <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Product's name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Action</th>
-                            </tr>
+                        <table class="table table-bordered" id="productsTable">
+                            <thead class="bg-green text-white">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Product's name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Featured</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                            
-                            </tr>
+                                <tr>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -48,69 +48,96 @@
 </div>
 
 @section Scripts
-{
+    {
     <script type="text/javascript">
         let dataTable = null;
         $(document).ready(function () {
             dataTable = $('#productsTable').DataTable({
-            ajax: {
-                url: '/Admin/Product/GetProducts',
-                complete: function (data) {
-                   let responseData = data["responseJSON"]?.data;
-                   if (responseData.length === 0){
-                       setInterval(function(){ window.location.reload(); }, 1500);
-                   }
+                ajax: {
+                    url: '/Admin/Product/GetProducts',
+                    complete: function (data) {
+                        let responseData = data["responseJSON"]?.data;
+                        if (responseData.length === 0) {
+                            setInterval(function () { window.location.reload(); }, 1500);
+                        }
+                    },
                 },
-            },
-            columns: [
-                { data: 'id' },
-                { data: 'name' },
-                { data: 'category.name' },
-                { data: 'price', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
-                { data: 'stock.currentStock' },
-                {
-                    data: 'id',
-                    render: function (data) {
-                        return `<a href="/Admin/Product/Detail?id=${data}" title="View" class="px-3 py-2 mx-2 btn btn-secondary"><i class="bi bi-eye"></i></a>
-                                <a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="px-3 py-2 btn btn-info">Edit</a>
-                                <a onclick=deleteProduct(${data}) title="Delete" class="btn btn-danger p-2 mx-2 text-white">Delete</a>`;
+                columns: [
+                    { data: 'id' },
+                    { data: 'name' },
+                    { data: 'category.name' },
+                    { data: 'price', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
+                    { data: 'stock.currentStock' },
+                    {
+                        data: { isFeatured: 'isFeatured', id: 'id' }, render: function (data, row, type) {
+                            if (!data.isFeatured) return `<p title="Check as Featured" class="text-secondary d-flex justify-content-center align-items-center py-2 mt-2 fs-5"><i onclick="checkOrUncheckAsFeatured(${data.id})" class="pointer-cursor bi bi-square"></i></p>`
+                            return `<p title="Remove from Featured" class="pointer-cursor text-success d-flex justify-content-center align-items-center py-2 mt-2 fs-5"><i onclick="checkOrUncheckAsFeatured(${data.id})" class="bi bi-check-square-fill"></i></p>`
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return `<a href="/Admin/Product/Detail?id=${data}" title="View" class="px-3 py-2 mx-2 btn btn-secondary"><i class="bi bi-eye"></i></a>
+                                        <a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="px-3 py-2 btn btn-info">Edit</a>
+                                        <a onclick=deleteProduct(${data}) title="Delete" class="btn btn-danger p-2 mx-2 text-white">Delete</a>`;
+                        }
                     }
-                }
-            ],
+                ],
             });
         })
-        
-        function deleteProduct(data) {
-            Swal.fire({
-              title: 'Are you sure?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-              if (result["isConfirmed"]) {
-                  $.ajax({
-                  method: 'DELETE',
-                  url: `/Admin/Product/DeleteProduct?id=${data}`,
-                  success: function (data) {
-                      Swal.fire(
-                        'Deleted!',
-                        'Product has been deleted.',
-                        'success'
-                      )
-                      dataTable.ajax.reload();
-                  },
-                  error: function (error) {
-                      Swal.fire({
+
+        function checkOrUncheckAsFeatured(id) {
+            $.ajax({
+                method: 'GET',
+                url: `/Admin/Product/MakeAsFeatured?productId=${id}`,
+                success: function (data) {
+                    Toastify({
+                        text: data.success,
+                        duration: 3000
+                    }).showToast();
+                    dataTable.ajax.reload();
+                },
+                error: function (error) {
+                    Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: error?.responseText,
-                      })
-                  }
-              });
-              }
-            }) 
+                        text: "Featured action failed!",
+                    })
+                }
+            });
+        }
+
+        function deleteProduct(data) {
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result["isConfirmed"]) {
+                    $.ajax({
+                        method: 'DELETE',
+                        url: `/Admin/Product/DeleteProduct?id=${data}`,
+                        success: function (data) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Product has been deleted.',
+                                'success'
+                            )
+                            dataTable.ajax.reload();
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: error?.responseText,
+                            })
+                        }
+                    });
+                }
+            })
         }
     </script>
 }
