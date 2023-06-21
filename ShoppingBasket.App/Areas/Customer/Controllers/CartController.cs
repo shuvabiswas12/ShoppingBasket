@@ -131,6 +131,7 @@ public class CartController : Controller
     public IActionResult PaymentByStripe(int orderHeaderId)
     {
         var domain = "https://localhost:7147/";
+        domain = Request.Scheme + "://" + Request.Host.Value;
 
         var orderDetails = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.Id == orderHeaderId);
 
@@ -141,8 +142,8 @@ public class CartController : Controller
             {
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                SuccessUrl = domain + "Customer/Cart/PaymentSuccess?id=" + orderHeaderId,
-                CancelUrl = domain + "Customer/Cart/Index",
+                SuccessUrl = domain + "/Customer/Cart/PaymentSuccess?id=" + orderHeaderId,
+                CancelUrl = domain + "/Customer/Cart/Index",
             };
 
             foreach (var orderDetail in orderDetails)
