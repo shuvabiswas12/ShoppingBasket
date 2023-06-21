@@ -130,8 +130,7 @@ public class CartController : Controller
 
     public IActionResult PaymentByStripe(int orderHeaderId)
     {
-        var domain = "https://localhost:7147/";
-        domain = Request.Scheme + "://" + Request.Host.Value;
+        var domain = Request.Scheme + "://" + Request.Host.Value;
 
         var orderDetails = _unitOfWork.OrderDetailsRepository.GetAll(includeProperties: "Product", predicate: o => o.Id == orderHeaderId);
 
