@@ -76,9 +76,15 @@
                                                     <span class="icon_heart_alt"></span>
                                                 </a>
                                             }
+                                            else
+                                            {
+                                                <a onclick="addOrRemoveToWishlist(this, @product.Id)" title="Remove from wishlist!" class="heart-icon" >
+                                                    <span class="bi bi-heart-fill"></span>
+                                                </a>
+                                            }
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a onclick="addToCart(this, @product.Id)" class="pointer-cursor">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
                                         </li>
@@ -109,6 +115,37 @@
 <!-- Product Section End -->
 @section Scripts {
     <script type="text/javascript">
+
+        function addToCart(addToCartBtn, productId) {
+            console.log(addToCartBtn);
+            $.ajax({
+                contentType: "application/json",
+                headers: {
+                    "isApiResponse": true
+                },
+                url: `/Customer/Cart/AddToCart?productId=${productId}`,
+                type: "POST",
+                success: function (data) {
+                    addToCartBtn.style.cursor = "no-drop";
+                    addToCartBtn.hidden = true;
+                    Toastify({
+                        text: data.success,
+                        duration: 3000
+                    }).showToast();
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (error) {
+                    console.log("Error");
+                    if (error.status === 401) {
+                        return window.location.href = "https://" + window.location.host + "/Identity/Account/Login?ReturnUrl=/Customer/Shops";
+                    }
+                    console.log(error);
+                }
+            });
+        }
+
         function addOrRemoveToWishlist(wishlistBtn, productId) {
             console.log(wishlistBtn);
             $.ajax({

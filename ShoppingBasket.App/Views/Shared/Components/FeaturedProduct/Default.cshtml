@@ -23,7 +23,7 @@
                         <div class="featured__item__pic set-bg" data-setbg="@product.ProductImage_1">
                             <ul class="featured__item__pic__hover">
                                 <li>
-                                    <a href="#">
+                                    <a>
                                         <i class="fa fa-heart"></i>
                                     </a>
                                 </li>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="featured__item__text">
                             <h6>
-                                <a href="#">@product.Name</a>
+                                <a asp-action="Details" asp-controller="Shops" asp-area="Customer" asp-route-id="@product.Id">@product.Name</a>
                             </h6>
                             <h5>@product.Price.ToString("C2")</h5>
                         </div>

@@ -40,6 +40,7 @@ public class WishlistController : Controller
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
         var claims = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
+        string message = "";
 
         try
         {
@@ -47,6 +48,7 @@ public class WishlistController : Controller
                 claims != null && (w.ProductId == productId && w.ApplicationUserId == claims.Value));
             _unitOfWork.WishlistRepository.Delete(wishlist);
             _unitOfWork.Save();
+            message = "Product removed from wishlist.";
         }
         catch (Exception)
         {
@@ -57,6 +59,7 @@ public class WishlistController : Controller
             };
             _unitOfWork.WishlistRepository.Add(newWishlist);
             _unitOfWork.Save();
+            message = "Product added to wishlist.";
         }
 
         // for api call
@@ -64,7 +67,7 @@ public class WishlistController : Controller
         // Otherwise, response will be View() response.
         var isApiResponse = HttpContext.Request.Headers["isApiResponse"].ToString().ToLower();
 
-        if (isApiResponse == "true") return Ok(new { success = "The Product just added to wishlist!" });
+        if (isApiResponse == "true") return Ok(new { success = message });
 
         return reload == 1 ? RedirectToAction("Index") : RedirectToAction("Details", "Shops", new { id = productId });
     }
