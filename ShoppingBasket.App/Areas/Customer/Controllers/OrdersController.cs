@@ -113,10 +113,9 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                     }
                     catch (Exception)
                     {
-                        TempData["error"] = "Something went wrog during Cancelling Order Or Refunding Amuont!";
+                        TempData["error"] = "Something went wrong during Cancelling Order Or Refunding Amount!";
                     }
-
-                    ;
+                    
                 }
             }
 

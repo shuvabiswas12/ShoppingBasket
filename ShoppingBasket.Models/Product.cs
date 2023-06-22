@@ -23,8 +23,7 @@ public class Product
 
     [Required] public double Price { get; set; }
 
-    [ForeignKey(("Category"))]
-    [DisplayName("Category")]
+    [Required, ForeignKey(("Category")), DisplayName("Category")]
     public int CategoryId { get; set; }
 
     [ValidateNever] public Category Category { get; set; } = null!;

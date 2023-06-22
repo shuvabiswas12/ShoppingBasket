@@ -69,7 +69,7 @@
                     @if (@Model.Product != null && @Model.Product!.Id != 0)
                     {
                         <input asp-for="Product.Id"  hidden/>
-                        <input asp-for="Product.Stock.Id"  hidden/>
+                        <input asp-for="Product.Stock!.Id"  hidden/>
                     }
                     <input asp-for="Product.ProductImage_1" hidden />
                     <input asp-for="Product.ProductImage_2" hidden />
@@ -94,17 +94,17 @@
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group mb-4 px-3">
-                                <label class="form-label" asp-for="Product.Stock.CurrentStock"></label>
-                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Product.Stock.CurrentStock" placeholder="Ex. 12" />
-                                <span asp-validation-for="Product.Stock.CurrentStock" class="text-danger"></span>
+                                <label class="form-label" asp-for="Product.Stock!.CurrentStock"></label>
+                                <input type="text" class="form-control number-field" min="1" max="50" asp-for="Product.Stock!.CurrentStock" placeholder="Ex. 12" />
+                                <span asp-validation-for="Product.Stock!.CurrentStock" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group px-3">
                         <label asp-for="Product.CategoryId" class="form-label"></label> <br>
-                        <select asp-for="Product.CategoryId" asp-items="@Model.Categories" style="width: 100%">
-                            <option selected disabled>Select a category &nbsp;</option>
+                        <select asp-for="Product.CategoryId" asp-items="@Model.Categories" style="width: 100%" id="select">
+                            <option selected disabled value="0">Select a category &nbsp;</option>
                         </select>
                         <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                     </div>
@@ -211,7 +211,20 @@
                 document.getElementById("imageSelector1").style.borderColor = "red";
                 return false;
                 }
-            return true;
+
+            // Validation of select tag
+            select = document.getElementById('select');
+            if (select.value != 0 && select.value != null) {
+                return true;
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You must select a Category!',
+                });
+                document.getElementById("select").style.borderColor = "red";
+                return false;
+            }
         }
 
         // number filed validation starts...

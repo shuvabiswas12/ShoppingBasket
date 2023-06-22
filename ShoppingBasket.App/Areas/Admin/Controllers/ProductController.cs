@@ -110,8 +110,7 @@ public class ProductController : Controller
     [HttpGet]
     public IActionResult GetProducts()
     {
-        var products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock");
-
+        IEnumerable<Product> products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock").OrderByDescending(p => p.Id).ToList();
         return Json(new { data = products });
     }
 
