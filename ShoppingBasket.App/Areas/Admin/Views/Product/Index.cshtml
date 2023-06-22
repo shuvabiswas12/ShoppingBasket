@@ -64,7 +64,7 @@
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'name' },
+                    { data: 'name', width: "40%" },
                     { data: 'category.name' },
                     { data: 'price', render: $.fn.dataTable.render.number('.', '.', 2, '$') },
                     { data: 'stock.currentStock' },
@@ -77,9 +77,11 @@
                     {
                         data: 'id',
                         render: function (data) {
-                            return `<a href="/Admin/Product/Detail?id=${data}" title="View" class="px-3 py-2 mx-2 btn btn-secondary"><i class="bi bi-eye"></i></a>
-                                        <a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="px-3 py-2 btn btn-info">Edit</a>
-                                        <a onclick=deleteProduct(${data}) title="Delete" class="btn btn-danger p-2 mx-2 text-white">Delete</a>`;
+                            return `<div class="d-flex align-items-center justify-content-cen">
+                                    <a href="/Admin/Product/Detail?id=${data}" title="View" class="px-3 py-2 m-2 btn btn-secondary"><i class="bi bi-eye"></i></a>
+                                                <a href="/Admin/Product/CreateAndUpdate?id=${data}" title="Edit" class="px-3 py-2 btn btn-info">Edit</a>
+                                                <a onclick=deleteProduct(${data}) title="Delete" class="btn btn-danger p-2 m-2 text-white">Delete</a>
+                            </div>`;
                         }
                     }
                 ],

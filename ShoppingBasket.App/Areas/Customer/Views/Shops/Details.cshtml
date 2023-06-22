@@ -1,3 +1,4 @@
+@using ShoppingBasket.CommonHelper;
 @model ShoppingBasket.Models.ViewModels.ProductDetailsVM
 
 @{
@@ -99,6 +100,12 @@
                             <i class="bi bi-heart-fill"></i>
                         </a>
                     }
+                    
+                    @if (User.IsInRole(WebsiteRoles.AdminRole))
+                    {
+                        <a asp-route-id="@Model.Product.Id" asp-action="CreateAndUpdate" asp-controller="Product" asp-area="Admin" title="Edit" class="mx-2 px-3 py-2 fs-5 fw-bold text-white btn btn-danger">Edit</a>
+                    }
+
                     <ul>
                         <li>
                             <b>Availability</b> <span>In Stock (@Model.Product.Stock!.CurrentStock)</span>
