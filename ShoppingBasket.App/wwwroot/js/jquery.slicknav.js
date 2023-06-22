@@ -146,7 +146,6 @@
 
             // if a list item has a nested menu
             if (data.children.length > 0) {
-
                 // select all text before the child menu
                 // check for anchors
 
@@ -193,8 +192,6 @@
 
                 //append arrow
                 $(nodes).last().after(arrowElement);
-
-
             } else if ( item.children().length === 0) {
                  item.addClass(prefix+'_txtnode');
             }
@@ -269,12 +266,10 @@
                     if (ev.keyCode !== Keyboard.DOWN || !$($this.btn).hasClass(prefix+'_open')){
                         $this._menuToggle();
                     }
-                    
+
                     $($this.btn).next().find('[role="menuitem"]').first().focus();
                     break;
             }
-
-            
         });
 
         $this.mobileNav.on('keydown', '.'+prefix+'_item', function(e) {
@@ -332,7 +327,7 @@
                     e.preventDefault();
                     $this._menuToggle();
                     $($this.btn).focus();
-                    break;    
+                    break;
             }
         });
 
@@ -402,7 +397,7 @@
         if (animate) {
             duration = settings.duration;
         }
-        
+
         function afterOpen(trigger, parent) {
             $(trigger).removeClass(prefix+'_animating');
             $(parent).removeClass(prefix+'_animating');
@@ -412,7 +407,7 @@
                 settings.afterOpen(trigger);
             }
         }
-        
+
         function afterClose(trigger, parent) {
             el.attr('aria-hidden','true');
             items.attr('tabindex', '-1');
@@ -465,7 +460,6 @@
                     afterClose(trigger, parent)
                 });
             } else if (settings.animations === 'velocity') {
-                
                 el.velocity("finish").velocity("slideUp", {
                     duration: duration,
                     easing: settings.easingClose,
@@ -550,10 +544,8 @@
         // Is the first parameter an object (options), or was omitted, instantiate a new instance
         if (options === undefined || typeof options === 'object') {
             return this.each(function () {
-
                 // Only allow the plugin to be instantiated once due to methods
                 if (!$.data(this, 'plugin_' + mobileMenu)) {
-
                     // if it has no instance, create a new one, pass options to our plugin constructor,
                     // and store the plugin instance in the elements jQuery data object.
                     $.data(this, 'plugin_' + mobileMenu, new Plugin( this, options ));
@@ -562,7 +554,6 @@
 
         // If is a string and doesn't start with an underscore or 'init' function, treat this as a call to a public method.
         } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
-
             // Cache the method call to make it possible to return a value
             var returns;
 
@@ -571,7 +562,6 @@
 
                 // Tests that there's already a plugin-instance and checks that the requested public method exists
                 if (instance instanceof Plugin && typeof instance[options] === 'function') {
-
                     // Call the method of our plugin instance, and pass it the supplied arguments.
                     returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
                 }

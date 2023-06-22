@@ -28,6 +28,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
         }
 
         /* This orderId is a Order Header ID */
+
         [HttpGet]
         public IActionResult Details(int orderId)
         {
@@ -87,7 +88,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
             }
         }
 
-        #endregion
+        #endregion API CALL
 
         public IActionResult Cancel(int orderId)
         {
@@ -115,7 +116,6 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                     {
                         TempData["error"] = "Something went wrong during Cancelling Order Or Refunding Amount!";
                     }
-                    
                 }
             }
 
@@ -172,6 +172,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
         }
 
         /* This id is a OrderHeaderID */
+
         [HttpGet, ActionName("StartProcessing")]
         public IActionResult ApproveOrderAndStartProcessing(int orderId)
         {

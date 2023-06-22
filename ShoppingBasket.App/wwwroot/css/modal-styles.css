@@ -2,10 +2,10 @@
     overflow: hidden;
 }
 
-.modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+    .modal-open .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
 .modal {
     position: fixed;
@@ -58,20 +58,20 @@
     max-height: calc(100% - 1rem);
 }
 
-.modal-dialog-scrollable .modal-content {
-    max-height: calc(100vh - 1rem);
-    overflow: hidden;
-}
+    .modal-dialog-scrollable .modal-content {
+        max-height: calc(100vh - 1rem);
+        overflow: hidden;
+    }
 
-.modal-dialog-scrollable .modal-header,
-.modal-dialog-scrollable .modal-footer {
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-}
+    .modal-dialog-scrollable .modal-header,
+    .modal-dialog-scrollable .modal-footer {
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+    }
 
-.modal-dialog-scrollable .modal-body {
-    overflow-y: auto;
-}
+    .modal-dialog-scrollable .modal-body {
+        overflow-y: auto;
+    }
 
 .modal-dialog-centered {
     display: -webkit-box;
@@ -83,30 +83,30 @@
     min-height: calc(100% - 1rem);
 }
 
-.modal-dialog-centered::before {
-    display: block;
-    height: calc(100vh - 1rem);
-    content: "";
-}
+    .modal-dialog-centered::before {
+        display: block;
+        height: calc(100vh - 1rem);
+        content: "";
+    }
 
-.modal-dialog-centered.modal-dialog-scrollable {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    height: 100%;
-}
+    .modal-dialog-centered.modal-dialog-scrollable {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        height: 100%;
+    }
 
-.modal-dialog-centered.modal-dialog-scrollable .modal-content {
-    max-height: none;
-}
+        .modal-dialog-centered.modal-dialog-scrollable .modal-content {
+            max-height: none;
+        }
 
-.modal-dialog-centered.modal-dialog-scrollable::before {
-    content: none;
-}
+        .modal-dialog-centered.modal-dialog-scrollable::before {
+            content: none;
+        }
 
 .modal-content {
     position: relative;
@@ -136,13 +136,13 @@
     background-color: #000;
 }
 
-.modal-backdrop.fade {
-    opacity: 0;
-}
+    .modal-backdrop.fade {
+        opacity: 0;
+    }
 
-.modal-backdrop.show {
-    opacity: 0.5;
-}
+    .modal-backdrop.show {
+        opacity: 0.5;
+    }
 
 .modal-header {
     display: -webkit-box;
@@ -160,10 +160,10 @@
     border-top-right-radius: 0.3rem;
 }
 
-.modal-header .close {
-    padding: 1rem 1rem;
-    margin: -1rem -1rem -1rem auto;
-}
+    .modal-header .close {
+        padding: 1rem 1rem;
+        margin: -1rem -1rem -1rem auto;
+    }
 
 .modal-title {
     margin-bottom: 0;
@@ -194,13 +194,13 @@
     border-bottom-left-radius: 0.3rem;
 }
 
-.modal-footer > :not(:first-child) {
-    margin-left: .25rem;
-}
+    .modal-footer > :not(:first-child) {
+        margin-left: .25rem;
+    }
 
-.modal-footer > :not(:last-child) {
-    margin-right: .25rem;
-}
+    .modal-footer > :not(:last-child) {
+        margin-right: .25rem;
+    }
 
 .modal-scrollbar-measure {
     position: absolute;
@@ -220,17 +220,17 @@
         max-height: calc(100% - 3.5rem);
     }
 
-    .modal-dialog-scrollable .modal-content {
-        max-height: calc(100vh - 3.5rem);
-    }
+        .modal-dialog-scrollable .modal-content {
+            max-height: calc(100vh - 3.5rem);
+        }
 
     .modal-dialog-centered {
         min-height: calc(100% - 3.5rem);
     }
 
-    .modal-dialog-centered::before {
-        height: calc(100vh - 3.5rem);
-    }
+        .modal-dialog-centered::before {
+            height: calc(100vh - 3.5rem);
+        }
 
     .modal-sm {
         max-width: 300px;
@@ -263,42 +263,42 @@
     box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
 }
 
-.modal-content .modal-header {
-    position: relative;
-    padding: 0;
-    border: none;
-}
+    .modal-content .modal-header {
+        position: relative;
+        padding: 0;
+        border: none;
+    }
 
-.modal-content button.close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0;
-    margin: 0;
-    width: 40px;
-    height: 40px;
-    z-index: 1;
-}
+    .modal-content button.close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        width: 40px;
+        height: 40px;
+        z-index: 1;
+    }
 
-.modal-content .modal-body {
-    border: none;
-}
+    .modal-content .modal-body {
+        border: none;
+    }
 
-.modal-content .modal-body .icon {
-    width: 80px;
-    height: 80px;
-    border: 1px solid #7fad39;
-    border-radius: 50%;
-    font-size: 30px;
-    margin: 0 auto;
-    margin-bottom: 10px;
-}
+        .modal-content .modal-body .icon {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #7fad39;
+            border-radius: 50%;
+            font-size: 30px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
 
-.modal-content .modal-body .icon span {
-    color: #7fad39;
-}
+            .modal-content .modal-body .icon span {
+                color: #7fad39;
+            }
 
-.modal-content .modal-footer {
-    border: none;
-    background: #f8f8f8;
-}
+    .modal-content .modal-footer {
+        border: none;
+        background: #f8f8f8;
+    }

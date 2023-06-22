@@ -56,7 +56,7 @@ public class ProductController : Controller
             Stock = new Stock()
         };
 
-        // for product creation: if id is null or 0 
+        // for product creation: if id is null or 0
         if (id is null or 0)
         {
             return View(productVm);
@@ -84,7 +84,7 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
-            // convert price to double like: 180 to 180.0. "F" parameter is responsible for this conversion. 
+            // convert price to double like: 180 to 180.0. "F" parameter is responsible for this conversion.
             productVm.Product.Price = double.Parse(productVm.Product.Price.ToString("F"));
             if (productVm.Product.Id == 0)
             {
@@ -131,7 +131,7 @@ public class ProductController : Controller
     {
         var product = _unitOfWork.ProductRepository.GetT(p => p.Id == productId);
         if (product == null) return NotFound(new { error = "Product not found!" });
-        
+
         var successMessage = "";
         if (product.IsFeatured == true) successMessage = "Unchecked from Featured Product.";
         else successMessage = "Checked as Featured Product.";
@@ -142,5 +142,5 @@ public class ProductController : Controller
         return Ok(new { success = successMessage });
     }
 
-    #endregion
+    #endregion Datatables API
 }

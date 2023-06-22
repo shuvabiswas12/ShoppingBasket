@@ -2,25 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace ShoppingBasket.App.Areas.Identity.Pages.Account
 {
@@ -35,6 +28,7 @@ namespace ShoppingBasket.App.Areas.Identity.Pages.Account
 
         // Extra fields added by developer
         private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
@@ -113,7 +107,6 @@ namespace ShoppingBasket.App.Areas.Identity.Pages.Account
             [Required] public string Name { get; set; }
         }
 
-
         // Get method will works for getting the registration form
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -147,7 +140,6 @@ namespace ShoppingBasket.App.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-
                     // Here we are adding roles for the newly created User.
                     // Here we are adding two roles for user. Admin and Customer which is stands for normal user.
                     if (Input.Email == "super.admin@admin.com")

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
-using ShoppingBasket.Models.ViewModels;
+using System.Diagnostics;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers
 {
@@ -22,7 +21,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
         {
             return View();
         }
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

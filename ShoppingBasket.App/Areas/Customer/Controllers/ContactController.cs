@@ -1,10 +1,9 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
-using System.Security.Claims;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
+using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers
 {

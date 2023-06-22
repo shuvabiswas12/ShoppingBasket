@@ -25,7 +25,7 @@ public class CategoryController : Controller
 
     // GET
     [HttpGet]
-    public IActionResult CreateAndUpdate(int ? id)
+    public IActionResult CreateAndUpdate(int? id)
     {
         if (id is not null)
         {
@@ -74,5 +74,5 @@ public class CategoryController : Controller
         return Json(new { success = true, message = "Deleted!" });
     }
 
-    #endregion API delete
+    #endregion API DELETE
 }

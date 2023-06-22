@@ -27,11 +27,12 @@ public class ShopsController : Controller
     }
 
     /** This id is a product's Id */
+
     public IActionResult Details(int id)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
         var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
-        
+
         string includeProperties = "Category, Stock";
 
         if (claims != null)

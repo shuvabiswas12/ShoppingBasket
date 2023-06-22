@@ -1,9 +1,9 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
+using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -31,10 +31,11 @@ public class WishlistController : Controller
         return View(wishlistVm);
     }
 
-    /** If API is false then it is consider as like "The Action method called from directly!". Otherwise if api=true then it 
-        is considered as like "The action method called from api call". 
+    /** If API is false then it is consider as like "The Action method called from directly!". Otherwise if api=true then it
+        is considered as like "The action method called from api call".
         If api call happens, The method returns a json file instead of a Html Pages.
     */
+
     [HttpGet]
     public IActionResult AddOrDeleteWishlist(int productId, int? reload = 0)
     {
@@ -72,5 +73,5 @@ public class WishlistController : Controller
         return reload == 1 ? RedirectToAction("Index") : RedirectToAction("Details", "Shops", new { id = productId });
     }
 
-    #endregion
+    #endregion Wishlist api call
 }

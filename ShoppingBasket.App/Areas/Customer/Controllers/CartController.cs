@@ -1,13 +1,11 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
-using System.Security.Claims;
-using ShoppingBasket.CommonHelper;
 using Stripe.Checkout;
-using Exception = System.Exception;
+using System.Security.Claims;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -84,14 +82,13 @@ public class CartController : Controller
             OrderHeader = orderHeader
         };
 
-        // counting total price value of all of selected products 
+        // counting total price value of all of selected products
         checkoutVm.OrderHeader.OrderTotal = checkoutVm.Carts.Sum(cart => (cart.Product!.Price * cart.Count));
 
         if (checkoutVm.OrderHeader.OrderTotal == 0) return RedirectToAction("Index");
 
         return View(checkoutVm);
     }
-
 
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult Checkout(CheckoutVM checkoutVm)
@@ -136,7 +133,6 @@ public class CartController : Controller
 
         if (orderDetails.Any())
         {
-
             var options = new SessionCreateOptions()
             {
                 LineItems = new List<SessionLineItemOptions>(),
@@ -194,7 +190,6 @@ public class CartController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-
     private bool RemoveCart(CheckoutVM checkoutVm)
     {
         // remove the carts from db
@@ -222,7 +217,6 @@ public class CartController : Controller
 
         return true;
     }
-
 
     #region update increment or decrement product's count
 
@@ -268,5 +262,5 @@ public class CartController : Controller
         return NotFound(new { error = "Cart could be deleted." });
     }
 
-    #endregion
+    #endregion update increment or decrement product's count
 }
