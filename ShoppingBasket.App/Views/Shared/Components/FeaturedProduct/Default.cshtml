@@ -23,12 +23,21 @@
                         <div class="featured__item__pic set-bg" data-setbg="@product.ProductImage_1">
                             <ul class="featured__item__pic__hover">
                                 <li>
-                                    <a>
-                                        <i class="fa fa-heart"></i>
-                                    </a>
+                                    @if (product.Wishlist == null)
+                                    {
+                                        <a onclick="addOrRemoveToWishlist(this, @product.Id)">
+                                            <span class="icon_heart_alt"></span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a onclick="addOrRemoveToWishlist(this, @product.Id)">
+                                            <span class="bi bi-heart-fill"></span>
+                                        </a>
+                                    }
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a onclick="addToCart(this, @product.Id)">
                                         <i class="fa fa-shopping-cart"></i>
                                     </a>
                                 </li>

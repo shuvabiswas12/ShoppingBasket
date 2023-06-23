@@ -7,3 +7,66 @@ if (document.getElementById("notFound")) {
     document.getElementById("header").style.display = "none";
     document.getElementById("Humberger").style.display = "none";
 }
+
+function addToCart(addToCartBtn, productId, text=0) {
+    $.ajax({
+        contentType: "application/json",
+        headers: {
+            "isApiResponse": true
+        },
+        url: `/Customer/Cart/AddToCart?productId=${productId}`,
+        type: "POST",
+        success: function (data) {
+            // If text === 1, then "Added!" text will be added
+            // If not, button will be hidden
+            if (text === 1) {
+                addToCartBtn.innerText = "ADDED !";
+                addToCartBtn.disabled = true;
+                addToCartBtn.style.cursor = "no-drop";
+            } else {
+                addToCartBtn.style.display = "none";
+            }
+            Toastify({
+                text: data.success,
+                duration: 3000
+            }).showToast();
+            return true;
+        },
+        failure: function (response) {
+            alert(response.responseText);
+            return false;
+        },
+        error: function (error) {
+            if (error.status === 401) {
+                return window.location.href = "https://" + window.location.host + "/Identity/Account/Login?ReturnUrl=/Customer/Shops";
+            }
+            console.log(error);
+            return false;
+        }
+    });
+}
+
+function addOrRemoveToWishlist(wishlistBtn, productId) {
+    $.ajax({
+        contentType: "application/json",
+        headers: {
+            "isApiResponse": true
+        },
+        method: "GET",
+        url: `/Customer/Wishlist/AddOrDeleteWishlist?productId=${productId}`,
+        success: function (data) {
+            wishlistBtn.style.display = "none";
+            Toastify({
+                text: data.success,
+                duration: 2000
+            }).showToast();
+        },
+        error: function (error) {
+            console.log("Error");
+            if (error.status === 401) {
+                return window.location.href = "https://" + window.location.host + "/Identity/Account/Login?ReturnUrl=" + window.location.pathname;
+            }
+            console.log(error);
+        }
+    });
+}

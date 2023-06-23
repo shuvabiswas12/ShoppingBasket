@@ -16,7 +16,7 @@ namespace ShoppingBasket.App.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var featuredProducts = _unitOfWork.ProductRepository.GetAll(includeProperties: "Stock", predicate: p => p.IsFeatured == true);
+            var featuredProducts = _unitOfWork.ProductRepository.GetAll(includeProperties: "Stock, Wishlist", predicate: p => p.IsFeatured == true);
             return View(featuredProducts);
         }
     }
