@@ -13,6 +13,9 @@
         <span>All Categories</span>
     </div>
     <ul id="dynamic-category">
+        <li>
+            <a asp-action="Index" asp-controller="Shops" asp-area="Customer">All</a>
+        </li>
         @foreach (var category in Model)
         {
             <li>

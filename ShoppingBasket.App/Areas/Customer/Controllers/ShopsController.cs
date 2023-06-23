@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
@@ -20,6 +22,7 @@ public class ShopsController : Controller
         _unitOfWork = unitOfWork;
     }
 
+    [HttpGet]
     public IActionResult Index(int? category)
     {
         if (category is not null && category != 0)
@@ -29,6 +32,19 @@ public class ShopsController : Controller
         }
         var products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
         return View(products);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Index(string? item = null)
+    {
+        if (item!.Trim() is null)
+        {
+            return View();
+        }
+        var filteredProducts = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock, Wishlist",
+                p => p.Name.Contains(item));
+        return View(filteredProducts);
     }
 
     /** This id is a product's Id */
