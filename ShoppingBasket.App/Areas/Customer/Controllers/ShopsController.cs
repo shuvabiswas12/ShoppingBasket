@@ -20,14 +20,18 @@ public class ShopsController : Controller
         _unitOfWork = unitOfWork;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(int? category)
     {
+        if (category is not null && category != 0)
+        {
+            var filteredProducts = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist", predicate: p => p.CategoryId == category);
+            return View(filteredProducts);
+        }
         var products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
         return View(products);
     }
 
     /** This id is a product's Id */
-
     public IActionResult Details(int id)
     {
         var claimsIdentity = User.Identity as ClaimsIdentity;
