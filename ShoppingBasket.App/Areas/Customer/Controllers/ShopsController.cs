@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
+using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
 using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
@@ -23,15 +24,35 @@ public class ShopsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index(int? category)
+    public IActionResult Index(int? category, string? sortBy)
     {
+        var shopsVm = new ShopsVM();
+
         if (category is not null && category != 0)
         {
-            var filteredProducts = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist", predicate: p => p.CategoryId == category);
-            return View(filteredProducts);
+            shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist", predicate: p => p.CategoryId == category);
+            return View(shopsVm);
         }
-        var products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
-        return View(products);
+        else if (sortBy is not null && sortBy == FilterBy.PRICE_ASC)
+        {
+            shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderBy(product => product.Price).ToList();
+            shopsVm.SortBy = FilterBy.PRICE_ASC.ToString();
+            return View(shopsVm);
+        }
+        else if (sortBy is not null && sortBy == FilterBy.PRICE_DESC)
+        {
+            shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderByDescending(product => product.Price).ToList();
+            shopsVm.SortBy = FilterBy.PRICE_DESC.ToString();
+            return View(shopsVm);
+        }
+        else if (sortBy is not null && sortBy == FilterBy.NEW)
+        {
+            shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderByDescending(product => product.Id).ToList();
+            shopsVm.SortBy = FilterBy.NEW;
+            return View(shopsVm);
+        }
+        shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
+        return View(shopsVm);
     }
 
     [HttpPost]
@@ -42,9 +63,10 @@ public class ShopsController : Controller
         {
             return View();
         }
-        var filteredProducts = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock, Wishlist",
+        var shopsVm = new ShopsVM();
+        shopsVm.products = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category, Stock, Wishlist",
                 p => p.Name.Contains(item));
-        return View(filteredProducts);
+        return View(shopsVm);
     }
 
     /** This id is a product's Id */

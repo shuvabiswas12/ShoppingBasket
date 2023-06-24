@@ -70,3 +70,12 @@ function addOrRemoveToWishlist(wishlistBtn, productId) {
         }
     });
 }
+
+function handleChange() {
+    var selectedValue = document.getElementById("sortProduct").value;
+    console.log("Selected value: " + selectedValue);
+    if (selectedValue === "Default") document.getElementById("Default").click();
+    if (selectedValue === "High_To_Low") document.getElementById("High_To_Low").click();
+    if (selectedValue === "Low_To_High") document.getElementById("Low_To_High").click();
+    if (selectedValue === "New") document.getElementById("New").click();
+}

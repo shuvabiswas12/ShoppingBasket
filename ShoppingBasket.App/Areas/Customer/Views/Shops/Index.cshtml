@@ -1,4 +1,5 @@
-@model IEnumerable<Product>
+@using ShoppingBasket.CommonHelper;
+@model ShoppingBasket.Models.ViewModels.ShopsVM;
 
 @{
     ViewData["Title"] = ViewData["Root"] = "Shops";
@@ -42,29 +43,39 @@
                         <div class="col-lg-4 col-md-5">
                             <div class="filter__sort">
                                 <span>Sort By</span>
-                                <select>
-                                    <option value="0">Default</option>
-                                    <option value="1">High To Low</option>
-                                    <option value="2">Low To High</option>
-                                    <option value="2">New</option>
+                                <select id="sortProduct" onchange="handleChange()" asp-for="@Model.SortBy">
+                                    <option value="@FilterBy.DEFAULT">
+                                        Default
+                                    </option>
+                                    <option value="@FilterBy.PRICE_DESC">
+                                        High -> Low
+                                    </option>
+                                    <option value="@FilterBy.PRICE_ASC">
+                                        Low -> High
+                                    </option>
+                                    <option value="@FilterBy.NEW">
+                                        New
+                                    </option>
                                 </select>
+
+                                <div hidden>
+                                    <a id="High_To_Low" asp-action="Index" asp-asp-controller="Shops" asp-asp-area="Customer" asp-route-sortBy="@FilterBy.PRICE_DESC"></a>
+                                    <a id="Low_To_High" asp-action="Index" asp-asp-controller="Shops" asp-asp-area="Customer" asp-route-sortBy="@FilterBy.PRICE_ASC"></a>
+                                    <a id="Default" asp-action="Index" asp-asp-controller="Shops" asp-asp-area="Customer" asp-route-sortBy="@FilterBy.DEFAULT"></a>
+                                    <a id="New" asp-action="Index" asp-asp-controller="Shops" asp-asp-area="Customer" asp-route-sortBy="@FilterBy.NEW"></a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>@Model.Count()</span> Products found</h6>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-3">
-                            <div class="filter__option">
-                               
+                                <h6><span>@Model.products.Count()</span> Products found</h6>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
 
-                    @foreach (var product in Model)
+                    @foreach (var product in Model.products)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -101,7 +112,7 @@
                         </div>
                     }
                 </div>
-                @if (Model.Any())
+                @if (Model.products.Any())
                 {
                     <div class="product__pagination">
                         <a href="#">1</a>
