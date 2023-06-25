@@ -73,9 +73,26 @@ function addOrRemoveToWishlist(wishlistBtn, productId) {
 
 function handleChange() {
     var selectedValue = document.getElementById("sortProduct").value;
-    console.log("Selected value: " + selectedValue);
     if (selectedValue === "Default") document.getElementById("Default").click();
     if (selectedValue === "High_To_Low") document.getElementById("High_To_Low").click();
     if (selectedValue === "Low_To_High") document.getElementById("Low_To_High").click();
     if (selectedValue === "New") document.getElementById("New").click();
+}
+
+function previewMessage(messageBtn, messageId) {
+    $.ajax({
+        contentType: "application/json",
+        url: `/Admin/Messages/Preview?messageId=${messageId}`,
+        method: "GET",
+        success: function (data) {
+            document.getElementById("message-preview-div").classList.remove("d-none");
+            document.getElementById("messageName").innerText = data.data?.name;
+            document.getElementById("messageTime").innerText = `${new Date(data.data?.createdAt).toLocaleDateString()} ${new Date(data.data?.createdAt).toLocaleTimeString()}`; 
+            document.getElementById("messageEmail").innerText = data.data?.email; 
+            document.getElementById("message").innerText = data.data?.message; 
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 }

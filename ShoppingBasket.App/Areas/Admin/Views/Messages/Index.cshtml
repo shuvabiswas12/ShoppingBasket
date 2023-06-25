@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ShoppingBasket.Models.Contact>
+
+@{
+    ViewData["Title"] = "Messages";
+}
+
+<div class="p-3 bg-secondary d-flex justify-content-center align-items-center" style="height: 100px;">
+    <h3 class="text-center text-white border-0">Messages</h3>
+</div>
+
+<section class="content message_box py-4">
+    <div class="container p-0 cart-detail">
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-12 col-lg-5 col-xl-3 border-right overflow-auto" style="height: 650px;">
+                    @foreach (var contact in Model)
+                    {
+                        <button onclick="previewMessage(this, @contact.Id)" class="list-group-item list-group-item-action border-0">
+                            <div class="d-flex align-items-start">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Jennifer Chang" width="40" height="40">
+                                <div class="flex-grow-1 ml-3 mt-1">
+                                    @contact.Name
+                                </div>
+                            </div>
+                        </button>
+                    }
+
+                    <hr class="d-block d-lg-none mt-1 mb-0">
+                </div>
+                <div class="col-12 col-lg-7 col-xl-9 d-none" id="message-preview-div">
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong id="messageName">Sharon Lessman</strong> <br />
+                                <span id="messageTime">2:30PM</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="position-relative">
+                        <div class="chat-messages p-4">
+
+                            <div class="chat-message-left pb-4">
+                                <div class="flex-shrink-1 rounded py-2 px-1 ml-1">
+                                    <div class="font-weight-bold mb-1">Email</div>
+                                    <p id="messageEmail">Email@email.com</p>
+                                </div>
+                            </div>
+
+                            <div class="chat-message-left pb-4 w-75">
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-1">
+                                    <div class="font-weight-bold mb-1">MESSAGE</div>
+                                    <hr />
+                                    <p class="py-3" id="message">lorem ln skvbs shvw eowh hkwbc vwi fbwfb wfugwkfbwk cgjkbdoqudwlfj ef gwurfg wfb owuwgf owuf wfwfohw flhwf</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
