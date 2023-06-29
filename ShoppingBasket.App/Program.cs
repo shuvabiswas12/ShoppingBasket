@@ -33,6 +33,17 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Pay
 // For resolving issues of Razor pages services.
 builder.Services.AddRazorPages();
 
+// enable memory cache so that this session which is created for email sending, store into browser cache.
+builder.Services.AddDistributedMemoryCache();
+
+// creating sessions for email sending 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // must be given so that return url works properly
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -58,6 +69,8 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("PaymentSettings:S
 
 app.UseRouting();
 app.UseAuthentication(); ;
+
+app.UseSession();  // enabling session using
 
 app.UseAuthorization();
 

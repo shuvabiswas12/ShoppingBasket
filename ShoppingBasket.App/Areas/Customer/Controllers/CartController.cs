@@ -25,7 +25,10 @@ public class CartController : Controller
     // GET
     public IActionResult Index()
     {
-        var carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product");
+        var claimIdentity = User.Identity as ClaimsIdentity;
+        var claims = claimIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+
+        var carts = _unitOfWork.CartRepository.GetAll(includeProperties: "Product", predicate: c => c.ApplicationUserId == claims!.Value);
         double total = 0;
         foreach (var cart in carts)
         {
@@ -33,6 +36,10 @@ public class CartController : Controller
         }
 
         var cartVm = new CartVM() { Carts = carts, Total = total };
+
+        // adding cart count to sessions
+        HttpContext.Session.SetInt32("carts", carts.ToList().Count);
+
         return View(cartVm);
     }
 
@@ -55,6 +62,8 @@ public class CartController : Controller
 
         _unitOfWork.CartRepository.Add(newCart);
         _unitOfWork.Save();
+        // adding cart count to sessions
+        HttpContext.Session.SetInt32("carts", _unitOfWork.CartRepository.GetAll(predicate: c => c.ApplicationUserId == claims!.Value).ToList().Count);
 
         var isApiResponse = HttpContext.Request.Headers["isApiResponse"].ToString().ToLower();
         if (isApiResponse == "true") return Ok(new { success = "The Product just added to cart!" });

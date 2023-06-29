@@ -3,6 +3,10 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+@* for getting sessions *@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContext
+
 <ul>
     <li class="active">
         <a asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
@@ -17,7 +21,17 @@
             <a>Pages</a>
             <ul class="header__menu__dropdown">
                 <li>
-                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart</a>
+                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index">Shoping Cart 
+
+                        @if(httpContext.HttpContext!.Session.GetInt32("carts") != null )
+                        {
+                            <span>
+                                (
+                                @httpContext.HttpContext.Session.GetInt32("carts")
+                                )
+                            </span>
+                        }
+                    </a>
                 </li>
                 <li>
                     <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index">Wishlist</a>
