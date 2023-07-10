@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using ShoppingBasket.App.Middlewares;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
@@ -18,6 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<CookieMiddleware>();
 
 // For resolving IEmailSender exception on activating RegisterModel.
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
