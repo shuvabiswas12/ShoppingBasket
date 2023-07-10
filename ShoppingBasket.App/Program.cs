@@ -19,6 +19,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// custom middleware for adding carts count to the cookie
 builder.Services.AddScoped<CookieMiddleware>();
 
 // For resolving IEmailSender exception on activating RegisterModel.
