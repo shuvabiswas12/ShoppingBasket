@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using ShoppingBasket.CommonHelper;
@@ -24,34 +25,39 @@ public class ShopsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index(int? category, string? sortBy)
+    public IActionResult Index(int? category, string? sortBy, int page = 1)
     {
+        const int pageSize = 9;
         var shopsVm = new ShopsVM();
 
         if (category is not null && category != 0)
         {
             shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist", predicate: p => p.CategoryId == category);
-            return View(shopsVm);
         }
         else if (sortBy is not null && sortBy == FilterBy.PRICE_ASC)
         {
             shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderBy(product => product.Price).ToList();
             shopsVm.SortBy = FilterBy.PRICE_ASC.ToString();
-            return View(shopsVm);
         }
         else if (sortBy is not null && sortBy == FilterBy.PRICE_DESC)
         {
             shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderByDescending(product => product.Price).ToList();
             shopsVm.SortBy = FilterBy.PRICE_DESC.ToString();
-            return View(shopsVm);
         }
         else if (sortBy is not null && sortBy == FilterBy.NEW)
         {
             shopsVm.products = _unitOfWork.ProductRepository.GetAll().OrderByDescending(product => product.Id).ToList();
             shopsVm.SortBy = FilterBy.NEW;
-            return View(shopsVm);
         }
-        shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
+        else
+        {
+            shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
+        }
+        
+        shopsVm.PageCount = (int)Math.Ceiling((decimal)shopsVm.products.Count() / 9);
+        shopsVm.ProductsCount = shopsVm.products.Count();
+        shopsVm.products = shopsVm.products.Skip((page - 1) * pageSize).Take(pageSize);
+
         return View(shopsVm);
     }
 

@@ -12,7 +12,13 @@ namespace ShoppingBasket.Models.ViewModels
     public class ShopsVM
     {
         public IEnumerable<Product> products { get; set; } = null!;
+        
+        public int PageCount { get; set; } = 1;
+        
+        public int ProductsCount { get; set; } = 0;
+
         public string SortBy = FilterBy.DEFAULT;
+
         public IEnumerable<SelectListItem> Sorts = new List<SelectListItem>
         {
             new SelectListItem
