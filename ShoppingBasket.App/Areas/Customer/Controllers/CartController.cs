@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
@@ -6,6 +7,7 @@ using ShoppingBasket.Models;
 using ShoppingBasket.Models.ViewModels;
 using Stripe.Checkout;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace ShoppingBasket.App.Areas.Customer.Controllers;
 
@@ -15,11 +17,13 @@ public class CartController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CartController> _logger;
+    private readonly IEmailSender _emailSender;
 
-    public CartController(ILogger<CartController> logger, IUnitOfWork unitOfWork)
+    public CartController(ILogger<CartController> logger, IUnitOfWork unitOfWork, IEmailSender emailSender)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _emailSender = emailSender;
     }
 
     // GET
@@ -124,14 +128,26 @@ public class CartController : Controller
                 _unitOfWork.OrderHeaderRepository.UpdateStatus(checkoutVm.OrderHeader.Id, OrderStatus.STATUS_PENDING,
                     PaymentStatus.STATUS_DUE);
                 _unitOfWork.Save();
+                SendEmail(claimIdentity.Name, checkoutVm.OrderHeader.OrderNumber);
                 return RedirectToAction("Index", "Shops");
             }
 
             // Online Payment options...
             return PaymentByStripe(checkoutVm.OrderHeader.Id);
         }
-
         return View();
+    }
+
+    private void SendEmail(string? email, string orderNo)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return;
+        }
+        _emailSender.SendEmailAsync(email, "Order Confimation", 
+            $"Your order has been placed. Order Number is: <strong>{orderNo}</strong>. " +
+            $"\n<i>Visit order deatil page for more information about the order.</i>. \n<p>Thanks</p>")
+            .GetAwaiter();
     }
 
     public IActionResult PaymentByStripe(int orderHeaderId)

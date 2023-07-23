@@ -24,9 +24,12 @@ public class WishlistController : Controller
 
     public IActionResult Index()
     {
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+
         var wishlistVm = new WishlistVM()
         {
-            Wishlists = _unitOfWork.WishlistRepository.GetAll(includeProperties: "Product"),
+            Wishlists = _unitOfWork.WishlistRepository.GetAll(includeProperties: "Product", predicate: w => w.ApplicationUserId == claims!.Value),
         };
         return View(wishlistVm);
     }

@@ -65,7 +65,13 @@
                                 <div class="product__item__pic set-bg img-thumbnail" data-setbg="@product.ProductImage_1">
                                     <ul class="product__item__pic__hover">
                                         <li>
-                                            @if (product.Wishlist == null)
+                                            @if (!User.Identity!.IsAuthenticated)
+                                            {
+                                                <a onclick="addOrRemoveToWishlist(this, @product.Id)" title="Add to wishlist!" class="heart-icon">
+                                                    <span class="icon_heart_alt"></span>
+                                                </a>
+                                            }
+                                            else if (product.Wishlist == null || (Model.AuthenticatedUser.ToString() != product.Wishlist.ApplicationUserId.ToString()))
                                             {
                                                 <a onclick="addOrRemoveToWishlist(this, @product.Id)" title="Add to wishlist!" class="heart-icon">
                                                     <span class="icon_heart_alt"></span>

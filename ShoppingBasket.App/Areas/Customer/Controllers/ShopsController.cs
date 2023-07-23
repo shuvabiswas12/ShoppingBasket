@@ -27,6 +27,10 @@ public class ShopsController : Controller
     [HttpGet]
     public IActionResult Index(int? category, string? sortBy, int page = 1)
     {
+
+        var claimsIdentity = User.Identity as ClaimsIdentity;
+        var claims = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+
         const int pageSize = 9;
         var shopsVm = new ShopsVM();
 
@@ -53,7 +57,13 @@ public class ShopsController : Controller
         {
             shopsVm.products = _unitOfWork.ProductRepository.GetAll("Category, Stock, Wishlist");
         }
-        
+
+        // for checking wishlist icon fill-heart or empty heart.
+        if (claims != null)
+        {
+            shopsVm.AuthenticatedUser = claims.Value;
+        }
+
         shopsVm.PageCount = (int)Math.Ceiling((decimal)shopsVm.products.Count() / 9);
         shopsVm.ProductsCount = shopsVm.products.Count();
         shopsVm.products = shopsVm.products.Skip((page - 1) * pageSize).Take(pageSize);

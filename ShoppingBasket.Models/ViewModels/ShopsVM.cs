@@ -12,6 +12,8 @@ namespace ShoppingBasket.Models.ViewModels
     public class ShopsVM
     {
         public IEnumerable<Product> products { get; set; } = null!;
+
+        public string AuthenticatedUser { get; set; } = null!;
         
         public int PageCount { get; set; } = 1;
         
