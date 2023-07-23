@@ -138,12 +138,25 @@ public class CartController : Controller
         return View();
     }
 
-    private void SendEmail(string? email, string orderNo)
+    private void SendEmail(string? email, string orderNo, string? paymentIntentId = null)
     {
         if (string.IsNullOrEmpty(email))
         {
             return;
         }
+
+        // for online payment's message
+        if (paymentIntentId is not null)
+        {
+            _emailSender.SendEmailAsync(email, "Order Confimation",
+            $"Your order has been placed. \nOrder Number is: <strong>{orderNo}</strong>. " +
+            $"\nPayment Intent Id: <b>{paymentIntentId}<b>." +
+            $"\n<i>Visit order deatil page for more information about the order.</i>. \n<p>Thanks</p>")
+            .GetAwaiter();
+            return;
+        }
+
+        // For cash on delivery
         _emailSender.SendEmailAsync(email, "Order Confimation", 
             $"Your order has been placed. Order Number is: <strong>{orderNo}</strong>. " +
             $"\n<i>Visit order deatil page for more information about the order.</i>. \n<p>Thanks</p>")
@@ -200,7 +213,7 @@ public class CartController : Controller
     public IActionResult PaymentSuccess(int id)
     {
         // Updting payment status and order status for online payment system
-        var orderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == id);
+        var orderHeader = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == id, includeProperties: "ApplicationUser");
         if (orderHeader != null && orderHeader.PaymentIntentId == null)
         {
             var service = new SessionService();
@@ -208,6 +221,8 @@ public class CartController : Controller
             _unitOfWork.OrderHeaderRepository.PaymentStatus(orderHeaderId: orderHeader.Id, paymentIntentId: session.PaymentIntentId);
             _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderId: orderHeader.Id, OrderStatus.STATUS_APPROVED, PaymentStatus.STATUS_APPROVED);
             _unitOfWork.Save();
+
+            SendEmail(orderHeader.Email, orderHeader.OrderNumber, orderHeader.PaymentIntentId);
 
             return View(orderHeader);
         }

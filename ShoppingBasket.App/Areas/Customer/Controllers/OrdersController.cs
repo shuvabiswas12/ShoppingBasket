@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingBasket.CommonHelper;
 using ShoppingBasket.DataAccessLayer.Infrastructure.IRepository;
@@ -15,11 +16,13 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<OrdersController> _logger;
+        private readonly IEmailSender _emailSender;
 
-        public OrdersController(ILogger<OrdersController> logger, IUnitOfWork unitOfWork)
+        public OrdersController(ILogger<OrdersController> logger, IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -92,7 +95,7 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
 
         public IActionResult Cancel(int orderId)
         {
-            var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId);
+            var order = _unitOfWork.OrderHeaderRepository.GetT(o => o.Id == orderId, includeProperties: "ApplicationUser");
             if (order == null) return View("_404");
 
             if (order.OrderStatus != OrderStatus.STATUS_CANCELLED)
@@ -101,6 +104,10 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 {
                     _unitOfWork.OrderHeaderRepository.UpdateStatus(orderId, OrderStatus.STATUS_CANCELLED);
                     _unitOfWork.Save();
+                    
+                    // sending email to customer
+                    string message = $"Your order <b>({order.OrderNumber})</b> has been cancelled. \nIf you did complete the payment, check your account balance after a while because we refunded the payment! \nThanks";
+                    _emailSender.SendEmailAsync(order.ApplicationUser.Email, "Order Cancell Notification", message);
                 }
                 else if (order.PaymentType == PaymentTypes.PaymentOnline &&
                          order.PaymentStatus == PaymentStatus.STATUS_APPROVED)
@@ -111,6 +118,10 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                     {
                         RefundPayment(order);
                         TempData["success"] = "Order is Canceled and Amount is Refunded!";
+
+                        // sending email to customer
+                        string message = $"Your order <b>({order.OrderNumber})</b> has been cancelled. \nIf you did complete the payment, check your account balance after a while because we refunded the payment! \nThanks";
+                        _emailSender.SendEmailAsync(order.ApplicationUser.Email, "Order Cancell Notification", message);
                     }
                     catch (Exception)
                     {
@@ -166,6 +177,9 @@ namespace ShoppingBasket.App.Areas.Customer.Controllers
                 }
 
                 TempData["success"] = "Order Shipped!";
+                // sending email to customer
+                string message = $"Your order <b>({order.OrderNumber})</b> has been shiped. Tracking No: {order.TrackingNumber} and Carrier: {order.Carrier}. \nThanks";
+                _emailSender.SendEmailAsync(order.ApplicationUser.Email, "Order Shiping Notification", message);
             }
 
             return RedirectToAction("Details", new { orderId = order.Id });
