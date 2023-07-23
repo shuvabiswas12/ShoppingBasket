@@ -129,7 +129,8 @@ public class CartController : Controller
                     PaymentStatus.STATUS_DUE);
                 _unitOfWork.Save();
                 SendEmail(claimIdentity.Name, checkoutVm.OrderHeader.OrderNumber);
-                return RedirectToAction("Index", "Shops");
+                TempData["success"] = "Your Order has been successful. There is an email regarding this order sent to you. Please check your mailbox.";
+                return RedirectToAction("Details", "Orders", new { orderId = checkoutVm.OrderHeader.Id });
             }
 
             // Online Payment options...
